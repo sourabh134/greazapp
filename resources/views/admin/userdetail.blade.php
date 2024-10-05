@@ -338,12 +338,12 @@
                                                         $carname = "";
                                                         foreach($car as $carvalue){
                                                             $cname = App\Models\Vehicle::where('id',$carvalue)->first()->name;
-                                                            $carname .= ",".$carname;
+                                                            $carname .= ", ".$cname;
                                                         }
                                                     ?>
                                                     <tr>
                                                         <td>{{$g}}</td>
-                                                        <td>{{$carname}}</td>
+                                                        <td>{{trim($carname,",")}}</td>
                                                     </tr>
                                                     @php
                                                     $g++;

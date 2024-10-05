@@ -83,6 +83,12 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::get('/admin/stateList','stateList');
         Route::get('/admin/cityList','cityList');
         Route::post('/admin/change_city_status','change_city_status');
+        //CarCheck
+        Route::get('/admin/CarCheck','CarCheck');
+        Route::get('/admin/addCarCheck','addCarCheck');
+        Route::post('/admin/insert_carcheck','insert_carcheck');
+        Route::post('/admin/delete_carCheck','delete_carCheck');
+        Route::post('/admin/change_carcheck_status','change_carcheck_status');
     });
     //CategoryController;
     Route::controller(CategoryController::class)->group(function(){

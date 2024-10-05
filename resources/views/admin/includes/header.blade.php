@@ -206,6 +206,7 @@ if (!isset($active)) {
           <li><a href="{{ url('admin/service') }}">Service</a></li>
           <li><a href="{{ url('admin/dealtype') }}">Deal Type</a></li>
           <li><a href="{{ url('admin/notification') }}">Notification</a></li>
+          <li><a href="{{ url('admin/CarCheck') }}">Car Check</a></li>
           <li><a href="{{ url('admin/stafflist') }}">Staff </a></li>
         </ul>
       </li>

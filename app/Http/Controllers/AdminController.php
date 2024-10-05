@@ -23,6 +23,7 @@ use App\Models\InternalAppPage;
 use App\Models\AccessRight;
 use App\Models\StaffLog;
 use App\Models\StaffLogEvent;
+use App\Models\CarCheck;
 use Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -351,9 +352,6 @@ class AdminController extends Controller
         }
         
     }
-
-    
-
     public function update_status($id, $table){
         $model = 'App\Models\\'.$table;
         $item = $model::find($id);
@@ -671,5 +669,100 @@ class AdminController extends Controller
         $admin_id = session::get('id');;
         $data['admin']=Admin::find($admin_id);
         return view('admin.permissiondenied', $data);
+    }
+
+    public function CarCheck(Request $request){
+        $admin_id = session::get('id');
+        $data['active'] = "banner";
+        $data['active1'] = "banner";
+        $data['data'] = CarCheck::where('status','!=', 2)->get();
+        $data['admin'] = Admin::find($admin_id);
+        return view('admin.carcheck', $data);
+    }
+    public function addCarCheck(Request $request){
+        $admin_id = session::get('id');
+        $data['active'] = "banner";
+        $data['active1'] = "banner";
+        $data['data'] = CarCheck::where('id', base64_decode($request->key))->first();
+        $data['admin'] = Admin::find($admin_id);
+        return view('admin.addCarCheck', $data);
+    }
+    public function insert_carcheck(Request $request){
+        if($request->id == ""){
+            $carcheck = new CarCheck;
+            $carcheck->name = $request->name;
+            $carcheck->name_ar = $request->namear;
+            $carcheck->content = $request->info;
+            $carcheck->content_ar = $request->infoar;
+            $carcheck->status = 1;
+            $carcheck->save();
+            echo 1;
+            if(session::get('usertype')==2){
+                $log = array(
+                    'staff_id'=>session::get('id'),
+                    'logDate'=>date('Y-m-d'),
+                    'event_name'=>"Add Car Check",
+                    'event_category'=>24,
+                    'event_id'=>$request->id,
+                );
+                // print_r($log);
+                $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+            }
+        }else{
+            $carcheck = CarCheck::find($request->id);
+            $carcheck->name = $request->name;
+            $carcheck->name_ar = $request->namear;
+            $carcheck->content = $request->info;
+            $carcheck->content_ar = $request->infoar;
+            $carcheck->save();
+            echo 1;
+            if(session::get('usertype')==2){
+                $log = array(
+                    'staff_id'=>session::get('id'),
+                    'logDate'=>date('Y-m-d'),
+                    'event_name'=>"Update Car Check",
+                    'event_category'=>24,
+                    'event_id'=>$request->id,
+                );
+                // print_r($log);
+                $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+            }
+        }
+
+    }
+    public function delete_carCheck(Request $request){
+        $id = $request->id;
+        $category = CarCheck::find($id);
+        $category->status = 2;
+        $category->save();
+        if(session::get('usertype')==2){
+            $log = array(
+                'staff_id'=>session::get('id'),
+                'logDate'=>date('Y-m-d'),
+                'event_name'=>"Delete Car Check",
+                'event_category'=>24,
+                'event_id'=>$request->id,
+            );
+            // print_r($log);
+            $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+        }
+    }
+    public function change_carcheck_status(Request $request){
+        $id = $request->id;
+        $status = $request->status;
+        $category = CarCheck::find($id);
+        $category->status = $status;
+        $category->save();
+        if(session::get('usertype')==2){
+            $log = array(
+                'staff_id'=>session::get('id'),
+                'logDate'=>date('Y-m-d'),
+                'event_name'=>"Change Car Check Status",
+                'event_category'=>24,
+                'event_id'=>$request->id,
+            );
+            // print_r($log);
+            $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+        }
     }
 }

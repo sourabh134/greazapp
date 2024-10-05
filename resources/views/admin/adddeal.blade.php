@@ -101,21 +101,21 @@
 <?php 
 if(isset($data->id)){ 
   if($data->internalpage!=''){
-    if($data->internalpage!=1){
+    if($data->internalpage==1){
 ?>
 <style>    
   .pageid{display: none;}
 </style>
 
     <?php }else{?>
-//
+
 <style>    
   .pageid{display: block;}
 </style>
     <?php }
   }else{
     ?>
-//
+
 <style>    
   .pageid{display: none;}
 </style>
@@ -176,7 +176,86 @@ if(isset($data->id)){
                 <div class="col-md-6 mb-3 pageid">
                   <label for="pageid" class="col-form-label">Page ID</label>
                   <Select class="form-select" name="pageid" id="pageid">
-                    <option value="">Choose</option>                    
+                    <?php 
+                      if(isset($data->id)){
+                        if($data->internalpage!=""){                          
+                          if($data->internalpage == 2){
+                              //brand
+                              $datap = App\Models\Brand::where('status',1)->get();
+                              foreach($datap as $value){
+                                if($value->id==$data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->name."</option>";
+                              }
+                          }
+                          if($data->internalpage == 3){
+                              //car
+                              $datap = App\Models\Vehicle::where('status',1)->get();
+                              foreach($datap as $value){
+                                if($value->id==$data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->name."</option>";
+                              }
+                          }
+                          if($data->internalpage == 4){
+                              //agent
+                              $datap = App\Models\Agent::where('status',1)->get();
+                              foreach($datap as $value){
+                                if($value->id==$data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->name."</option>";
+                              }
+                          }
+                          if($data->internalpage == 5){
+                              //event
+                              $datap = App\Models\Magazine::where('status',1)->where('type',4)->get();
+                              foreach($datap as $value){
+                                if($value->id==$data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->heading."</option>";
+                              }
+                          }
+                          if($data->internalpage == 6){
+                              //news
+                              $datap = App\Models\Magazine::where('status',1)->where('type','!=',4)->get();
+                              foreach($datap as $value){
+                                if($value->id==$data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->heading."</option>";
+                              }
+                          }
+                          if($data->internalpage == 7){
+                              //deal
+                              $datap = App\Models\Deal::where('status',1)->get();
+                              foreach($datap as $value){
+                                if($value->id == $data->pageid){
+                                  $selected = "selected";
+                                }else{
+                                  $selected = "";
+                                }
+                                  echo "<option value='".$value->id."' ".$selected.">".$value->name."</option>";
+                              }
+                          }
+                        }
+
+                      }else{?>
+                    <option value="">Choose</option>
+                    <?php } ?>                  
                   </Select>
                 </div>
 

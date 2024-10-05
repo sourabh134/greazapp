@@ -96,6 +96,8 @@ Route::middleware('token.check')->group(function(){
     Route::post('/deletemycarimage',[MycarController::class,'deletemycarimage']);
     Route::post('/car_detail_by_vin',[MycarController::class,'car_detail_by_vin']);
     Route::post('/getcarimage',[MycarController::class,'getcarimage']);
+    Route::post('/car_draft',[MycarController::class,'car_draft']);
+    Route::post('/addcarcheck',[MycarController::class,'addcarcheck']);
     //knowledge center
     Route::controller(KnowledgeCenterController::class)->group(function(){        
         Route::post('/advice', 'advice');        

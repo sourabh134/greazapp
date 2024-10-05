@@ -50,6 +50,7 @@ class AgentController extends Controller
                 $data['id'] = $value->id;
                 $data['position_id'] = $value->position_id;
                 $data['image'] = $value->image;
+                $data['internal_external'] = $value->internal_external;
                 $data['url'] = $value->url;
                 $data['start_date'] = $value->start_date;
                 $data['end_date'] = $value->end_date;

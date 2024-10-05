@@ -29,6 +29,7 @@ use App\Models\MycarspecificationSixEn;
 use App\Models\MycarspecificationSevenEn;
 use App\Models\MycarspecificationExteriorcolorEn;
 use App\Models\MycarspecificationInteriorcolorEn;
+use App\Models\CarCheck;
 
 class MycarController extends Controller
 {
@@ -622,17 +623,26 @@ class MycarController extends Controller
                 $data['serviceDate'] = $value->serviceDate;
                 $data['odometer'] = $value->odometer;
                 $data['service'] = $value->service;
-                if($value->service != ''){
-                    $serv = explode(",",$value->service);
-                    $sername = "";
-                    foreach($serv as $se){
-                        $ser = MycarServiceTask::find($se)->name;
-                        $sername = $sername.','.$ser;
+                if($value->service_type==3){
+                    if($language==2){
+                        $data['service_name'] = CarCheck::where('id',$value->service)->first()->name_ar;
+                    }else{
+                        $data['service_name'] = CarCheck::where('id',$value->service)->first()->name;
                     }
-                    $data['service_name'] = ltrim($sername,',');
                 }else{
-                    $data['service_name'] = "";
+                    if($value->service != ''){
+                        $serv = explode(",",$value->service);
+                        $sername = "";
+                        foreach($serv as $se){
+                            $ser = MycarServiceTask::find($se)->name;
+                            $sername = $sername.','.$ser;
+                        }
+                        $data['service_name'] = ltrim($sername,',');
+                    }else{
+                        $data['service_name'] = "";
+                    }
                 }
+                
                 $data['serviceCenter'] = $value->serviceCenter;
                 $data['totalcost'] = $value->totalcost;
                 $data['notes'] = $value->notes;
@@ -668,21 +678,43 @@ class MycarController extends Controller
             $data['serviceDate'] = $MycarService->serviceDate;
             $data['odometer'] = $MycarService->odometer;
             $data['service'] = $MycarService->service;
-            if($MycarService->service != ''){
-                $serv = explode(",",$MycarService->service);
-                $sername = "";
-                foreach($serv as $se){
-                    $ser = MycarServiceTask::find($se)->name;
-                    $sername = $sername.','.$ser;
-                    //$sername = $sername.','.$sername;
+            if($MycarService->service_type==3){
+                if($language==2){
+                    $data['service_name'] = CarCheck::where('id',$MycarService->service)->first()->name_ar;
+                    $data['notes'] = CarCheck::where('id',$MycarService->service)->first()->content_ar;
+                }else{
+                    $data['service_name'] = CarCheck::where('id',$MycarService->service)->first()->name;
+                    $data['notes'] = CarCheck::where('id',$MycarService->service)->first()->content;
                 }
-                $data['service_name'] = ltrim($sername,',');
             }else{
-                $data['service_name'] = "";
+                if($MycarService->service != ''){
+                    $serv = explode(",",$MycarService->service);
+                    $sername = "";
+                    foreach($serv as $se){
+                        $ser = MycarServiceTask::find($se)->name;
+                        $sername = $sername.','.$ser;
+                    }
+                    $data['service_name'] = ltrim($sername,',');
+                }else{
+                    $data['service_name'] = "";
+                }
+                $data['notes'] = $MycarService->notes;
             }
+            // if($MycarService->service != ''){
+            //     $serv = explode(",",$MycarService->service);
+            //     $sername = "";
+            //     foreach($serv as $se){
+            //         $ser = MycarServiceTask::find($se)->name;
+            //         $sername = $sername.','.$ser;
+            //         //$sername = $sername.','.$sername;
+            //     }
+            //     $data['service_name'] = ltrim($sername,',');
+            // }else{
+            //     $data['service_name'] = "";
+            // }
             $data['serviceCenter'] = $MycarService->serviceCenter;
             $data['totalcost'] = $MycarService->totalcost;
-            $data['notes'] = $MycarService->notes;
+            
             $data['attachment'] = $MycarService->attachment;
             return response()->json(['success'=>'true','message'=>"",'result'=>$data], 200);
         }
@@ -1726,6 +1758,74 @@ class MycarController extends Controller
             return $record->images;
         }else{
             return "";
+        }
+    }
+
+    public function car_draft(Request $request){
+        $userID = $request->userID;
+        $language = $request->language;  
+        $err_array =array();
+        if($userID==null){
+            $err_array[]='userID';    
+        }      
+        if(count($err_array)>0){
+            $er = implode(",", $err_array);    
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+        }else{
+            $recordArray = array();
+            $carcheck = CarCheck::where('status',1)->get();
+            foreach($carcheck as $value){
+                $data['id'] = $value->id;
+                if($language==2){
+                    $data['name'] = $value->name_ar;
+                    $data['content'] = $value->content_ar;
+                }else{
+                    $data['name'] = $value->name;
+                    $data['content'] = $value->content;
+                }
+                array_push($recordArray,$data);
+            }
+            return response()->json(['success'=>'true','message'=>"",'record'=>$recordArray], 200);
+        }
+    }
+
+    public function addcarcheck(Request $request){
+        $userID = $request->userID;
+        $myCarID = $request->myCarID;       
+        $serviceDate = $request->serviceDate;      
+        $carcheckid = $request->carcheckid; 
+        $language = $request->language;    
+        $err_array =array();
+        if($userID==null){
+            $err_array[]='userID';    
+        }
+        if($myCarID==null){
+            $err_array[]='myCarID';    
+        }
+        if($serviceDate==null){
+            $err_array[]='serviceDate';    
+        }
+        if($carcheckid==null){
+            $err_array[]='carcheckid';    
+        }
+        if(count($err_array)>0){
+            $er = implode(",", $err_array);    
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+        }else{ 
+            if($language == 2){
+                $msg_success = "تمت إضافة مقياس ";
+            }else{
+                $msg_success = "added successfully";
+            }                   
+            $MycarService = new MycarService;
+            $MycarService->userID = $userID;
+            $MycarService->mycarID = $request->myCarID;
+            $MycarService->serviceDate = $request->serviceDate;
+            $MycarService->service = $request->carcheckid;
+            $MycarService->service_type = 3;
+            $MycarService->status = 1;
+            $MycarService->save();
+            return response()->json(['success'=>'true','message'=>$msg_success], 200);
         }
     }
     
