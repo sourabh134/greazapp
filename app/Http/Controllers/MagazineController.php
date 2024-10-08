@@ -9,6 +9,7 @@ use App\Models\MagazineReview;
 use App\Models\Admin;
 use App\Models\NewsFavorite;
 use App\Models\StaffLogEvent;
+use App\Modules\ExternalSystem;
 
 class MagazineController extends Controller
 {
@@ -52,23 +53,69 @@ class MagazineController extends Controller
         }
         
         if($request->id==""){
-            //image upload                
-            $imageName1 = time().'.'.$request->images->extension();      
-            $request->images->move(public_path('images'), $imageName1);
+            //image upload
+            if($request->images!=''){
+                $new_width = 100;
+                $new_height = 100;
+                $file = $request->file('images');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName1 = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            }else{
+                $imageName1 = "";
+            }
+
+            //$imageName = time().'.'.$request->image->extension();      
+            //$request->image->move(public_path('images'), $imageName);                    
             //tag icon
-            if($request->tag_icon!=''){
-                $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                $request->tag_icon->move(public_path('images'), $tag_icon);
+            if($request->tag_icon!=''){                        
+                $new_widtht = 100;
+                $new_heightt = 100;
+                $filet = $request->file('tag_icon');
+                $fileNamet = $filet->getRealPath();
+                $uploadPatht = public_path('images/');
+                $fileExtt = $filet->getClientOriginalExtension();
+                $imgnamet = "tagthump_";
+                $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
+                // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                // $request->tag_icon->move(public_path('images'), $tag_icon);
             }else{
                 $tag_icon='';
             }
             //sponser_icon
             if($request->sponser_icon!=''){
-                $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-                $request->sponser_icon->move(public_path('images'), $sponser_icon);
+                $new_widths = 100;
+                $new_heights = 100;
+                $files = $request->file('sponser_icon');
+                $fileNames = $files->getRealPath();
+                $uploadPaths = public_path('images/');
+                $fileExts = $file->getClientOriginalExtension();
+                $imgnames = "sponthump_";
+                $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
+                //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                //$request->sponser_icon->move(public_path('images'), $sponser_icon);
             }else{
                 $sponser_icon='';
             }
+            // //image upload                
+            // $imageName1 = time().'.'.$request->images->extension();      
+            // $request->images->move(public_path('images'), $imageName1);
+            // //tag icon
+            // if($request->tag_icon!=''){
+            //     $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+            //     $request->tag_icon->move(public_path('images'), $tag_icon);
+            // }else{
+            //     $tag_icon='';
+            // }
+            // //sponser_icon
+            // if($request->sponser_icon!=''){
+            //     $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+            //     $request->sponser_icon->move(public_path('images'), $sponser_icon);
+            // }else{
+            //     $sponser_icon='';
+            // }
 
             $magazine = new Magazine;
             $magazine->heading = $request->heading;
@@ -114,24 +161,51 @@ class MagazineController extends Controller
             }
                         
         }else{  
+            //image upload
             if($request->images!=''){
-                $imageName1 = time().'.'.$request->images->extension();      
-                $request->images->move(public_path('images'), $imageName1);
+                $new_width = 100;
+                $new_height = 100;
+                $file = $request->file('images');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName1 = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
             }else{
-                $imageName1 = '';
+                $imageName1 = "";
             }
 
-            if($request->tag_icon!=''){
-                $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                $request->tag_icon->move(public_path('images'), $tag_icon);
+            //$imageName = time().'.'.$request->image->extension();      
+            //$request->image->move(public_path('images'), $imageName);                    
+            //tag icon
+            if($request->tag_icon!=''){                        
+                $new_widtht = 100;
+                $new_heightt = 100;
+                $filet = $request->file('tag_icon');
+                $fileNamet = $filet->getRealPath();
+                $uploadPatht = public_path('images/');
+                $fileExtt = $filet->getClientOriginalExtension();
+                $imgnamet = "tagthump_";
+                $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
+                // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                // $request->tag_icon->move(public_path('images'), $tag_icon);
             }else{
-                $tag_icon = '';
+                $tag_icon='';
             }
+            //sponser_icon
             if($request->sponser_icon!=''){
-                $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-                $request->sponser_icon->move(public_path('images'), $sponser_icon);
+                $new_widths = 100;
+                $new_heights = 100;
+                $files = $request->file('sponser_icon');
+                $fileNames = $files->getRealPath();
+                $uploadPaths = public_path('images/');
+                $fileExts = $file->getClientOriginalExtension();
+                $imgnames = "sponthump_";
+                $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
+                //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                //$request->sponser_icon->move(public_path('images'), $sponser_icon);
             }else{
-                $sponser_icon = '';
+                $sponser_icon='';
             }
 
             $magazine = new Magazine;

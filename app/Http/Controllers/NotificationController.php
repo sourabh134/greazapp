@@ -12,6 +12,7 @@ use App\Models\MyCar;
 use App\Models\InternalAppPage;
 use App\Models\StaffLogEvent;
 use Google\Client as GoogleClient;
+use App\Modules\ExternalSystem;
 //use Google_Service_Drive;
 
 class NotificationController extends Controller
@@ -115,8 +116,16 @@ class NotificationController extends Controller
         }
         //image upload
         if($request->image!=''){
-            $imageName = time().'.'.$request->image->extension();      
-            $request->image->move(public_path('images'), $imageName);
+            $new_width = 1179;
+            $new_height = 900;
+            $file = $request->file('image');
+            $fileName = $file->getRealPath();
+            $uploadPath = public_path('images/');
+            $fileExt = $file->getClientOriginalExtension();
+            $imgname = "thump_";
+            $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            // $imageName = time().'.'.$request->image->extension();      
+            // $request->image->move(public_path('images'), $imageName);
         }else{
             $imageName='';
         }

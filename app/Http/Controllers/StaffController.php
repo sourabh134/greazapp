@@ -9,6 +9,7 @@ use App\Models\AccessRight;
 use App\Models\ManagementSection;
 use App\Models\StaffLogEvent;
 use App\Models\StaffLog;
+use App\Modules\ExternalSystem;
 class StaffController extends Controller
 {
     public function stafflist(Request $request){
@@ -39,8 +40,16 @@ class StaffController extends Controller
                 if($check_email==0){
                     if($request->image!=''){
                         //image upload
-                        $imageName = 'logo'.time().'.'.$request->image->extension();      
-                        $request->image->move(public_path('img'), $imageName);
+                        $new_width = 100;
+                        $new_height = 100;
+                        $file = $request->file('image');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('img/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                        // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                        // $request->image->move(public_path('img'), $imageName);
                     }else{
                         $imageName = '';
                     }
@@ -83,9 +92,18 @@ class StaffController extends Controller
             }
         }else{
             if($request->image!=''){
+                
                 //image upload
-                $imageName = 'logo'.time().'.'.$request->image->extension();      
-                $request->image->move(public_path('img'), $imageName);
+                $new_width = 100;
+                $new_height = 100;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('img/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                // $request->image->move(public_path('img'), $imageName);
             }else{
                 $imageName = '';
             } 

@@ -30,6 +30,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Redirect;
 use Illuminate\Validation\ValidationException;
+use App\Modules\ExternalSystem;
 
 class AdminController extends Controller
 {
@@ -164,6 +165,7 @@ class AdminController extends Controller
     }
 
     public function insertBanner(Request $request){
+
         $validator = Validator::make($request->all(), 
             [
                 //'image' => 'mimes:jpeg,jpg,png,gif|max:2000|dimensions:max_width=500,max_height=500',
@@ -177,10 +179,18 @@ class AdminController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $image = $request->file('image');
-                $filename = time().'.'.$image->getClientOriginalExtension();
-                $image->move('public/img/banners', $filename);
-                $imageName = $filename;
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('img/banners/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $image = $request->file('image');
+                // $filename = time().'.'.$image->getClientOriginalExtension();
+                // $image->move('public/img/banners', $filename);
+                // $imageName = $filename;
             }else if($request->banner_id){
                 
                     $imageName = $request->pre_image;
@@ -279,10 +289,18 @@ class AdminController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $image = $request->file('image');
-                $filename = time().'.'.$image->getClientOriginalExtension();
-                $image->move('public/img/welcome_images', $filename);
-                $imageName = $filename;
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('img/welcome_images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $image = $request->file('image');
+                // $filename = time().'.'.$image->getClientOriginalExtension();
+                // $image->move('public/img/welcome_images', $filename);
+                // $imageName = $filename;
             }else{
                 if($request->welcome_image_id){
                     $imageName = $request->pre_image;
@@ -532,10 +550,18 @@ class AdminController extends Controller
 
     public function image_setting_insert(Request $request){
         if($request->hasFile('image')){
-            $image = $request->file('image');
-            $filename = time().'.'.$image->getClientOriginalExtension();
-            $image->move('public/img/welcome_images/', $filename);
-            $imageName = $filename;
+            $new_width = 1242;
+            $new_height = 2689;
+            $file = $request->file('image');
+            $fileName = $file->getRealPath();
+            $uploadPath = public_path('img/welcome_images/');
+            $fileExt = $file->getClientOriginalExtension();
+            $imgname = "thump_";
+            $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            // $image = $request->file('image');
+            // $filename = time().'.'.$image->getClientOriginalExtension();
+            // $image->move('public/img/welcome_images/', $filename);
+            // $imageName = $filename;
         }else{
             $imageName = "";
         }

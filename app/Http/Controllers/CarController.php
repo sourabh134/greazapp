@@ -604,8 +604,17 @@ class CarController extends Controller
         $exteriorimg = $request->exteriorimg;
         $testimg = $request->testimg;
         if($interiorimg!=''){
-            $imageName = 'in'.time().'.'.$request->interiorimg->extension();      
-            $request->interiorimg->move(public_path('images/car/'), $imageName);
+            $new_width = 1179;
+            $new_height = 900;
+            $file = $request->file('interiorimg');
+            $fileName = $file->getRealPath();
+            $uploadPath = public_path('images/car/');
+            $fileExt = $file->getClientOriginalExtension();
+            $imgname = "inthump_";
+            $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            // $imageName = 'in'.time().'.'.$request->interiorimg->extension();      
+            // $request->interiorimg->move(public_path('images/car/'), $imageName);
+
             $in_image_table=new CarImage;
             $in_image_table->vehicleID=$request->id;
             $in_image_table->modelID=base64_decode($request->modelID);
@@ -614,8 +623,16 @@ class CarController extends Controller
             $in_image_table->save();
         }
         if($exteriorimg!=''){
-            $imageNames = 'ex'.time().'.'.$request->exteriorimg->extension();      
-            $request->exteriorimg->move(public_path('images/car/'), $imageNames);
+            $new_widthe = 1179;
+            $new_heighte = 900;
+            $filee = $request->file('exteriorimg');
+            $fileNamee = $filee->getRealPath();
+            $uploadPathe = public_path('images/car/');
+            $fileExte = $filee->getClientOriginalExtension();
+            $imgnamee = "exthump_";
+            $imageNames = ExternalSystem::saveresizeimage($new_widthe,$new_heighte,$fileNamee,$uploadPathe,$fileExte,$imgnamee);
+            // $imageNames = 'ex'.time().'.'.$request->exteriorimg->extension();      
+            // $request->exteriorimg->move(public_path('images/car/'), $imageNames);
             $ex_image_table=new CarImage;
             $ex_image_table->vehicleID=$request->id;
             $ex_image_table->modelID=base64_decode($request->modelID);
@@ -624,8 +641,16 @@ class CarController extends Controller
             $ex_image_table->save();
         }
         if($testimg!=''){
-            $imageNamet = 'te'.time().'.'.$request->testimg->extension();      
-            $request->testimg->move(public_path('images/car/'), $imageNamet);
+            $new_widtht = 1179;
+            $new_heightt = 900;
+            $filet = $request->file('testimg');
+            $fileNamet = $filet->getRealPath();
+            $uploadPatht = public_path('images/car/');
+            $fileExtt = $filet->getClientOriginalExtension();
+            $imgnamet = "tethump_";
+            $imageNamet = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+            // $imageNamet = 'te'.time().'.'.$request->testimg->extension();      
+            // $request->testimg->move(public_path('images/car/'), $imageNamet);
             $te_image_table=new CarImage;
             $te_image_table->vehicleID=$request->id;
             $te_image_table->modelID=base64_decode($request->modelID);

@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Redirect;
 use Illuminate\Validation\ValidationException;
+use App\Modules\ExternalSystem;
 
 class BrandController extends Controller
 {
@@ -96,19 +97,48 @@ class BrandController extends Controller
                 $check_name = Brand::where('name',$request->name)->count();
                 if($check_name==0){ 
                     //image upload
-                    $imageName = time().'.'.$request->image->extension();      
-                    $request->image->move(public_path('images'), $imageName);                    
+                    if($request->image!=''){
+                        $new_width = 100;
+                        $new_height = 100;
+                        $file = $request->file('image');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('images/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                    }else{
+                        $imageName = "";
+                    }
+
+                    //$imageName = time().'.'.$request->image->extension();      
+                    //$request->image->move(public_path('images'), $imageName);                    
                     //tag icon
-                    if($request->tag_icon!=''){
-                        $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                        $request->tag_icon->move(public_path('images'), $tag_icon);
+                    if($request->tag_icon!=''){                        
+                        $new_widtht = 100;
+                        $new_heightt = 100;
+                        $filet = $request->file('tag_icon');
+                        $fileNamet = $filet->getRealPath();
+                        $uploadPatht = public_path('images/');
+                        $fileExtt = $filet->getClientOriginalExtension();
+                        $imgnamet = "tagthump_";
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
                     }
                     //sponser_icon
                     if($request->sponser_icon!=''){
-                        $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-                        $request->sponser_icon->move(public_path('images'), $sponser_icon);
+                        $new_widths = 100;
+                        $new_heights = 100;
+                        $files = $request->file('sponser_icon');
+                        $fileNames = $files->getRealPath();
+                        $uploadPaths = public_path('images/');
+                        $fileExts = $file->getClientOriginalExtension();
+                        $imgnames = "sponthump_";
+                        $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
+                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                        //$request->sponser_icon->move(public_path('images'), $sponser_icon);
                     }else{
                         $sponser_icon='';
                     }
@@ -138,8 +168,17 @@ class BrandController extends Controller
                     if(!empty($request->images)){
                         $i=1;
                         foreach($request->images as $imagevalue){
-                            $imageNames = $i.time().'.'.$imagevalue->extension();      
-                            $imagevalue->move(public_path('images'), $imageNames);
+                            //upload images
+                            $new_widthss = 1179;
+                            $new_heightss = 900;
+                            $filess = $imagevalue;
+                            $fileNamess = $filess->getRealPath();
+                            $uploadPathss = public_path('images/');
+                            $fileExtss = $file->getClientOriginalExtension();
+                            $imgnamess = $i."sponthump_";
+                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $brand->id;
                             $AllBannerImage->image = $imageNames;
@@ -168,26 +207,53 @@ class BrandController extends Controller
                 if($check_name->count() >= 1 && $request->id != $check_name->first()->id){
                     echo 2;
                 }else{
-                    if($request->image!=''){
-                        $imageName = time().'.'.$request->image->extension();      
-                        $request->image->move(public_path('images'), $imageName);
+                     //image upload
+                     if($request->image!=''){
+                        $new_width = 100;
+                        $new_height = 100;
+                        $file = $request->file('image');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('images/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
                     }else{
-                        $imageName = '';
+                        $imageName = "";
                     }
+
+                    //$imageName = time().'.'.$request->image->extension();      
+                    //$request->image->move(public_path('images'), $imageName);                    
                     //tag icon
-                    if($request->tag_icon!=''){
-                        $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                        $request->tag_icon->move(public_path('images'), $tag_icon);
+                    if($request->tag_icon!=''){                        
+                        $new_widtht = 100;
+                        $new_heightt = 100;
+                        $filet = $request->file('tag_icon');
+                        $fileNamet = $filet->getRealPath();
+                        $uploadPatht = public_path('images/');
+                        $fileExtt = $filet->getClientOriginalExtension();
+                        $imgnamet = "tagthump_";
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
                     }
                     //sponser_icon
                     if($request->sponser_icon!=''){
-                        $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-                        $request->sponser_icon->move(public_path('images'), $sponser_icon);
+                        $new_widths = 100;
+                        $new_heights = 100;
+                        $files = $request->file('sponser_icon');
+                        $fileNames = $files->getRealPath();
+                        $uploadPaths = public_path('images/');
+                        $fileExts = $file->getClientOriginalExtension();
+                        $imgnames = "sponthump_";
+                        $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
+                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                        //$request->sponser_icon->move(public_path('images'), $sponser_icon);
                     }else{
                         $sponser_icon='';
                     }
+
                     $brand = new Brand;
                     $brand = Brand::find($request->id);
                     $brand->name = $request->name;
@@ -219,8 +285,17 @@ class BrandController extends Controller
                     if(!empty($request->images)){
                         $i=1;
                         foreach($request->images as $imagevalue){
-                            $imageNames = $i.time().'.'.$imagevalue->extension();      
-                            $imagevalue->move(public_path('images'), $imageNames);
+                           //upload images
+                            $new_widthss = 1179;
+                            $new_heightss = 900;
+                            $filess = $imagevalue;
+                            $fileNamess = $filess->getRealPath();
+                            $uploadPathss = public_path('images/');
+                            $fileExtss = $file->getClientOriginalExtension();
+                            $imgnamess = $i."sponthump_";
+                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $request->id;
                             $AllBannerImage->image = $imageNames;
@@ -354,9 +429,5 @@ class BrandController extends Controller
         }
 
     }
-
-    
-
-    
 
 }

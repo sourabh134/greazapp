@@ -22,6 +22,7 @@ use Illuminate\Validation\Rules\File;
 use Redirect;
 use Illuminate\Validation\ValidationException;
 use Google\Client as GoogleClient;
+use App\Modules\ExternalSystem;
 
 class KnowledgeCenterController extends Controller
 {
@@ -65,10 +66,18 @@ class KnowledgeCenterController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $image = $request->file('image');
-                $filename = time().'.'.$image->getClientOriginalExtension();
-                $image->move('public/img/banners', $filename);
-                $imageName = $filename;
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('img/banners/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $image = $request->file('image');
+                // $filename = time().'.'.$image->getClientOriginalExtension();
+                // $image->move('public/img/banners', $filename);
+                // $imageName = $filename;
             }else{
                 if($request->banner_id){
                     $imageName = $request->pre_image;
@@ -276,15 +285,32 @@ class KnowledgeCenterController extends Controller
         $advicetype = $request->advicetype;
         //image upload
         if($request->image!=''){
-            $imageName = time().'.'.$request->image->extension();      
-            $request->image->move(public_path('images'), $imageName);
+            $new_width = 1179;
+            $new_height = 900;
+            $file = $request->file('image');
+            $fileName = $file->getRealPath();
+            $uploadPath = public_path('images/');
+            $fileExt = $file->getClientOriginalExtension();
+            $imgname = "thump_";
+            $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            // $imageName = time().'.'.$request->image->extension();      
+            // $request->image->move(public_path('images'), $imageName);
         }else{
             $imageName='';
         }
 
         if($request->sponser_icon!=''){
-            $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-            $request->sponser_icon->move(public_path('images'), $sponser_icon);
+            $new_widths = 100;
+            $new_heights = 100;
+            $files = $request->file('sponser_icon');
+            $fileNames = $files->getRealPath();
+            $uploadPaths = public_path('images/');
+            $fileExts = $file->getClientOriginalExtension();
+            $imgnames = "sponthump_";
+            $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
+
+            // $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+            // $request->sponser_icon->move(public_path('images'), $sponser_icon);
         }else{
             $sponser_icon='';
         }
@@ -614,8 +640,16 @@ class KnowledgeCenterController extends Controller
                 if($check_titlear==0){
                     //image upload
                     if($request->sponser_icon!=''){
-                        $imageName = time().'.'.$request->sponser_icon->extension();      
-                        $request->sponser_icon->move(public_path('images'), $imageName);
+                        $new_width = 1179;
+                        $new_height = 900;
+                        $file = $request->file('sponser_icon');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('images/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                        // $imageName = time().'.'.$request->sponser_icon->extension();      
+                        // $request->sponser_icon->move(public_path('images'), $imageName);
                     }else{
                         $imageName='';
                     }
@@ -651,8 +685,16 @@ class KnowledgeCenterController extends Controller
         }else{
             //image upload
             if($request->sponser_icon!=''){
-                $imageName = time().'.'.$request->sponser_icon->extension();      
-                $request->sponser_icon->move(public_path('images'), $imageName);
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('sponser_icon');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $imageName = time().'.'.$request->sponser_icon->extension();      
+                // $request->sponser_icon->move(public_path('images'), $imageName);
             }else{
                 $imageName='';
             }
@@ -730,8 +772,16 @@ class KnowledgeCenterController extends Controller
         if($request->id==""){          
             //image upload
             if($request->sponser_icon!=''){
-                $imageName = time().'.'.$request->sponser_icon->extension();      
-                $request->sponser_icon->move(public_path('images'), $imageName);
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('sponser_icon');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $imageName = time().'.'.$request->sponser_icon->extension();      
+                // $request->sponser_icon->move(public_path('images'), $imageName);
             }else{
                 $imageName='';
             }
@@ -755,8 +805,16 @@ class KnowledgeCenterController extends Controller
         }else{
             //image upload
             if($request->sponser_icon!=''){
-                $imageName = time().'.'.$request->sponser_icon->extension();      
-                $request->sponser_icon->move(public_path('images'), $imageName);
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('sponser_icon');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $imageName = time().'.'.$request->sponser_icon->extension();      
+                // $request->sponser_icon->move(public_path('images'), $imageName);
             }else{
                 $imageName='';
             }            

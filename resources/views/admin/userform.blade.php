@@ -75,8 +75,8 @@
                                     <label for="profileImage" class="col-form-label">Profile Image</label>
                                     <input type="file" name="profileImage" class="form-control file" placeholder="Profile Image"
                                         id="logo" accept=".jpeg, .jpg, .png,.gif"
-                                        onchange="previewFile(this,500,500);">
-                                    <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br>
+                                        >
+                                    {{-- <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br> --}}
                                     <div class="text-center">
                                         <img id="previewImg"
                                         src="<?php if(isset($data->id)){ if($data->profileImage!=''){ echo url("public/images/".$data->profileImage);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
@@ -89,28 +89,27 @@
                                     <label for="DriverLicense" class="col-form-label">Driver License</label>
                                     <input type="file" name="DriverLicense" id="tag_icon" class="form-control file"
                                         placeholder="DriverLicense" accept=".jpeg,.jpg,.png,.gif"
-                                        onchange="previewFiletag(this,500,500);">
-                                    <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br>
+                                        >
+                                    {{-- <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br> --}}
                                     <div class="text-center">
                                         <img id="previewImgtag"
                                         src="<?php if(isset($data->id)){ if($data->DriverLicense!=''){ echo url("public/images/".$data->DriverLicense);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                                     </div>
-                                    <div class="text-danger" id="DriverLicense_error"></div>
+                                    <div class="text-danger" id="tag_icon_error"></div>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="DriverLicenseback" class="col-form-label">Driver License Back</label>
                                     <input type="file" name="DriverLicenseback" id="sponserlogo"
-                                        class="form-control file" placeholder="DriverLicenseback" accept=".jpeg, .jpg, .png, .gif"
-                                        onchange="previewFilesponser(this,500,500);">
-                                    <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br>
+                                        class="form-control file" placeholder="DriverLicenseback" accept=".jpeg, .jpg, .png, .gif">
+                                    {{-- <span class="text-danger"><b>Note : </b>Dimension 500px * 500px</span><br> --}}
                                     <div class="text-center">
                                         <img id="previewImgsponser"
                                         src="<?php if(isset($data->id)){ if($data->DriverLicenseback!=''){ echo url("public/images/".$data->DriverLicenseback);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>"
                                         alt="Placeholder" width="100px">
                                     </div>
-                                    <div class="text-danger" id="DriverLicenseback_error"></div>
+                                    <div class="text-danger" id="sponser_error"></div>
                                 </div>
                             </div>
                             
@@ -132,6 +131,187 @@
         </div>
     </div>
 </div>
+<script>
+    var imgfile = "0";
+    document.getElementById('logo').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+  
+        const img = new Image();
+        const objectURL = URL.createObjectURL(file);
+        img.src = objectURL;
+        
+        img.onload = function() {
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+          const aspectRatio = width / height;
+          const validImageTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif'];
+          if (!validImageTypes.includes(file.type)) {
+            //messageDiv.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
+            //return;
+            const fileInput = document.getElementById('logo');
+            fileInput.value = '';
+            document.getElementById('image_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
+            document.getElementById('previewImg').style.display = 'none';
+            // Clean up if the ratio is invalid
+            URL.revokeObjectURL(objectURL);
+            imgfile="1";
+          }else{
+            document.getElementById('previewImg').src = objectURL;
+            document.getElementById('previewImg').style.display = 'block';
+            document.getElementById('image_error').style.display = 'none';
+            imgfile="0";
+          }
+            // const width = img.naturalWidth;
+            // const height = img.naturalHeight;
+            // const aspectRatio = width / height;
+            
+            // // Define your desired aspect ratio
+            // //const desiredAspectRatio = 16 / 9;
+            // const desiredAspectRatio = 4 / 3;
+            // const tolerance = 0.03;  // Adjust the tolerance as needed
+            // console.log(Math.abs(aspectRatio - desiredAspectRatio));
+            // if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
+            //     //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
+            //     document.getElementById('previewImg').src = objectURL;
+            //     document.getElementById('previewImg').style.display = 'block';
+            //     document.getElementById('image_error').style.display = 'none';
+            //     imgfile="0";
+            // } else {
+            //     const fileInput = document.getElementById('logo');
+            //     fileInput.value = '';
+            //     document.getElementById('image_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
+            //     document.getElementById('previewImg').style.display = 'none';
+            //     // Clean up if the ratio is invalid
+            //     URL.revokeObjectURL(objectURL);
+            //     imgfile="1";
+            // }
+        };
+  
+        img.onerror = function() {
+            document.getElementById('image_error').textContent = 'Failed to load image.';
+            document.getElementById('previewImg').style.display = 'none';
+        };
+    });
+  </script>
+  <script>
+    document.getElementById('sponserlogo').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+  
+        const img = new Image();
+        const objectURL = URL.createObjectURL(file);
+        img.src = objectURL;
+        
+        img.onload = function() {
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+          const aspectRatio = width / height;
+          const validImageTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif'];
+          if (!validImageTypes.includes(file.type)) {
+            //messageDiv.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
+            //return;
+            const fileInput = document.getElementById('sponserlogo');
+            fileInput.value = '';
+            document.getElementById('sponser_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
+            document.getElementById('previewImgsponser').style.display = 'none';
+            // Clean up if the ratio is invalid
+            URL.revokeObjectURL(objectURL);
+            imgfile="1";
+          }else{
+            document.getElementById('previewImgsponser').src = objectURL;
+            document.getElementById('previewImgsponser').style.display = 'block';
+            document.getElementById('sponser_error').style.display = 'none';
+            imgfile="0";
+          }
+            // const width = img.naturalWidth;
+            // const height = img.naturalHeight;
+            // const aspectRatio = width / height;
+            
+            // // Define your desired aspect ratio
+            // //const desiredAspectRatio = 16 / 9;
+            // const desiredAspectRatio = 4 / 3;
+            // const tolerance = 0.03;  // Adjust the tolerance as needed
+            // console.log(Math.abs(aspectRatio - desiredAspectRatio));
+            // if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
+            //     //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
+            //     document.getElementById('previewImgsponser').src = objectURL;
+            //     document.getElementById('previewImgsponser').style.display = 'block';
+            // } else {
+            //     const fileInput = document.getElementById('sponserlogo');
+            //     fileInput.value = '';
+            //     document.getElementById('sponser_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
+            //     document.getElementById('previewImgsponser').style.display = 'none';
+            //     // Clean up if the ratio is invalid
+            //     URL.revokeObjectURL(objectURL);
+            // }
+        };
+  
+        img.onerror = function() {
+            document.getElementById('sponser_error').textContent = 'Failed to load image.';
+            document.getElementById('previewImgsponser').style.display = 'none';
+        };
+    });
+  </script>
+  <script>
+    document.getElementById('tag_icon').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+  
+        const img = new Image();
+        const objectURL = URL.createObjectURL(file);
+        img.src = objectURL;
+        
+        img.onload = function() {
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+          const aspectRatio = width / height;
+          const validImageTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif'];
+          if (!validImageTypes.includes(file.type)) {
+            //messageDiv.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
+            //return;
+            const fileInput = document.getElementById('tag_icon');
+            fileInput.value = '';
+            document.getElementById('tag_icon_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
+            document.getElementById('previewImgtag').style.display = 'none';
+            // Clean up if the ratio is invalid
+            URL.revokeObjectURL(objectURL);
+            imgfile="1";
+          }else{
+            document.getElementById('previewImgtag').src = objectURL;
+            document.getElementById('previewImgtag').style.display = 'block';
+            document.getElementById('tag_icon_error').style.display = 'none';
+            imgfile="0";
+          }
+            // const width = img.naturalWidth;
+            // const height = img.naturalHeight;
+            // const aspectRatio = width / height;
+            
+            // // Define your desired aspect ratio
+            // //const desiredAspectRatio = 16 / 9;
+            // const desiredAspectRatio = 4 / 3;
+            // const tolerance = 0.03;  // Adjust the tolerance as needed
+            // console.log(Math.abs(aspectRatio - desiredAspectRatio));
+            // if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
+            //     //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
+            //     document.getElementById('previewImgtag').src = objectURL;
+            //     document.getElementById('previewImgtag').style.display = 'block';
+            // } else {
+            //     const fileInput = document.getElementById('tag_icon');
+            //     fileInput.value = '';
+            //     document.getElementById('tag_icon_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
+            //     document.getElementById('previewImgtag').style.display = 'none';
+            //     // Clean up if the ratio is invalid
+            //     URL.revokeObjectURL(objectURL);
+            // }
+        };
+  
+        img.onerror = function() {
+            document.getElementById('tag_icon_error').textContent = 'Failed to load image.';
+            document.getElementById('previewImgtag').style.display = 'none';
+        };
+    });
+  </script>
 <script>
     $('.submitdata').click(function() {
         var name = $('#name').val();
@@ -197,7 +377,7 @@
                 $('#dob_error').text("");
                 $('#email_error').text("");
                 $('#mobile_number').text("");
-                $('#DriverLicense_error').text("The image field is required.");
+                $('#tag_icon_error').text("The image field is required.");
                 return false;
             }
         }
@@ -209,8 +389,8 @@
                 $('#dob_error').text("");
                 $('#email_error').text("");
                 $('#mobile_number').text("");
-                $('#DriverLicense_error').text("");
-                $('#DriverLicenseback_error').text("The image field is required.");
+                $('#tag_icon_error').text("");
+                $('#sponser_error').text("The image field is required.");
                 return false;
             }
         }
@@ -221,8 +401,8 @@
             $('#dob_error').text("");
             $('#email_error').text("");
             $('#mobile_number').text("");
-            $('#DriverLicense_error').text("");
-            $('#DriverLicenseback_error').text("");
+            $('#tag_icon_error').text("");
+            $('#sponser_error').text("");
             $('#license_expire_date_error').text("The field is required.");
             return false;
         }      

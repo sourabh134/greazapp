@@ -258,6 +258,59 @@ abstract class ExternalSystem
 		return $responseBody;
     }
 
+	//resize image
+	public static function resizeImage($resourceType,$image_width,$image_height,$resizeWidth,$resizeHeight) {
+        // $resizeWidth = 100;
+        // $resizeHeight = 100;
+        $imageLayer = imagecreatetruecolor($resizeWidth,$resizeHeight);
+        imagecopyresampled($imageLayer,$resourceType,0,0,0,0,$resizeWidth,$resizeHeight, $image_width,$image_height);
+        return $imageLayer;
+    }
+
+    public static function saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname){
+        //$new_width = 1179;
+        //$new_height = 900;
+        //$fileName = $_FILES['image']['tmp_name'];
+        $sourceProperties = getimagesize($fileName);
+        $resizeFileName = time();
+        //$uploadPath = "./public/img/banners/";
+        //$fileExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        $uploadImageType = $sourceProperties[2];
+        $sourceImageWidth = $sourceProperties[0];
+        $sourceImageHeight = $sourceProperties[1];
+        switch ($uploadImageType) {
+            case IMAGETYPE_JPEG:
+                $resourceType = imagecreatefromjpeg($fileName); 
+                $imageLayer = static::resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight,$new_width,$new_height);
+                imagejpeg($imageLayer,$uploadPath.$imgname.$resizeFileName.'.'. $fileExt);
+                break;
+
+            case IMAGETYPE_GIF:
+                $resourceType = imagecreatefromgif($fileName); 
+                $imageLayer = static::resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight,$new_width,$new_height);
+                imagegif($imageLayer,$uploadPath.$imgname.$resizeFileName.'.'. $fileExt);
+                break;
+
+            case IMAGETYPE_PNG:
+                $resourceType = imagecreatefrompng($fileName); 
+                $imageLayer = static::resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight,$new_width,$new_height);
+                imagepng($imageLayer,$uploadPath.$imgname.$resizeFileName.'.'. $fileExt);
+                break;
+
+            case IMAGETYPE_JPG:
+                $resourceType = imagecreatefrompng($fileName); 
+                $imageLayer = static::resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight,$new_width,$new_height);
+                imagepng($imageLayer,$uploadPath.$imgname.$resizeFileName.'.'. $fileExt);
+                break;
+
+            default:
+                $imageProcess = 0;
+                break;
+        }
+        move_uploaded_file($fileName, $uploadPath. $resizeFileName. ".". $fileExt);
+        return $imageName = $imgname.$resizeFileName.'.'. $fileExt;
+    }
+
 	
 
 }

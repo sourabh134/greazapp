@@ -28,6 +28,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Redirect;
 use Illuminate\Validation\ValidationException;
+use App\Modules\ExternalSystem;
 
 class AgentResellerController extends Controller
 {
@@ -64,10 +65,18 @@ class AgentResellerController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $image = $request->file('image');
-                $filename = time().'.'.$image->getClientOriginalExtension();
-                $image->move('public/img/banners', $filename);
-                $imageName = $filename;
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('img/banners/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $image = $request->file('image');
+                // $filename = time().'.'.$image->getClientOriginalExtension();
+                // $image->move('public/img/banners', $filename);
+                // $imageName = $filename;
             }else{
                 if($request->banner_id){
                     $imageName = $request->pre_image;
@@ -253,16 +262,47 @@ class AgentResellerController extends Controller
                 $check_name = Agent::where('name',$request->name)->count();
                 if($check_name==0){ 
                     //image upload
-                    $imageName = 'logo'.time().'.'.$request->image->extension();      
-                    $request->image->move(public_path('images'), $imageName);
-                    
-                    $imageName1 = 'im'.time().'.'.$request->imagess->extension();      
-                    $request->imagess->move(public_path('images'), $imageName1);
+                    if($request->image!=''){
+                        $new_width = 100;
+                        $new_height = 100;
+                        $file = $request->file('image');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('images/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                    }else{
+                        $imageName = "";
+                    }
+                    // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                    // $request->image->move(public_path('images'), $imageName);
+                    if($request->imagess!=''){                        
+                        $new_widths = 100;
+                        $new_heights = 100;
+                        $files = $request->file('imagess');
+                        $fileNames = $files->getRealPath();
+                        $uploadPaths = public_path('images/');
+                        $fileExts = $file->getClientOriginalExtension();
+                        $imgnames = "imthump_";
+                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames); 
+                    }else{
+                        $imageName1='';
+                    }
+                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();      
+                    // $request->imagess->move(public_path('images'), $imageName1);
                     
                     //tag icon
                     if($request->tag_icon!=''){
-                        $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                        $request->tag_icon->move(public_path('images'), $tag_icon);
+                        $new_widtht = 100;
+                        $new_heightt = 100;
+                        $filet = $request->file('tag_icon');
+                        $fileNamet = $filet->getRealPath();
+                        $uploadPatht = public_path('images/');
+                        $fileExtt = $filet->getClientOriginalExtension();
+                        $imgnamet = "tagthump_";
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
                     }
@@ -298,8 +338,17 @@ class AgentResellerController extends Controller
                     if(!empty($request->images)){
                         $i=1;
                         foreach($request->images as $imagevalue){
-                            $imageNames = $i.time().'.'.$imagevalue->extension();      
-                            $imagevalue->move(public_path('images'), $imageNames);
+                            //upload images
+                            $new_widthss = 1179;
+                            $new_heightss = 900;
+                            $filess = $imagevalue;
+                            $fileNamess = $filess->getRealPath();
+                            $uploadPathss = public_path('images/');
+                            $fileExtss = $file->getClientOriginalExtension();
+                            $imgnamess = $i."sponthump_";
+                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $agent->id;
                             $AllBannerImage->image = $imageNames;
@@ -329,24 +378,48 @@ class AgentResellerController extends Controller
                 if($check_name->count() >= 1 && $request->id != $check_name->first()->id){
                     echo 2;
                 }else{
+                    //image upload
                     if($request->image!=''){
-                        $imageName = time().'.'.$request->image->extension();      
-                        $request->image->move(public_path('images'), $imageName);
+                        $new_width = 100;
+                        $new_height = 100;
+                        $file = $request->file('image');
+                        $fileName = $file->getRealPath();
+                        $uploadPath = public_path('images/');
+                        $fileExt = $file->getClientOriginalExtension();
+                        $imgname = "thump_";
+                        $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
                     }else{
-                        $imageName = '';
-                    }  
-                    
-                    if($request->imagess!=''){
-                        $imageName1 = time().'.'.$request->imagess->extension();      
-                        $request->imagess->move(public_path('images'), $imageName1);
-                    }else{
-                        $imageName1 = '';
+                        $imageName = "";
                     }
-
+                    // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                    // $request->image->move(public_path('images'), $imageName);
+                    if($request->imagess!=''){                        
+                        $new_widths = 100;
+                        $new_heights = 100;
+                        $files = $request->file('imagess');
+                        $fileNames = $files->getRealPath();
+                        $uploadPaths = public_path('images/');
+                        $fileExts = $file->getClientOriginalExtension();
+                        $imgnames = "imthump_";
+                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames); 
+                    }else{
+                        $imageName1='';
+                    }
+                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();      
+                    // $request->imagess->move(public_path('images'), $imageName1);
+                    
                     //tag icon
                     if($request->tag_icon!=''){
-                        $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                        $request->tag_icon->move(public_path('images'), $tag_icon);
+                        $new_widtht = 100;
+                        $new_heightt = 100;
+                        $filet = $request->file('tag_icon');
+                        $fileNamet = $filet->getRealPath();
+                        $uploadPatht = public_path('images/');
+                        $fileExtt = $filet->getClientOriginalExtension();
+                        $imgnamet = "tagthump_";
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
                     }
@@ -401,8 +474,17 @@ class AgentResellerController extends Controller
                     if(!empty($request->images)){
                         $i=1;
                         foreach($request->images as $imagevalue){
-                            $imageNames = $i.time().'.'.$imagevalue->extension();      
-                            $imagevalue->move(public_path('images'), $imageNames);
+                            //upload images
+                            $new_widthss = 1179;
+                            $new_heightss = 900;
+                            $filess = $imagevalue;
+                            $fileNamess = $filess->getRealPath();
+                            $uploadPathss = public_path('images/');
+                            $fileExtss = $file->getClientOriginalExtension();
+                            $imgnamess = $i."sponthump_";
+                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $request->id;
                             $AllBannerImage->image = $imageNames;
@@ -582,8 +664,16 @@ class AgentResellerController extends Controller
     //     $longitude = $apiResponse->results[0]->geometry->location->lng; 
     //     die; 
         if($request->image!=''){
-            $image = 't'.time().'.'.$request->image->extension();      
-            $request->image->move(public_path('images'), $image);
+            $new_width = 1179;
+            $new_height = 900;
+            $file = $request->file('image');
+            $fileName = $file->getRealPath();
+            $uploadPath = public_path('images/');
+            $fileExt = $file->getClientOriginalExtension();
+            $imgname = "thump_";
+            $image = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+            // $image = 't'.time().'.'.$request->image->extension();      
+            // $request->image->move(public_path('images'), $image);
         }else{
             $image='';
         }      

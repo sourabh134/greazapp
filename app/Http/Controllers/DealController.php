@@ -16,6 +16,7 @@ use App\Models\Magazine;
 use App\Models\InternalAppPage;
 use App\Models\Vehicle;
 use App\Models\StaffLogEvent;
+use App\Modules\ExternalSystem;
 use Session;
 class DealController extends Controller
 {
@@ -97,15 +98,36 @@ class DealController extends Controller
             if($check_name==0){
                 $stateid = implode(",",$request->state);
                 //image upload
-                $imageName = time().'.'.$request->images->extension();      
-                $request->images->move(public_path('images'), $imageName);
+                if($request->images!=''){
+                    $new_width = 1179;
+                    $new_height = 900;
+                    $file = $request->file('images');
+                    $fileName = $file->getRealPath();
+                    $uploadPath = public_path('images/');
+                    $fileExt = $file->getClientOriginalExtension();
+                    $imgname = "thump_";
+                    $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                }else{
+                    $imageName = "";
+                }
+                // $imageName = time().'.'.$request->images->extension();      
+                // $request->images->move(public_path('images'), $imageName);
                 //tag icon
                 if($request->tag_icon!=''){
-                    $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                    $request->tag_icon->move(public_path('images'), $tag_icon);
+                    $new_widtht = 100;
+                    $new_heightt = 100;
+                    $filet = $request->file('tag_icon');
+                    $fileNamet = $filet->getRealPath();
+                    $uploadPatht = public_path('images/');
+                    $fileExtt = $filet->getClientOriginalExtension();
+                    $imgnamet = "tagthump_";
+                    $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                    // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                    // $request->tag_icon->move(public_path('images'), $tag_icon);
                 }else{
                     $tag_icon='';
                 }
+
                 if($request->page!=""){
                     $page = $request->page;
                 }else{
@@ -253,19 +275,50 @@ class DealController extends Controller
                 echo 2;
             }else{
                 $stateid = implode(",",$request->state);
+                //image upload
                 if($request->images!=''){
-                    $imageName = time().'.'.$request->images->extension();      
-                    $request->images->move(public_path('images'), $imageName);
+                    $new_width = 1179;
+                    $new_height = 900;
+                    $file = $request->file('images');
+                    $fileName = $file->getRealPath();
+                    $uploadPath = public_path('images/');
+                    $fileExt = $file->getClientOriginalExtension();
+                    $imgname = "thump_";
+                    $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
                 }else{
-                    $imageName = '';
+                    $imageName = "";
                 }
+                // $imageName = time().'.'.$request->images->extension();      
+                // $request->images->move(public_path('images'), $imageName);
                 //tag icon
                 if($request->tag_icon!=''){
-                    $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
-                    $request->tag_icon->move(public_path('images'), $tag_icon);
+                    $new_widtht = 100;
+                    $new_heightt = 100;
+                    $filet = $request->file('tag_icon');
+                    $fileNamet = $filet->getRealPath();
+                    $uploadPatht = public_path('images/');
+                    $fileExtt = $filet->getClientOriginalExtension();
+                    $imgnamet = "tagthump_";
+                    $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                    // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                    // $request->tag_icon->move(public_path('images'), $tag_icon);
                 }else{
                     $tag_icon='';
                 }
+                // if($request->images!=''){
+                //     $imageName = time().'.'.$request->images->extension();      
+                //     $request->images->move(public_path('images'), $imageName);
+                // }else{
+                //     $imageName = '';
+                // }
+                // //tag icon
+                // if($request->tag_icon!=''){
+                //     $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                //     $request->tag_icon->move(public_path('images'), $tag_icon);
+                // }else{
+                //     $tag_icon='';
+                // }
+
                 if($request->page!=""){
                     $page = $request->page;
                 }else{
@@ -671,7 +724,7 @@ class DealController extends Controller
         //echo "<option value='All'>All</option>";
         echo '<a class="dropdown-option stateallcheck" onclick="checkallstate()" style="cursor:pointer">
         Check All
-    </a>';
+        </a>';
         foreach($state as $value){
             //echo "<option value='".$value->id."'>".$value->name."</option>";
             echo '<label class="dropdown-option">

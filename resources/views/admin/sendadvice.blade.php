@@ -174,7 +174,7 @@
                                              <?php if (!isset($banner)) {
                                                 echo 'required';
                                             } ?>>
-                                        <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br>
+                                        {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
                                         <img id="previewImg" src="../public/img/image-preview.png" alt="Placeholder"
                                             width="100px">
                                         <div class="text-danger" id="image_error"></div>
@@ -240,25 +240,45 @@
             const width = img.naturalWidth;
             const height = img.naturalHeight;
             const aspectRatio = width / height;
-            
-            // Define your desired aspect ratio
-            //const desiredAspectRatio = 16 / 9;
-            const desiredAspectRatio = 4 / 3;
-            const tolerance = 0.03;  // Adjust the tolerance as needed
-            console.log(Math.abs(aspectRatio - desiredAspectRatio));
-            if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
-                //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
-                document.getElementById('previewImg').src = objectURL;
-                document.getElementById('previewImg').style.display = 'block';
-                document.getElementById('image_error').style.display = 'none';
-            } else {
+            const validImageTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif'];
+            if (!validImageTypes.includes(file.type)) {
+                //messageDiv.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
+                //return;
                 const fileInput = document.getElementById('image');
-              fileInput.value = '';
-                document.getElementById('image_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
+                fileInput.value = '';
+                document.getElementById('image_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
                 document.getElementById('previewImg').style.display = 'none';
                 // Clean up if the ratio is invalid
                 URL.revokeObjectURL(objectURL);
+                imgfile="1";
+            }else{
+                document.getElementById('previewImg').src = objectURL;
+                document.getElementById('previewImg').style.display = 'block';
+                document.getElementById('image_error').style.display = 'none';
+                imgfile="0";
             }
+            // const width = img.naturalWidth;
+            // const height = img.naturalHeight;
+            // const aspectRatio = width / height;
+            
+            // // Define your desired aspect ratio
+            // //const desiredAspectRatio = 16 / 9;
+            // const desiredAspectRatio = 4 / 3;
+            // const tolerance = 0.03;  // Adjust the tolerance as needed
+            // console.log(Math.abs(aspectRatio - desiredAspectRatio));
+            // if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
+            //     //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
+            //     document.getElementById('previewImg').src = objectURL;
+            //     document.getElementById('previewImg').style.display = 'block';
+            //     document.getElementById('image_error').style.display = 'none';
+            // } else {
+            //     const fileInput = document.getElementById('image');
+            //   fileInput.value = '';
+            //     document.getElementById('image_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
+            //     document.getElementById('previewImg').style.display = 'none';
+            //     // Clean up if the ratio is invalid
+            //     URL.revokeObjectURL(objectURL);
+            // }
         };
   
         img.onerror = function() {

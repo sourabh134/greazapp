@@ -15,6 +15,7 @@ use Illuminate\Validation\Rules\File;
 use Redirect;
 use Illuminate\Validation\ValidationException;
 use App\Models\MycarServiceTask;
+use App\Modules\ExternalSystem;
 
 class ServiceTypeController extends Controller
 {
@@ -47,8 +48,16 @@ class ServiceTypeController extends Controller
             echo 3;
         }else{
             if($request->image!=''){
-                $imageName = time().'.'.$request->image->extension();      
-                $request->image->move(public_path('images'), $imageName);
+                $new_width = 1179;
+                $new_height = 900;
+                $file = $request->file('image');
+                $fileName = $file->getRealPath();
+                $uploadPath = public_path('images/');
+                $fileExt = $file->getClientOriginalExtension();
+                $imgname = "thump_";
+                $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+                // $imageName = time().'.'.$request->image->extension();      
+                // $request->image->move(public_path('images'), $imageName);
             }else{
                 $imageName = '';
             }
