@@ -110,7 +110,7 @@ class CarController extends Controller
                 $dataover['kmpl'] = $engine->horsepower_hp." Horsepower HP";
                 $dataover['cc'] = $engine->horsepower_rpm. " Horsepower RPM";
                 if($language==2){
-                    $dataover['engine_type'] = utf8_encode($engine->engine_type_ar);
+                    $dataover['engine_type'] = $engine->engine_type_ar;
                 }else{
                     $dataover['engine_type'] = $engine->engine_type;
                 }

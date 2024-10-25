@@ -434,11 +434,15 @@ class AgentController extends Controller
 
     private function getAccessToken()
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig($this->serviceAccountFile);
-        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-        $token = $client->fetchAccessTokenWithAssertion();
-        return $token['access_token'];
+        try {
+            $client = new GoogleClient();
+            $client->setAuthConfig($this->serviceAccountFile);
+            $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+            $token = $client->fetchAccessTokenWithAssertion();        
+            return $token['access_token'];
+        } catch (\Throwable $th) {
+           //echo 5;
+        }
     }
     function send_notification($deviceToken, $msg, $title)
     {

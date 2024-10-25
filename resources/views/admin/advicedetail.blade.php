@@ -1,5 +1,12 @@
 
 @include('admin.includes.header')
+<style>
+    a.delete-img{
+        position: relative;
+        top: 25px;
+        left: 5px;
+    }
+</style>
 
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
@@ -41,10 +48,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 mt-4">
-                            <div class="advice_img_500">
-                            <img class="img-fluid" src="<?php if($data->image!=''){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt>
+                        <div class="row mt-4">
+                            @foreach($AllBannerImage as $imgbanner)
+                            <div class="col-md-2">
+                                {{-- <a href="" class="delete-img"><i class="fa fa-trash"></i></a> --}}
+                                <img class="img-fluid" src="<?php if($imgbanner->image!=''){ echo url("public/images/".$imgbanner->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt>
+                                
                             </div>
+                            @endforeach
+                            
+                            
+                            {{-- <div class="advice_img_500">
+                            <img class="img-fluid" src="<?php if($data->image!=''){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt>
+                            </div> --}}
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">

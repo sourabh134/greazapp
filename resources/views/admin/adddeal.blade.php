@@ -96,6 +96,13 @@
       color: #424244;
       font-weight: 600;
     }
+    .form-check-input:checked {
+        background-color: #766c2c;
+        border-color: #766c2c;
+        padding: 0px;
+        width: 15px;
+        height: 15px;
+    }
 </style>
 
 <?php 
@@ -151,6 +158,49 @@ if(isset($data->id)){
 
             <form id="formData" enctype="multipart/form-data">
               @csrf
+              <div class="row">                                
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="whereshow"
+                            id="exampleRadios1" value="1" <?php if (isset($data->id)) {
+                                if ($data->whereshow == 1) {
+                                    echo 'checked';
+                                }
+                            } else {
+                                echo 'checked';
+                            } ?>>
+                        <label class="form-check-label" for="exampleRadios1">
+                            All Deals
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="whereshow"
+                            id="exampleRadios2" value="2" <?php if (isset($data->id)) {
+                                if ($data->whereshow == 2) {
+                                    echo 'checked';
+                                }
+                            } ?>>
+                        <label class="form-check-label" for="exampleRadios2">
+                            Agent/Reseller
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="whereshow"
+                            id="exampleRadios3" value="3" <?php if (isset($data->id)) {
+                                if ($data->whereshow == 3) {
+                                    echo 'checked';
+                                }
+                            } ?>>
+                        <label class="form-check-label" for="exampleRadios3">
+                            Both
+                        </label>
+                    </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="name" class="col-form-label">Name (English)</label>

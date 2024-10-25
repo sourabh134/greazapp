@@ -54,6 +54,9 @@ Route::middleware('token.check')->group(function(){
     Route::post('/notification',[NotificationController::class,'notification']);
     Route::post('/notificationdelete',[NotificationController::class,'notificationdelete']);
     Route::post('/notification_hide',[NotificationController::class,'notification_hide']);
+    Route::post('/pngnotification',[NotificationController::class,'pngnotification']);
+    Route::post('/notification_hidedata',[NotificationController::class,'notification_hidedata']);
+    Route::post('/pngnotificationread',[NotificationController::class,'pngnotificationread']);
     Route::post('/car_details',[CarController::class,'car_details']);
     Route::post('/specificationAndFeature',[CarController::class,'specificationAndFeature']);
     Route::post('/addreview',[CarController::class,'addreview']);

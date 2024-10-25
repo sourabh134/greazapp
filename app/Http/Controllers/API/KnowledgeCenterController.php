@@ -15,6 +15,7 @@ use App\Models\AdviceReview;
 use App\Models\AdviceLike;
 use App\Models\Translation;
 use App\Models\KnowledgeImageSection;
+use App\Models\AllBannerImage;
 use App\Modules\ExternalSystem;
 
 
@@ -38,7 +39,7 @@ class KnowledgeCenterController extends Controller
             $bannerArray = array();
             foreach($banner as $value){
                 $databanner['id'] = $value->id;                
-                $databanner['image'] = $value->image;
+                $databanner['image'] = $value->image;               
                 $databanner['url'] = $value->url;
                 if($language==2){
                     $databanner['name'] = $value->name_ar;
@@ -55,7 +56,13 @@ class KnowledgeCenterController extends Controller
             $advice = Advice::whereIn('UserID',[$userID,0])->where('status',1)->get();
             foreach($advice as $advlaue){
                 $ad['id'] = $advlaue->id;                
-                $ad['image'] = $advlaue->image;
+                //$ad['image'] = $advlaue->image;
+                $bannerimg = AllBannerImage::where('bannertype',3)->where('bannerimageID',$advlaue->id)->orderBy('id','ASC')->take(1);
+                if($bannerimg->count()!=0){
+                    $ad['image'] = $bannerimg->first()->image;
+                }else{
+                    $ad['image'] = ""; 
+                }
                 $ad['url'] = $advlaue->url;                
                 $ad['sponser_icon'] = $advlaue->sponser_icon;
                 $ad['expire_date'] = $advlaue->expire_date;
@@ -137,6 +144,19 @@ class KnowledgeCenterController extends Controller
                 array_push($review_array,$ar);
             }
             $ad['review'] = $review_array;
+            //banner
+            $bannerArray = array();
+            $brandbanner = AllBannerImage::where('bannertype',3)->where('bannerimageID',$adviceID)->get();
+            foreach($brandbanner as $bannervalue){
+                $data['id'] = $bannervalue->id;
+                $data['position_id'] = "";
+                $data['image'] = $bannervalue->image;                
+                $data['start_date'] = "";
+                $data['end_date'] = "";
+                $data['name'] = "";
+                array_push($bannerArray,$data);
+            }
+            $ad['bannerimg'] = $bannerArray;
                 
             return response()->json(['success'=>'true','message'=>'','result'=>$ad], 200);
         }

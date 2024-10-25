@@ -163,6 +163,7 @@ class DealController extends Controller
                 $insert->internalpage = $page;
                 $insert->pageid = $pageid;
                 $insert->addasanews = $addasanews;
+                $insert->whereshow = $request->whereshow;
                 $insert->status = 1;
                 $insert->save();
 
@@ -358,6 +359,7 @@ class DealController extends Controller
                     $insert->tag_icon = $tag_icon;
                 }
                 $insert->addasanews = $addasanews;
+                $insert->whereshow = $request->whereshow;
                 $insert->save();
                 //detail
                 DealDetail::where('dealID',$request->id)->delete();

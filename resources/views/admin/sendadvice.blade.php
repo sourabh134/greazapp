@@ -21,6 +21,52 @@
     .select2-container {
         display: block !important;
     }
+    .form-check-input:checked {
+        background-color: #766c2c;
+        border-color: #766c2c;
+        padding: 0px;
+        width: 15px;
+        height: 15px;
+    }
+   
+  .img-div {
+    position: relative;
+    /* width: 46%; */
+    float:left;
+    margin-right:5px;
+    margin-left:5px;
+    margin-bottom:10px;
+    margin-top:10px;
+}
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    max-width: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.img-div:hover .image {
+    opacity: 0.3;
+}
+
+.img-div:hover .middle {
+    opacity: 1;
+}
+
 </style>
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
@@ -168,18 +214,43 @@
                                             id="url" value="">
                                         <div class="text-danger" id="url_error"></div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    {{-- <div class="col-sm-6">
                                         <label for="image" class="col-form-label">Upload Image</label>
                                         <input type="file" name="image" class="form-control" id="image"
                                              <?php if (!isset($banner)) {
                                                 echo 'required';
                                             } ?>>
-                                        {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                                        
                                         <img id="previewImg" src="../public/img/image-preview.png" alt="Placeholder"
                                             width="100px">
-                                        <div class="text-danger" id="image_error"></div>
-                                    </div>
+                                        
+                                    </div> --}}
                                 </div>
+                                {{-- banner image --}}
+                                <div class="row mb-3">
+                                    <div class="form-group">
+                                      <label for="images" class="col-form-label">Banner Images</label>
+                                      <input type="file" name="images[]" id="images" multiple class="form-control" accept=".jpeg, .jpg, .png,.gif">
+                                    </div>
+                                    <div class="form-group">
+                                      <?php if(isset($data->id)){
+                                        foreach($brandbanner as $bannervalue){
+                                      ?>
+                    
+                                        <div class='img-div' id='img-div"+i+"'>
+                                          <img src='{{url('public/images/'.$bannervalue->image)}}' class='img-responsive image img-thumbnail' title=''>
+                                          <div class='middle'>
+                                            <button id='action-icon' class='btn' type="button" onclick="bannerimagedelete({{$bannervalue->id}})"><i class='fa fa-trash'></i></button>
+                                          </div>
+                                        </div>
+                    
+                                      <?php } } ?>
+                                      <div id="image_preview" style="width:100%;">
+                                      </div>
+                                    </div>
+                                    <div class="text-danger" id="image_error"></div>
+                                  </div>
+                                {{-- banner image --}}
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                       <label for="sponser_name" class="col-form-label">Sponser Name (English)</label>
@@ -199,15 +270,35 @@
                                         {{-- <span class="text-danger"><b>Note : </b>Dimension 20px * 20px</span><br> --}}
                                         <img id="previewImgsponser" class="mt-2" src="<?php if(isset($data->id)){ if($data->sponser_icon!=''){ echo url("public/images/".$data->sponser_icon);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                                         <div class="text-danger" id="sponser_error"></div>
-                                      </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="end_date" class="col-form-label">Expire Date</label>
+                                        <input type="date" name="expire_date" class="form-control" min="<?=date('Y-m-d')?>" placeholder="End Date"
+                                            id="expire_date" value="@if(isset($data->id)){{$data->expire_date}}@endif">
+                                        <div class="text-danger" id="end_date_error"></div>
+                                    </div> 
                                   </div>
                                 <div class="row ui">
-                                  <div class="col-sm-6">
-                                      <label for="end_date" class="col-form-label">Expire Date</label>
-                                      <input type="date" name="expire_date" class="form-control" min="<?=date('Y-m-d')?>" placeholder="End Date"
-                                          id="expire_date" value="@if(isset($data->id)){{$data->expire_date}}@endif">
-                                      <div class="text-danger" id="end_date_error"></div>
-                                  </div>                                  
+                                    <label for="end_date" class="col-form-label">Send a push notification</label>
+                                    <div class="col-md-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sendpush"
+                                                id="exampleRadios1" value="1" checked>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sendpush"
+                                                id="exampleRadios2" value="0">
+                                            <label class="form-check-label" for="exampleRadios2">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                                                
                               </div>
 
                                 <div class="col-sm-12 text-center mt-4">
@@ -475,7 +566,7 @@
     var usertype = $('#usertype').val();
     var brand = $('#brand').val();
     var url = $('#url').val();
-    var image = $('#image').val();
+    var image = $('#images').val();
     var sponser_name = $('#sponser_name').val();
     var sponserlogo = $('#sponserlogo').val();
     var advicetype = $('#advicetype').val();
@@ -507,7 +598,7 @@
       }
     }
     
-    if(!image){      
+    if(!images){      
         $('#user_error').text("");
         $('#name_error').text("");
         $('#info_error').text("");
@@ -594,6 +685,49 @@
         }
     })
 </script>
+<script>
+    $(document).ready(function() {
+    var fileArr = [];
+     $("#images").change(function(){
+        // check if fileArr length is greater than 0
+         if (fileArr.length > 0) fileArr = [];
+       
+          $('#image_preview').html("");
+          var total_file = document.getElementById("images").files;
+          if (!total_file.length) return;
+          for (var i = 0; i < total_file.length; i++) {
+            if (total_file[i].size > 1048576) {
+              return false;
+            } else {
+              fileArr.push(total_file[i]);
+              $('#image_preview').append("<div class='img-div' id='img-div"+i+"'><img src='"+URL.createObjectURL(event.target.files[i])+"' class='img-responsive image img-thumbnail' title='"+total_file[i].name+"'><div class='middle'><button id='action-icon' value='img-div"+i+"' class='btn' role='"+total_file[i].name+"'><i class='fa fa-trash'></i></button></div></div>");
+            }
+          }
+     });
+    
+    $('body').on('click', '#action-icon', function(evt){
+        var divName = this.value;
+        var fileName = $(this).attr('role');
+        $(`#${divName}`).remove();
+      
+        for (var i = 0; i < fileArr.length; i++) {
+          if (fileArr[i].name === fileName) {
+            fileArr.splice(i, 1);
+          }
+        }
+      document.getElementById('images').files = FileListItem(fileArr);
+        evt.preventDefault();
+    });
+    
+     function FileListItem(file) {
+              file = [].slice.call(Array.isArray(file) ? file : arguments)
+              for (var c, b = c = file.length, d = !0; b-- && d;) d = file[b] instanceof File
+              if (!d) throw new TypeError("expected argument to FileList is File or array of File objects")
+              for (b = (new ClipboardEvent("")).clipboardData || new DataTransfer; c--;) b.items.add(file[c])
+              return b.files
+          }
+  });
+  </script>
 
 
 @include('admin.includes.footer')

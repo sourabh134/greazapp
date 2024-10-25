@@ -109,11 +109,18 @@ class NotificationController extends Controller
         $current_date = date('Y-m-d');
         $current_time = date('H:i');
         $brand = $request->brand;
+        $notifytype = $request->notifytype;
         if($request->inlineRadioOptions==2){
             $page = $request->page;
         }else{
             $page = $request->url;
         }
+        // if($notifytype==2){
+        //     $notify_type_time =$request->notify_type_time;
+        // }else{
+        //     $notify_type_time = "";
+        // }
+        $notify_type_time = 0;
         //image upload
         if($request->image!=''){
             $new_width = 1179;
@@ -131,82 +138,146 @@ class NotificationController extends Controller
         }
         
         //die;
-        $ready=1;
-        if($end_time!=''){
-            if($current_date==$end_date){
-                if($current_time <= $end_time){
-                    $ready = 2;
+        if($notifytype==1){
+            $ready=1;
+            if($end_time!=''){
+                if($current_date==$end_date){
+                    if($current_time <= $end_time){
+                        $ready = 2;
+                    }else{
+                        $ready = 1;
+                    }
                 }else{
                     $ready = 1;
                 }
+
             }else{
                 $ready = 1;
             }
+            if($ready==1){        
 
-        }else{
-            $ready = 1;
-        }
-        if($ready==1){        
-
-            if(in_array("0", $user))
-            {
-                if($usertype==1){
-                    $userlist = User::get();
-                }else if($usertype==2){
-                    $userlist = User::where('deviceType',2)->get();
-                }else if($usertype==3){
-                    $userlist = User::where('deviceType',1)->get();
-                }else if($usertype==4){
-                    $userlist = User::where('status',1)->get();
-                }else if($usertype==5){
-                    $userlist = User::where('status',0)->get();
-                }else if($usertype==6){
-                    $mycar = MyCar::where('make_id',$brand)->get();
-                    $userarray = array();
-                    foreach($mycar as $carval){
-                        if(!in_array($carval->userID,$userarray)){
-                            array_push($userarray,$carval->userID);
-                        } 
-                    }
-                    foreach($userarray as $userval){
-                        $uval = User::where('id',$userval)->first();
-                        $devicetoken = $uval->deviceToken;
-                        $userlanguage = $uval->language;
-                        //$this->sendNotifications($devicetoken,$title,$message);
-                        $notification = new Notification;
-                        $notification->UserID = $userval;
-                        $notification->title = $title;
-                        $notification->message = $message;
-                        $notification->title_ar = $titlear;
-                        $notification->message_ar = $messagear;
-                        $notification->type = $usertype;
-                        $notification->url = $page;
-                        $notification->image = $imageName;
-                        $notification->end_date = $end_date;
-                        $notification->end_time = $end_time;
-                        $notification->internal_external = $request->inlineRadioOptions;
-                        $notification->status = 1;
-                        $notification->save();
-                        if($userlanguage==2){
-                            $notimessage = $messagear;
-                            $notititle = $titlear;
-                        }else{
-                            $notimessage = $message;
-                            $notititle = $title;
+                if(in_array("0", $user))
+                {
+                    if($usertype==1){
+                        $userlist = User::get();
+                    }else if($usertype==2){
+                        $userlist = User::where('deviceType',2)->get();
+                    }else if($usertype==3){
+                        $userlist = User::where('deviceType',1)->get();
+                    }else if($usertype==4){
+                        $userlist = User::where('status',1)->get();
+                    }else if($usertype==5){
+                        $userlist = User::where('status',0)->get();
+                    }else if($usertype==6){
+                        $mycar = MyCar::where('make_id',$brand)->get();
+                        $userarray = array();
+                        foreach($mycar as $carval){
+                            if(!in_array($carval->userID,$userarray)){
+                                array_push($userarray,$carval->userID);
+                            } 
                         }
-                        $this->send_notification($devicetoken, $notimessage, $notititle,$imageName,$page,$internal_external);
+                        foreach($userarray as $userval){
+                            $uval = User::where('id',$userval)->first();
+                            $devicetoken = $uval->deviceToken;
+                            $userlanguage = $uval->language;
+                            //$this->sendNotifications($devicetoken,$title,$message);
+                            $notification = new Notification;
+                            $notification->UserID = $userval;
+                            $notification->title = $title;
+                            $notification->message = $message;
+                            $notification->title_ar = $titlear;
+                            $notification->message_ar = $messagear;
+                            $notification->type = $usertype;
+                            $notification->url = $page;
+                            $notification->image = $imageName;
+                            $notification->end_date = $end_date;
+                            $notification->end_time = $end_time;
+                            $notification->internal_external = $request->inlineRadioOptions;
+                            $notification->notify_type = $request->notifytype;
+                            $notification->notify_type_time = $notify_type_time;
+                            $notification->status = 1;
+                            $notification->save();
+                            if($userlanguage==2){
+                                $notimessage = $messagear;
+                                $notititle = $titlear;
+                            }else{
+                                $notimessage = $message;
+                                $notititle = $title;
+                            }
+                            if($notifytype==1){
+                                //$this->send_notification($devicetoken, $notimessage, $notititle,$imageName,$page,$internal_external);
+                            }
 
+                        }
                     }
-                }
-                //$userlist = User::where('status',1)->get();
-                if($usertype!=6){
-                    foreach($userlist as $value){
-                        $devicetoken = $value->deviceToken;
-                        $userlanguages = $value->language;
+                    //$userlist = User::where('status',1)->get();
+                    if($usertype!=6){
+                        foreach($userlist as $value){
+                            $devicetoken = $value->deviceToken;
+                            $userlanguages = $value->language;
+                            //$this->sendNotifications($devicetoken,$title,$message);
+                            //new
+                            $notification = new Notification;
+                            $notification->UserID = $value->id;
+                            $notification->title = $title;
+                            $notification->message = $message;
+                            $notification->title_ar = $titlear;
+                            $notification->message_ar = $messagear;
+                            $notification->type = $usertype;
+                            $notification->url = $page;
+                            $notification->image = $imageName;
+                            $notification->end_date = $end_date;
+                            $notification->end_time = $end_time;
+                            $notification->internal_external = $request->inlineRadioOptions;
+                            $notification->notify_type = $request->notifytype;
+                            $notification->notify_type_time = $notify_type_time;
+                            $notification->status = 1;
+                            $notification->save();
+                            if($userlanguages==2){
+                                $notimessages = $messagear;
+                                $notititles = $titlear;
+                            }else{
+                                $notimessages = $message;
+                                $notititles = $title;
+                            }
+                            if($notifytype == 1){
+                                //$this->send_notification($devicetoken, $notimessages, $notititles,$imageName,$page,$internal_external);
+                            }
+                        }
+                    }
+                    // $notification = new Notification;
+                    // $notification->UserID = 0;
+                    // $notification->title = $title;
+                    // $notification->message = $message;
+                    // $notification->type = $usertype;
+                    // $notification->url = $url;
+                    // $notification->image = $imageName;
+                    // $notification->end_date = $end_date;
+                    // $notification->end_time = $end_time;
+                    // $notification->status = 1;
+                    // $notification->save();
+                    //$this->send_notification($devicetoken, $message, $title);
+                    echo 1;
+                    if(session::get('usertype')==2){
+                        $log = array(
+                            'staff_id'=>session::get('id'),
+                            'logDate'=>date('Y-m-d'),
+                            'event_name'=>"Send Notification",
+                            'event_category'=>5,
+                            'event_id'=>0,
+                        );
+                        // print_r($log);
+                        $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+                    }
+
+                }else{
+                    foreach($user as $value){
+                        $userlist = User::find($value);
+                        $devicetoken = $userlist->deviceToken;
+                        $userlanguages = $userlist->language;
                         //$this->sendNotifications($devicetoken,$title,$message);
-                        //new
                         $notification = new Notification;
-                        $notification->UserID = $value->id;
+                        $notification->UserID = $value;
                         $notification->title = $title;
                         $notification->message = $message;
                         $notification->title_ar = $titlear;
@@ -217,6 +288,8 @@ class NotificationController extends Controller
                         $notification->end_date = $end_date;
                         $notification->end_time = $end_time;
                         $notification->internal_external = $request->inlineRadioOptions;
+                        $notification->notify_type = $request->notifytype;
+                        $notification->notify_type_time = $notify_type_time;
                         $notification->status = 1;
                         $notification->save();
                         if($userlanguages==2){
@@ -226,78 +299,60 @@ class NotificationController extends Controller
                             $notimessages = $message;
                             $notititles = $title;
                         }
-                        $this->send_notification($devicetoken, $notimessages, $notititles,$imageName,$page,$internal_external);
+                        if($notifytype == 1){
+                            //$this->send_notification($devicetoken, $notimessages, $notititles,$imageName,$page,$internal_external);
+                        }
+                        
+                    }
+                    echo 1;
+                    if(session::get('usertype')==2){
+                        $log = array(
+                            'staff_id'=>session::get('id'),
+                            'logDate'=>date('Y-m-d'),
+                            'event_name'=>"Send Notification",
+                            'event_category'=>5,
+                            'event_id'=>0,
+                        );
+                        // print_r($log);
+                        $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
                     }
                 }
-                // $notification = new Notification;
-                // $notification->UserID = 0;
-                // $notification->title = $title;
-                // $notification->message = $message;
-                // $notification->type = $usertype;
-                // $notification->url = $url;
-                // $notification->image = $imageName;
-                // $notification->end_date = $end_date;
-                // $notification->end_time = $end_time;
-                // $notification->status = 1;
-                // $notification->save();
-                //$this->send_notification($devicetoken, $message, $title);
-                echo 1;
-                if(session::get('usertype')==2){
-                    $log = array(
-                        'staff_id'=>session::get('id'),
-                        'logDate'=>date('Y-m-d'),
-                        'event_name'=>"Send Notification",
-                        'event_category'=>5,
-                        'event_id'=>0,
-                    );
-                    // print_r($log);
-                    $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-                }
-
             }else{
-                foreach($user as $value){
-                    $userlist = User::find($value);
-                    $devicetoken = $userlist->deviceToken;
-                    $userlanguages = $userlist->language;
-                    //$this->sendNotifications($devicetoken,$title,$message);
-                    $notification = new Notification;
-                    $notification->UserID = $value;
-                    $notification->title = $title;
-                    $notification->message = $message;
-                    $notification->title_ar = $titlear;
-                    $notification->message_ar = $messagear;
-                    $notification->type = $usertype;
-                    $notification->url = $page;
-                    $notification->image = $imageName;
-                    $notification->end_date = $end_date;
-                    $notification->end_time = $end_time;
-                    $notification->internal_external = $request->inlineRadioOptions;
-                    $notification->status = 1;
-                    $notification->save();
-                    if($userlanguages==2){
-                        $notimessages = $messagear;
-                        $notititles = $titlear;
-                    }else{
-                        $notimessages = $message;
-                        $notititles = $title;
-                    }
-                    $this->send_notification($devicetoken, $notimessages, $notititles,$imageName,$page,$internal_external);
-                }
-                echo 1;
-                if(session::get('usertype')==2){
-                    $log = array(
-                        'staff_id'=>session::get('id'),
-                        'logDate'=>date('Y-m-d'),
-                        'event_name'=>"Send Notification",
-                        'event_category'=>5,
-                        'event_id'=>0,
-                    );
-                    // print_r($log);
-                    $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-                }
+                echo 2;
             }
         }else{
-            echo 2;
+            $userlist = User::where('status',1)->where('is_login',1)->get();
+            foreach($userlist as $value){               
+                $notification = new Notification;
+                $notification->UserID = $value->id;
+                $notification->title = $title;
+                $notification->message ="";
+                $notification->title_ar = $titlear;
+                $notification->message_ar = "";
+                $notification->type = 0;
+                $notification->url = $page;
+                $notification->image = $imageName;
+                //$notification->end_date = "";
+                //$notification->end_time = "";
+                $notification->internal_external = $request->inlineRadioOptions;
+                $notification->notify_type = $request->notifytype;
+                $notification->notify_type_time = 0;
+                $notification->status = 1;
+                $notification->save();                
+            }
+            echo 1;
+            if(session::get('usertype')==2){
+                $log = array(
+                    'staff_id'=>session::get('id'),
+                    'logDate'=>date('Y-m-d'),
+                    'event_name'=>"Send PNG Notification",
+                    'event_category'=>5,
+                    'event_id'=>0,
+                );
+                // print_r($log);
+                $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+            }
+            
         }
     }
 
@@ -321,11 +376,15 @@ class NotificationController extends Controller
 
     private function getAccessToken()
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig($this->serviceAccountFile);
-        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-        $token = $client->fetchAccessTokenWithAssertion();
-        return $token['access_token'];
+        try {
+            $client = new GoogleClient();
+            $client->setAuthConfig($this->serviceAccountFile);
+            $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+            $token = $client->fetchAccessTokenWithAssertion();        
+            return $token['access_token'];
+        } catch (\Throwable $th) {
+           //echo 5;
+        }
     }
     function send_notification($deviceToken, $msg, $title,$imageName,$page,$internal_external)
     {

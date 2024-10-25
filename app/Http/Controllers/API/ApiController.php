@@ -182,6 +182,7 @@ class ApiController extends Controller
                     $userdata->deviceType = $request->deviceType;
                     $userdata->language = $request->language;
                     $userdata->deviceModel = $request->deviceModel;
+                    $userdata->is_login = 1;
                     $userdata->save();
                     if($user->deviceModel == $request->deviceModel){
                         $suc = 1;
@@ -1029,6 +1030,7 @@ class ApiController extends Controller
                 $user = User::find($userID);
                 $user->deviceToken = '';
                 $user->accessToken = '';
+                $user->is_login = 0;
                 $user->save();
             }
             return response()->json(['success'=>'true','message'=>$msg_success], 200);
@@ -1481,10 +1483,10 @@ class ApiController extends Controller
             }
             //fule type
             if($language==2){
-                $fuletype = ["ديزل" => 'diesel.png', "بنزين" => 'petrol-station.png', "غاز طبيعي مضغوط" => 'gas-station.png', "كهرباء" => ''];
+                $fuletype = ["ديزل" => 'diesel.png', "بنزين" => 'petrol-station.png', "غاز طبيعي مضغوط" => 'gas-station.png', "كهرباء" => 'electric.png',"هجين"=>'hybrid.png'];
             }else{
                 //$fuletype = ['Diesel'=>'1','Petrol'=>'2','CNG'=>'3','Electric'=>'4'];
-                $fuletype = ['Diesel' => 'diesel.png', 'Petrol' => 'petrol-station.png', 'CNG' => 'gas-station.png', 'Electric' => ''];
+                $fuletype = ['Diesel' => 'diesel.png', 'Petrol' => 'petrol-station.png', 'Gas' => 'gas-station.png', 'Electric' => 'electric.png','Hybrid'=>'hybrid.png'];
             }
             $i=1;
             $fuletypeArray = array();
@@ -1582,11 +1584,15 @@ class ApiController extends Controller
 
     private function getAccessToken()
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig($this->serviceAccountFile);
-        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-        $token = $client->fetchAccessTokenWithAssertion();
-        return $token['access_token'];
+        try {
+            $client = new GoogleClient();
+            $client->setAuthConfig($this->serviceAccountFile);
+            $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+            $token = $client->fetchAccessTokenWithAssertion();        
+            return $token['access_token'];
+        } catch (\Throwable $th) {
+           //echo 5;
+        }
     }
     function send_notification($deviceToken, $msg, $title)
     {

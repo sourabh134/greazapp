@@ -23,6 +23,7 @@ use Redirect;
 use Illuminate\Validation\ValidationException;
 use Google\Client as GoogleClient;
 use App\Modules\ExternalSystem;
+use App\Models\AllBannerImage;
 
 class KnowledgeCenterController extends Controller
 {
@@ -283,21 +284,23 @@ class KnowledgeCenterController extends Controller
         $sponser_icon = $request->sponser_icon;
         $expire_date = $request->expire_date;
         $advicetype = $request->advicetype;
+        $sendpush = $request->sendpush;
         //image upload
-        if($request->image!=''){
-            $new_width = 1179;
-            $new_height = 900;
-            $file = $request->file('image');
-            $fileName = $file->getRealPath();
-            $uploadPath = public_path('images/');
-            $fileExt = $file->getClientOriginalExtension();
-            $imgname = "thump_";
-            $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
-            // $imageName = time().'.'.$request->image->extension();      
-            // $request->image->move(public_path('images'), $imageName);
-        }else{
-            $imageName='';
-        }
+        // if($request->image!=''){
+        //     $new_width = 1179;
+        //     $new_height = 900;
+        //     $file = $request->file('image');
+        //     $fileName = $file->getRealPath();
+        //     $uploadPath = public_path('images/');
+        //     $fileExt = $file->getClientOriginalExtension();
+        //     $imgname = "thump_";
+        //     $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
+        //     // $imageName = time().'.'.$request->image->extension();      
+        //     // $request->image->move(public_path('images'), $imageName);
+        // }else{
+        //     $imageName='';
+        // }
+        $imageName = "";
 
         if($request->sponser_icon!=''){
             $new_widths = 100;
@@ -305,7 +308,7 @@ class KnowledgeCenterController extends Controller
             $files = $request->file('sponser_icon');
             $fileNames = $files->getRealPath();
             $uploadPaths = public_path('images/');
-            $fileExts = $file->getClientOriginalExtension();
+            $fileExts = $files->getClientOriginalExtension();
             $imgnames = "sponthump_";
             $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
 
@@ -339,7 +342,32 @@ class KnowledgeCenterController extends Controller
                         $notification->message_ar = $messagear;
                         $notification->sponser_name_ar = $sponser_namear;
                         $notification->expire_date = $expire_date;
+                        $notification->sendpush = $sendpush;
                         $notification->save();
+                        // banner
+                        if(!empty($request->images)){
+                            $i=1;
+                            foreach($request->images as $imagevalue){
+                                //upload images
+                                $new_widthss = 1179;
+                                $new_heightss = 900;
+                                $filess = $imagevalue;
+                                $fileNamess = $filess->getRealPath();
+                                $uploadPathss = public_path('images/');
+                                $fileExtss = $file->getClientOriginalExtension();
+                                $imgnamess = $i."sponthump_";
+                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                                // $imagevalue->move(public_path('images'), $imageNames);
+                                $AllBannerImage = new AllBannerImage;
+                                $AllBannerImage->bannerimageID = $notification->id;
+                                $AllBannerImage->image = $imageNames;
+                                $AllBannerImage->bannertype = 3;
+                                $AllBannerImage->save();
+                                $i++;
+                            }
+                        }
+                        // banner
                         if($userlanguage==2){
                             $notimessage = $messagear;
                             $notititle = $titlear;
@@ -347,7 +375,9 @@ class KnowledgeCenterController extends Controller
                             $notimessage = $message;
                             $notititle = $title;
                         }
-                        $this->send_notification($devicetoken, $notimessage, $notititle);
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessage, $notititle);
+                        }
                     }
                 }else if($type==2){
                     $brand = $request->brand;
@@ -378,7 +408,32 @@ class KnowledgeCenterController extends Controller
                         $notification->message_ar = $messagear;
                         $notification->sponser_name_ar = $sponser_namear;
                         $notification->expire_date = $expire_date;
+                        $notification->sendpush = $sendpush;
                         $notification->save();
+                        // banner
+                        if(!empty($request->images)){
+                            $i=1;
+                            foreach($request->images as $imagevalue){
+                                //upload images
+                                $new_widthss = 1179;
+                                $new_heightss = 900;
+                                $filess = $imagevalue;
+                                $fileNamess = $filess->getRealPath();
+                                $uploadPathss = public_path('images/');
+                                $fileExtss = $file->getClientOriginalExtension();
+                                $imgnamess = $i."sponthump_";
+                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                                // $imagevalue->move(public_path('images'), $imageNames);
+                                $AllBannerImage = new AllBannerImage;
+                                $AllBannerImage->bannerimageID = $notification->id;
+                                $AllBannerImage->image = $imageNames;
+                                $AllBannerImage->bannertype = 3;
+                                $AllBannerImage->save();
+                                $i++;
+                            }
+                        }
+                        // banner
                         if($userlanguage==2){
                             $notimessage = $messagear;
                             $notititle = $titlear;
@@ -386,7 +441,9 @@ class KnowledgeCenterController extends Controller
                             $notimessage = $message;
                             $notititle = $title;
                         }
-                        $this->send_notification($devicetoken, $notimessage, $notititle);
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessage, $notititle);
+                        }
                     }
                 }else if($type==3){
                     $age = $request->age;
@@ -411,7 +468,32 @@ class KnowledgeCenterController extends Controller
                             $notification->message_ar = $messagear;
                             $notification->sponser_name_ar = $sponser_namear;
                             $notification->expire_date = $expire_date;
+                            $notification->sendpush = $sendpush;
                             $notification->save();
+                            // banner
+                        if(!empty($request->images)){
+                            $i=1;
+                            foreach($request->images as $imagevalue){
+                                //upload images
+                                $new_widthss = 1179;
+                                $new_heightss = 900;
+                                $filess = $imagevalue;
+                                $fileNamess = $filess->getRealPath();
+                                $uploadPathss = public_path('images/');
+                                $fileExtss = $file->getClientOriginalExtension();
+                                $imgnamess = $i."sponthump_";
+                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                                // $imagevalue->move(public_path('images'), $imageNames);
+                                $AllBannerImage = new AllBannerImage;
+                                $AllBannerImage->bannerimageID = $notification->id;
+                                $AllBannerImage->image = $imageNames;
+                                $AllBannerImage->bannertype = 3;
+                                $AllBannerImage->save();
+                                $i++;
+                            }
+                        }
+                        // banner
                             if($userlanguages==2){
                                 $notimessages = $messagear;
                                 $notititles = $titlear;
@@ -419,7 +501,9 @@ class KnowledgeCenterController extends Controller
                                 $notimessages = $message;
                                 $notititles = $title;
                             }
-                            $this->send_notification($devicetoken, $notimessages, $notititles);
+                            if($sendpush==1){
+                                $this->send_notification($devicetoken, $notimessages, $notititles);
+                            }
                         }                
                     }
                 }else if($type==5){
@@ -443,7 +527,32 @@ class KnowledgeCenterController extends Controller
                         $notification->message_ar = $messagear;
                         $notification->sponser_name_ar = $sponser_namear;
                         $notification->expire_date = $expire_date;
+                        $notification->sendpush = $sendpush;
                         $notification->save(); 
+                        // banner
+                        if(!empty($request->images)){
+                            $i=1;
+                            foreach($request->images as $imagevalue){
+                                //upload images
+                                $new_widthss = 1179;
+                                $new_heightss = 900;
+                                $filess = $imagevalue;
+                                $fileNamess = $filess->getRealPath();
+                                $uploadPathss = public_path('images/');
+                                $fileExtss = $file->getClientOriginalExtension();
+                                $imgnamess = $i."sponthump_";
+                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                                // $imagevalue->move(public_path('images'), $imageNames);
+                                $AllBannerImage = new AllBannerImage;
+                                $AllBannerImage->bannerimageID = $notification->id;
+                                $AllBannerImage->image = $imageNames;
+                                $AllBannerImage->bannertype = 3;
+                                $AllBannerImage->save();
+                                $i++;
+                            }
+                        }
+                        // banner
                         if($userlanguages==2){
                             $notimessages = $messagear;
                             $notititles = $titlear;
@@ -451,7 +560,9 @@ class KnowledgeCenterController extends Controller
                             $notimessages = $message;
                             $notititles = $title;
                         }
-                        $this->send_notification($devicetoken, $notimessages, $notititles);                              
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessages, $notititles); 
+                        }                             
                     }
                 }else if($type==4){
                     $gender = $request->gender; 
@@ -475,7 +586,32 @@ class KnowledgeCenterController extends Controller
                         $notification->message_ar = $messagear;
                         $notification->sponser_name_ar = $sponser_namear;
                         $notification->expire_date = $expire_date;
+                        $notification->sendpush = $sendpush;
                         $notification->save();
+                        // banner
+                        if(!empty($request->images)){
+                            $i=1;
+                            foreach($request->images as $imagevalue){
+                                //upload images
+                                $new_widthss = 1179;
+                                $new_heightss = 900;
+                                $filess = $imagevalue;
+                                $fileNamess = $filess->getRealPath();
+                                $uploadPathss = public_path('images/');
+                                $fileExtss = $file->getClientOriginalExtension();
+                                $imgnamess = $i."sponthump_";
+                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                                // $imagevalue->move(public_path('images'), $imageNames);
+                                $AllBannerImage = new AllBannerImage;
+                                $AllBannerImage->bannerimageID = $notification->id;
+                                $AllBannerImage->image = $imageNames;
+                                $AllBannerImage->bannertype = 3;
+                                $AllBannerImage->save();
+                                $i++;
+                            }
+                        }
+                        // banner
                         if($userlanguages==2){
                             $notimessages = $messagear;
                             $notititles = $titlear;
@@ -483,7 +619,9 @@ class KnowledgeCenterController extends Controller
                             $notimessages = $message;
                             $notititles = $title;
                         }
-                        $this->send_notification($devicetoken, $notimessages, $notititles);                               
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessages, $notititles);
+                        }                              
                     }
                 }
                 echo 1;
@@ -519,7 +657,32 @@ class KnowledgeCenterController extends Controller
                     $notification->message_ar = $messagear;
                     $notification->sponser_name_ar = $sponser_namear;
                     $notification->expire_date = $expire_date;
+                    $notification->sendpush = $sendpush;
                     $notification->save();
+                    // banner
+                    if(!empty($request->images)){
+                        $i=1;
+                        foreach($request->images as $imagevalue){
+                            //upload images
+                            $new_widthss = 1179;
+                            $new_heightss = 900;
+                            $filess = $imagevalue;
+                            $fileNamess = $filess->getRealPath();
+                            $uploadPathss = public_path('images/');
+                            $fileExtss = $filess->getClientOriginalExtension();
+                            $imgnamess = $i."sponthump_";
+                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imagevalue->move(public_path('images'), $imageNames);
+                            $AllBannerImage = new AllBannerImage;
+                            $AllBannerImage->bannerimageID = $notification->id;
+                            $AllBannerImage->image = $imageNames;
+                            $AllBannerImage->bannertype = 3;
+                            $AllBannerImage->save();
+                            $i++;
+                        }
+                    }
+                    // banner
                     if($userlanguages==2){
                         $notimessages = $messagear;
                         $notititles = $titlear;
@@ -527,7 +690,9 @@ class KnowledgeCenterController extends Controller
                         $notimessages = $message;
                         $notititles = $title;
                     }
-                    $this->send_notification($devicetoken, $notimessages, $notititles);
+                    if($sendpush==1){
+                        $this->send_notification($devicetoken, $notimessages, $notititles);
+                    }
                 }
                 echo 1;
                 if(session::get('usertype')==2){
@@ -558,8 +723,51 @@ class KnowledgeCenterController extends Controller
             $notification->message_ar = $messagear;
             $notification->sponser_name_ar = $sponser_namear;
             $notification->expire_date = $expire_date;
+            $notification->sendpush = $sendpush;
             $notification->save();
+            // banner
+            if(!empty($request->images)){
+                $i=1;
+                foreach($request->images as $imagevalue){
+                    //upload images
+                    $new_widthss = 1179;
+                    $new_heightss = 900;
+                    $filess = $imagevalue;
+                    $fileNamess = $filess->getRealPath();
+                    $uploadPathss = public_path('images/');
+                    $fileExtss = $file->getClientOriginalExtension();
+                    $imgnamess = $i."sponthump_";
+                    $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                    // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                    // $imagevalue->move(public_path('images'), $imageNames);
+                    $AllBannerImage = new AllBannerImage;
+                    $AllBannerImage->bannerimageID = $notification->id;
+                    $AllBannerImage->image = $imageNames;
+                    $AllBannerImage->bannertype = 3;
+                    $AllBannerImage->save();
+                    $i++;
+                }
+            }
+            // banner
+
+            $user = User::where('status',1)->get();
+            foreach($user as $value){
+                $devicetoken = $value->deviceToken;
+                $userlanguage = $value->language;
+                if($userlanguage==2){
+                    $notimessages = $messagear;
+                    $notititles = $titlear;
+                }else{
+                    $notimessages = $message;
+                    $notititles = $title;
+                }
+                if($sendpush==1){
+                    $this->send_notification($devicetoken, $notimessages, $notititles);
+                }
+                
+            }
             echo 1;
+
         }
 
     }
@@ -589,6 +797,7 @@ class KnowledgeCenterController extends Controller
         $data['admin']=Admin::find($admin_id);
         $adviceID = base64_decode($request->key);
         $data['data'] = Advice::where('id',$adviceID)->first();
+        $data['AllBannerImage'] = AllBannerImage::where('bannerimageID',$adviceID)->where('bannertype',3)->get();
         //rating
         $avgStar = AdviceReview::where('adviceID',$adviceID)->avg('Rate');
         $data['rating'] = "".$avgStar;
@@ -842,11 +1051,16 @@ class KnowledgeCenterController extends Controller
 
     private function getAccessToken()
     {
-        $client = new GoogleClient();
-        $client->setAuthConfig($this->serviceAccountFile);
-        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-        $token = $client->fetchAccessTokenWithAssertion();
-        return $token['access_token'];
+        try {
+            $client = new GoogleClient();
+            $client->setAuthConfig($this->serviceAccountFile);
+            $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+            $token = $client->fetchAccessTokenWithAssertion();        
+            return $token['access_token'];
+        } catch (\Throwable $th) {
+           //echo 5;
+        }
+       
     }
     function send_notification($deviceToken, $msg, $title)
     {

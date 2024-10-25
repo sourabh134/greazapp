@@ -626,8 +626,10 @@ class MycarController extends Controller
                 if($value->service_type==3){
                     if($language==2){
                         $data['service_name'] = CarCheck::where('id',$value->service)->first()->name_ar;
+                        $data['notes'] = CarCheck::where('id',$value->service)->first()->content_ar;
                     }else{
                         $data['service_name'] = CarCheck::where('id',$value->service)->first()->name;
+                        $data['notes'] = CarCheck::where('id',$value->service)->first()->content;
                     }
                 }else{
                     if($value->service != ''){
@@ -641,11 +643,12 @@ class MycarController extends Controller
                     }else{
                         $data['service_name'] = "";
                     }
+                    $data['notes'] = $value->notes;
                 }
                 
                 $data['serviceCenter'] = $value->serviceCenter;
                 $data['totalcost'] = $value->totalcost;
-                $data['notes'] = $value->notes;
+                //$data['notes'] = $value->notes;
                 $data['attachment'] = $value->attachment;
                 $data['service_type'] = $value->service_type;
                 array_push($MycarServiceArray,$data);

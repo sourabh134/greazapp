@@ -30,7 +30,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Image</th>
                                 <th scope="col">User Name</th>
                                 <th scope="col">Title (English)</th>
                                 <th scope="col">Title (Arabic)</th>
@@ -50,8 +49,7 @@
                         @endphp
                         @foreach($data as $value)
                             <tr>
-                                <td>{{$i}}</td>                                
-                                <td><img class="img-fluid" src="<?php if($value->image!=''){ echo url("public/images/".$value->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt width="100" height="100"></td>                                
+                                <td>{{$i}}</td>                 
                                 <td><?php if($value->UserID==0){echo "All"; }else{echo App\Models\User::find($value->UserID)->name; } ?></td>
                                 <td>{{$value->title}}</td>
                                 <td>{{$value->title_ar}}</td>
