@@ -801,7 +801,14 @@ class ApiController extends Controller
             foreach($deal_details as $dvalue){
                 //echo $dvalue->dealID."-----";
                 $currentDate = date('Y-m-d');
-                $deal = Deal::where('id',$dvalue->dealID)->where('status',1)->first();
+                //$deal = Deal::where('id',$dvalue->dealID)->where('status',1)->where('whereshow',3)->orWhere('whereshow',1)->first();
+                $deal = Deal::where('id', $dvalue->dealID)
+                ->where('status', 1)
+                ->where(function ($query) {
+                    $query->where('whereshow', 3)
+                        ->orWhere('whereshow', 1);
+                })
+                ->first();
                 $datadeal['position'] = $deal->position; 
                 $datadeal['id'] = $deal->id;                
                                 

@@ -280,7 +280,14 @@ class AgentController extends Controller
             $dealArray = array();
             foreach($deal_details as $dvalue){
                 $currentDate = date('Y-m-d');
-                $deal = Deal::where('id',$dvalue->dealID)->where('status',1)->first();
+                //$deal = Deal::where('id',$dvalue->dealID)->where('status',1)->first();
+                $deal = Deal::where('id', $dvalue->dealID)
+                ->where('status', 1)
+                ->where(function ($query) {
+                    $query->where('whereshow', 3)
+                        ->orWhere('whereshow', 2);
+                })
+                ->first();
                 $datadeal['id'] = $deal->id;
                 $datadeal['startDate'] = $deal->startDate;                
                 $datadeal['endDate'] = $deal->endDate;     
