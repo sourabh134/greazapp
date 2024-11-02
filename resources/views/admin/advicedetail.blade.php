@@ -36,13 +36,14 @@
                     <div class="row">
                         <div class="col-md-9">
                             <div class="advice_heading">
-                            <h3>{{$data->title}}</h3>
-                            <p>{{$data->message}}</p>
+
+                            <h3><?php if($language==2){ echo $data->title_ar;}else{ echo $data->title;} ?></h3>
+                            <p><?php if($language==2){ echo $data->message_ar;}else{ echo $data->message;} ?></p>
                             </div>
                         </div>
                         <div class="col-md-3 d-flex justify-content-end align-items-end">
                             <div>
-                                <h6>Sponser Image:</h6>
+                                <h6>Sponser Image: <span><?php if($language==2){ echo $data->sponser_name_ar;}else{ echo $data->sponser_name;} ?></span></h6>
                                 <div class="advice_img_20">
                                     <img class="img-fluid" src="<?php if($data->sponser_icon!=''){ echo url("public/images/".$data->sponser_icon);}else{ ?>../public/img/image-preview.png<?php } ?>" alt >
                                 </div>
@@ -55,12 +56,37 @@
                                 <img class="img-fluid" src="<?php if($imgbanner->image!=''){ echo url("public/images/".$imgbanner->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt>
                                 
                             </div>
-                            @endforeach
+                            @endforeach                           
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h2 class="mt-5 mb-4">User</h2>
+                            </div>
+                            <div class="QA_table table-responsive pb-3">
+                                <table class="table p-0" id="example">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                        
+                                        @php
+                                        $i=1;
+                                        @endphp
+                                        @foreach($userlist as $value)
+                                            <tr>                                               
+                                                <td>{{$i}}</td>                 
+                                                <td><?php if($value->userID==0){echo "All"; }else{echo App\Models\User::find($value->userID)->name; } ?></td>                                                                               
+                                            </tr>
+                                        @php
+                                        $i++;
+                                        @endphp
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             
-                            
-                            {{-- <div class="advice_img_500">
-                            <img class="img-fluid" src="<?php if($data->image!=''){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt>
-                            </div> --}}
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -97,5 +123,10 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+       $('#example').DataTable();
+    });
+ </script>
 
 @include('admin.includes.footer')

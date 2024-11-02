@@ -254,5 +254,7 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::get('/admin/knowledgeimagesection', 'knowledgeimagesection');
         Route::get('/admin/addknowledgeimagesection', 'addknowledgeimagesection');
         Route::post('/admin/addknowledgeimagesectionupdate', 'addknowledgeimagesectionupdate');
+        Route::post('/admin/change_advice_status', 'change_advice_status');
+        Route::post('/updateadviceOrder', 'updateadviceOrder');
     });
 });

@@ -29,38 +29,36 @@
                     <table class="table p-0" id="example">
                         <thead>
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col">#</th>
-                                <th scope="col">User Name</th>
+                                {{-- <th scope="col">User Name</th> --}}
                                 <th scope="col">Title (English)</th>
                                 <th scope="col">Title (Arabic)</th>
-                                <th scope="col">Message (English)</th>
-                                <th scope="col">Message (Arabic)</th>
-                                <th scope="col">Sponser (English)</th>
-                                <th scope="col">Sponser (Arabic)</th>
                                 <th scope="col">Expire Date</th>
-                                <th scope="col">Sponser Image</th>
                                 <th scope="col">Visited</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="row_position">
                         @php
                         $i=1;
                         @endphp
                         @foreach($data as $value)
-                            <tr>
+                            <tr id="<?php echo $value->id; ?>">
+                                <td><i class="fa fa-arrow-up"></i><br>Move<br><i class="fa fa-arrow-down"></i></td>
                                 <td>{{$i}}</td>                 
-                                <td><?php if($value->UserID==0){echo "All"; }else{echo App\Models\User::find($value->UserID)->name; } ?></td>
-                                <td>{{$value->title}}</td>
-                                <td>{{$value->title_ar}}</td>
-                                <td>{{$value->message}}</td>                                
-                                <td>{{$value->message_ar}}</td>                                
-                                <td>{{$value->sponser_name}}</td>                                
-                                <td>{{$value->sponser_name_ar}}</td>                                
-                                <td>{{$value->expire_date}}</td>                                
-                                <td><img class="img-fluid" src="<?php if($value->sponser_icon!=''){ echo url("public/images/".$value->sponser_icon);}else{ ?>../public/img/image-preview.png<?php } ?>" alt width="100" height="100"></td> 
-                                <td><?php echo $view = App\Models\Viewed::where('menu_type',5)->where('menuID',$value->id)->count(); ?></td>                               
-                                <td><a href="{{url('admin/advicedetail?key='.base64_encode($value->id))}}"><i class="fa fa-eye"></i></a> | <a class="delete" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>                               
+                                {{-- <td><?php if($value->UserID==0){echo "All"; }else{echo App\Models\User::find($value->UserID)->name; } ?></td> --}}
+                                <td><a href="{{url('admin/advicedetail?key='.base64_encode($value->id).'&lang='.base64_encode(1))}}">{{$value->title}}</a></td>
+                                <td><a href="{{url('admin/advicedetail?key='.base64_encode($value->id).'&lang='.base64_encode(2))}}">{{$value->title_ar}}</a></td>                                
+                                <td>{{$value->expire_date}}</td>
+                                <td><?php echo $view = App\Models\Viewed::where('menu_type',5)->where('menuID',$value->id)->count(); ?></td> 
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input flexSwitchCheckChecked" type="checkbox" role="switch" id="flexSwitchCheckChecked" data-id="{{$value->id}}" <?php if($value->status==1){ echo "checked"; } ?>>                                        
+                                    </div>
+                                </td>                              
+                                <td><a class="delete" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>                               
                             </tr>
                         @php
                         $i++;
@@ -110,6 +108,59 @@
          }],
       });
    });
+</script>
+<script>
+    $('.flexSwitchCheckChecked').click(function(){
+        var id = $(this).data('id');
+        var token = "<?=csrf_token()?>";
+        if ($(this).is(':checked')) {
+            var status = 1;
+        }else{
+            var status = 0;
+        }        
+        if(confirm("Are you sure want to change this status?")){
+            $.ajax({
+                type:'POST',
+                url:'{{url("/admin/change_advice_status")}}',
+                data  :{id:id,_token:token,status:status},          
+                success:function(data){
+                    location.reload();
+                }
+                
+            });
+        }
+    })
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+<script type="text/javascript">
+   $(".row_position").sortable({
+      delay: 150,
+      stop: function () {
+         var selectedData = new Array();
+         $(".row_position>tr").each(function(){
+            selectedData.push($(this).attr("id"))
+         });
+         updateOrder(selectedData);
+      }
+   });
+   function updateOrder(aData){
+      var token = "<?php echo csrf_token(); ?>";
+      $.ajax({
+         url: "{{url('updateadviceOrder')}}",
+         type: "POST",
+         data: {allData:aData,_token:token},
+         success: function(data){
+                $(window).scrollTop(0);
+                $("#orderUpdateMsg").show();
+                $("#orderUpdateMsg").fadeOut(3000);
+                setTimeout(() => {
+                    location.reload();
+                }, 3000);
+         }
+      });
+   }
 </script>
 
 @include('admin.includes.footer')

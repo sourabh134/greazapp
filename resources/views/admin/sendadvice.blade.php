@@ -171,7 +171,7 @@
                                 <div class="col-sm-6">
                                     <label for="user" class=" col-form-label">User</label>
                                     <select name="user[]" multiple="" id="user"
-                                        class="js-example-basic-single form-control">
+                                        class="js-example-basic-single form-control" onchange="toggleSelectAll(this)">
                                         <option value="0">All</option>
                                         @foreach ($user as $value)
                                             <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -319,7 +319,17 @@
     </div>
 </div>
 <script>
-    document.getElementById('image').addEventListener('change', function(event) {
+    function toggleSelectAll(selectElement) {
+        const options = selectElement.options;
+        const isSelectAll = selectElement.value === '0';
+
+        for (let i = 0; i < options.length; i++) {
+            options[i].selected = isSelectAll || (options[i].value !== '0' && selectElement.value === options[i].value);
+        }
+    }
+</script>
+<script>
+    document.getElementById('sponserlogo').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (!file) return;
   
@@ -335,41 +345,19 @@
             if (!validImageTypes.includes(file.type)) {
                 //messageDiv.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
                 //return;
-                const fileInput = document.getElementById('image');
+                const fileInput = document.getElementById('sponserlogo');
                 fileInput.value = '';
-                document.getElementById('image_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
-                document.getElementById('previewImg').style.display = 'none';
+                document.getElementById('sponser_error').textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or GIF image.";
+                document.getElementById('previewImgsponser').style.display = 'none';
                 // Clean up if the ratio is invalid
                 URL.revokeObjectURL(objectURL);
                 imgfile="1";
             }else{
-                document.getElementById('previewImg').src = objectURL;
-                document.getElementById('previewImg').style.display = 'block';
-                document.getElementById('image_error').style.display = 'none';
+                document.getElementById('previewImgsponser').src = objectURL;
+                document.getElementById('previewImgsponser').style.display = 'block';
+                document.getElementById('sponser_error').style.display = 'none';
                 imgfile="0";
-            }
-            // const width = img.naturalWidth;
-            // const height = img.naturalHeight;
-            // const aspectRatio = width / height;
-            
-            // // Define your desired aspect ratio
-            // //const desiredAspectRatio = 16 / 9;
-            // const desiredAspectRatio = 4 / 3;
-            // const tolerance = 0.03;  // Adjust the tolerance as needed
-            // console.log(Math.abs(aspectRatio - desiredAspectRatio));
-            // if (Math.abs(aspectRatio - desiredAspectRatio) < tolerance) {
-            //     //document.getElementById('message').textContent = 'Image aspect ratio is valid!';
-            //     document.getElementById('previewImg').src = objectURL;
-            //     document.getElementById('previewImg').style.display = 'block';
-            //     document.getElementById('image_error').style.display = 'none';
-            // } else {
-            //     const fileInput = document.getElementById('image');
-            //   fileInput.value = '';
-            //     document.getElementById('image_error').textContent = `Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Expected: ${desiredAspectRatio.toFixed(2)}`;
-            //     document.getElementById('previewImg').style.display = 'none';
-            //     // Clean up if the ratio is invalid
-            //     URL.revokeObjectURL(objectURL);
-            // }
+            }            
         };
   
         img.onerror = function() {
@@ -382,6 +370,8 @@
     $('#usertype').change(function() {
         var type = $(this).val();
         var token = "<?= csrf_token() ?>";
+        // var x = document.getElementById("user");
+        // x.remove(x.selectedIndex);
         if (type == 2) {
             $('.brand').css('display', 'block')
             $('.age').css('display', 'none')

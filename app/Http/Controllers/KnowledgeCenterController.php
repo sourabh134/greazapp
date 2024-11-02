@@ -15,6 +15,7 @@ use App\Models\AdviceLike;
 use App\Models\Translation;
 use App\Models\KnowledgeImageSection;
 use App\Models\StaffLogEvent;
+use App\Models\AdviceNotificationUser;
 use Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -201,7 +202,13 @@ class KnowledgeCenterController extends Controller
         $data['title'] = "Gearz Advice";
         $data['active'] = "advice";
         $data['admin']=Admin::find($admin_id);
-        $data['data'] = Advice::where('status',1)->orderBy('id','DESC')->get();
+        // $distinctRecords = Advice::select('uniqcode', 'status','title','title_ar','id') // Replace with your actual columns
+        // ->whereIn('status', [1, 0])
+        // ->distinct()
+        // ->get();
+        //print_r($distinctRecords);
+        //die;
+        $data['data'] = Advice::whereIn('status',[1,0])->get();
         return view('admin.advice', $data);
     }
 
@@ -265,9 +272,10 @@ class KnowledgeCenterController extends Controller
             }
         }        
     }
-
     public function insertadvice(Request $request){
         $user = $request->user;
+        // print_r($user);
+        // die;
         $title = $request->name;
         $titlear = $request->namear;
         $message = $request->info;
@@ -284,24 +292,8 @@ class KnowledgeCenterController extends Controller
         $sponser_icon = $request->sponser_icon;
         $expire_date = $request->expire_date;
         $advicetype = $request->advicetype;
-        $sendpush = $request->sendpush;
-        //image upload
-        // if($request->image!=''){
-        //     $new_width = 1179;
-        //     $new_height = 900;
-        //     $file = $request->file('image');
-        //     $fileName = $file->getRealPath();
-        //     $uploadPath = public_path('images/');
-        //     $fileExt = $file->getClientOriginalExtension();
-        //     $imgname = "thump_";
-        //     $imageName = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
-        //     // $imageName = time().'.'.$request->image->extension();      
-        //     // $request->image->move(public_path('images'), $imageName);
-        // }else{
-        //     $imageName='';
-        // }
+        $sendpush = $request->sendpush;             
         $imageName = "";
-
         if($request->sponser_icon!=''){
             $new_widths = 100;
             $new_heights = 100;
@@ -311,378 +303,68 @@ class KnowledgeCenterController extends Controller
             $fileExts = $files->getClientOriginalExtension();
             $imgnames = "sponthump_";
             $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
-
-            // $sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
-            // $request->sponser_icon->move(public_path('images'), $sponser_icon);
         }else{
             $sponser_icon='';
         }
-        if($advicetype==2){
-            if(in_array("0", $user))
-            {
-                if($type==1){
-                    //alluser
-                    $user = User::where('status',1)->get();
-                    foreach($user as $value){
-                        $devicetoken = $value->deviceToken;
-                        $userlanguage = $value->language;
-                        //$this->sendNotifications($devicetoken,$title,$message);
-                        //new
-                        $notification = new Advice;
-                        $notification->UserID = $value->id;
-                        $notification->title = $title;
-                        $notification->message = $message;
-                        $notification->type = $type;
-                        $notification->url = $url;
-                        $notification->image = $imageName;
-                        $notification->sponser_name = $sponser_name;                    
-                        $notification->sponser_icon = $sponser_icon;
-                        $notification->status = 1;                    
-                        $notification->title_ar = $titlear;                    
-                        $notification->message_ar = $messagear;
-                        $notification->sponser_name_ar = $sponser_namear;
-                        $notification->expire_date = $expire_date;
-                        $notification->sendpush = $sendpush;
-                        $notification->save();
-                        // banner
-                        if(!empty($request->images)){
-                            $i=1;
-                            foreach($request->images as $imagevalue){
-                                //upload images
-                                $new_widthss = 1179;
-                                $new_heightss = 900;
-                                $filess = $imagevalue;
-                                $fileNamess = $filess->getRealPath();
-                                $uploadPathss = public_path('images/');
-                                $fileExtss = $file->getClientOriginalExtension();
-                                $imgnamess = $i."sponthump_";
-                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                                // $imagevalue->move(public_path('images'), $imageNames);
-                                $AllBannerImage = new AllBannerImage;
-                                $AllBannerImage->bannerimageID = $notification->id;
-                                $AllBannerImage->image = $imageNames;
-                                $AllBannerImage->bannertype = 3;
-                                $AllBannerImage->save();
-                                $i++;
-                            }
-                        }
-                        // banner
-                        if($userlanguage==2){
-                            $notimessage = $messagear;
-                            $notititle = $titlear;
-                        }else{
-                            $notimessage = $message;
-                            $notititle = $title;
-                        }
-                        if($sendpush==1){
-                            $this->send_notification($devicetoken, $notimessage, $notititle);
-                        }
-                    }
-                }else if($type==2){
-                    $brand = $request->brand;
-                    $mycar = MyCar::where('make_id',$brand)->get();
-                    $userarray = array();
-                    foreach($mycar as $carval){
-                        if(!in_array($carval->userID,$userarray)){
-                            array_push($userarray,$carval->userID);
-                        } 
-                    }
-                    
-                    foreach($userarray as $userval){
-                        $uval = User::where('id',$userval)->first();
-                        $devicetoken = $uval->deviceToken;
-                        $userlanguage = $uval->language;
-                        //$this->sendNotifications($devicetoken,$title,$message);                    
-                        $notification = new Advice;
-                        $notification->UserID = $uval->id;
-                        $notification->title = $title;
-                        $notification->message = $message;
-                        $notification->type = $type;
-                        $notification->url = $url;
-                        $notification->image = $imageName;
-                        $notification->sponser_name = $sponser_name;
-                        $notification->sponser_icon = $sponser_icon;
-                        $notification->status = 1;
-                        $notification->title_ar = $titlear;                    
-                        $notification->message_ar = $messagear;
-                        $notification->sponser_name_ar = $sponser_namear;
-                        $notification->expire_date = $expire_date;
-                        $notification->sendpush = $sendpush;
-                        $notification->save();
-                        // banner
-                        if(!empty($request->images)){
-                            $i=1;
-                            foreach($request->images as $imagevalue){
-                                //upload images
-                                $new_widthss = 1179;
-                                $new_heightss = 900;
-                                $filess = $imagevalue;
-                                $fileNamess = $filess->getRealPath();
-                                $uploadPathss = public_path('images/');
-                                $fileExtss = $file->getClientOriginalExtension();
-                                $imgnamess = $i."sponthump_";
-                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                                // $imagevalue->move(public_path('images'), $imageNames);
-                                $AllBannerImage = new AllBannerImage;
-                                $AllBannerImage->bannerimageID = $notification->id;
-                                $AllBannerImage->image = $imageNames;
-                                $AllBannerImage->bannertype = 3;
-                                $AllBannerImage->save();
-                                $i++;
-                            }
-                        }
-                        // banner
-                        if($userlanguage==2){
-                            $notimessage = $messagear;
-                            $notititle = $titlear;
-                        }else{
-                            $notimessage = $message;
-                            $notititle = $title;
-                        }
-                        if($sendpush==1){
-                            $this->send_notification($devicetoken, $notimessage, $notititle);
-                        }
-                    }
-                }else if($type==3){
-                    $age = $request->age;
-                    $user = User::where('status',1)->get();                
-                    foreach($user as $value){
-                        $userage = (date('Y') - date('Y',strtotime($value->dob)));
-                        if($userage==$age){
-                            $devicetoken = $value->deviceToken;
-                            $userlanguages = $value->language;
-                            //$this->sendNotifications($devicetoken,$title,$message);
-                            $notification = new Advice;
-                            $notification->UserID = $value->id;
-                            $notification->title = $title;
-                            $notification->message = $message;
-                            $notification->type = $type;
-                            $notification->url = $url;
-                            $notification->image = $imageName;
-                            $notification->sponser_name = $sponser_name;
-                            $notification->sponser_icon = $sponser_icon;
-                            $notification->status = 1;
-                            $notification->title_ar = $titlear;                    
-                            $notification->message_ar = $messagear;
-                            $notification->sponser_name_ar = $sponser_namear;
-                            $notification->expire_date = $expire_date;
-                            $notification->sendpush = $sendpush;
-                            $notification->save();
-                            // banner
-                        if(!empty($request->images)){
-                            $i=1;
-                            foreach($request->images as $imagevalue){
-                                //upload images
-                                $new_widthss = 1179;
-                                $new_heightss = 900;
-                                $filess = $imagevalue;
-                                $fileNamess = $filess->getRealPath();
-                                $uploadPathss = public_path('images/');
-                                $fileExtss = $file->getClientOriginalExtension();
-                                $imgnamess = $i."sponthump_";
-                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                                // $imagevalue->move(public_path('images'), $imageNames);
-                                $AllBannerImage = new AllBannerImage;
-                                $AllBannerImage->bannerimageID = $notification->id;
-                                $AllBannerImage->image = $imageNames;
-                                $AllBannerImage->bannertype = 3;
-                                $AllBannerImage->save();
-                                $i++;
-                            }
-                        }
-                        // banner
-                            if($userlanguages==2){
-                                $notimessages = $messagear;
-                                $notititles = $titlear;
-                            }else{
-                                $notimessages = $message;
-                                $notititles = $title;
-                            }
-                            if($sendpush==1){
-                                $this->send_notification($devicetoken, $notimessages, $notititles);
-                            }
-                        }                
-                    }
-                }else if($type==5){
-                    $city = $request->city; 
-                    $user = User::where('location',$city)->where('status',1)->get();
-                    foreach($user as $value){ 
-                        $devicetoken = $value->deviceToken;
-                        $userlanguages = $value->language;
-                        //$this->sendNotifications($devicetoken,$title,$message);               
-                        $notification = new Advice;
-                        $notification->UserID = $value->id;
-                        $notification->title = $title;
-                        $notification->message = $message;
-                        $notification->type = $type;
-                        $notification->url = $url;
-                        $notification->image = $imageName;
-                        $notification->sponser_name = $sponser_name;
-                        $notification->sponser_icon = $sponser_icon;
-                        $notification->status = 1;
-                        $notification->title_ar = $titlear;                    
-                        $notification->message_ar = $messagear;
-                        $notification->sponser_name_ar = $sponser_namear;
-                        $notification->expire_date = $expire_date;
-                        $notification->sendpush = $sendpush;
-                        $notification->save(); 
-                        // banner
-                        if(!empty($request->images)){
-                            $i=1;
-                            foreach($request->images as $imagevalue){
-                                //upload images
-                                $new_widthss = 1179;
-                                $new_heightss = 900;
-                                $filess = $imagevalue;
-                                $fileNamess = $filess->getRealPath();
-                                $uploadPathss = public_path('images/');
-                                $fileExtss = $file->getClientOriginalExtension();
-                                $imgnamess = $i."sponthump_";
-                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                                // $imagevalue->move(public_path('images'), $imageNames);
-                                $AllBannerImage = new AllBannerImage;
-                                $AllBannerImage->bannerimageID = $notification->id;
-                                $AllBannerImage->image = $imageNames;
-                                $AllBannerImage->bannertype = 3;
-                                $AllBannerImage->save();
-                                $i++;
-                            }
-                        }
-                        // banner
-                        if($userlanguages==2){
-                            $notimessages = $messagear;
-                            $notititles = $titlear;
-                        }else{
-                            $notimessages = $message;
-                            $notititles = $title;
-                        }
-                        if($sendpush==1){
-                            $this->send_notification($devicetoken, $notimessages, $notititles); 
-                        }                             
-                    }
-                }else if($type==4){
-                    $gender = $request->gender; 
-                    $user = User::where('gender',$gender)->where('status',1)->get();           
-                    
-                    foreach($user as $value){                
-                        $devicetoken = $value->deviceToken;
-                        $userlanguages = $value->language;
-                        //$this->sendNotifications($devicetoken,$title,$message);               
-                        $notification = new Advice;
-                        $notification->UserID = $value->id;
-                        $notification->title = $title;
-                        $notification->message = $message;
-                        $notification->type = $type;
-                        $notification->url = $url;
-                        $notification->image = $imageName;
-                        $notification->sponser_name = $sponser_name;
-                        $notification->sponser_icon = $sponser_icon;
-                        $notification->status = 1;
-                        $notification->title_ar = $titlear;                    
-                        $notification->message_ar = $messagear;
-                        $notification->sponser_name_ar = $sponser_namear;
-                        $notification->expire_date = $expire_date;
-                        $notification->sendpush = $sendpush;
-                        $notification->save();
-                        // banner
-                        if(!empty($request->images)){
-                            $i=1;
-                            foreach($request->images as $imagevalue){
-                                //upload images
-                                $new_widthss = 1179;
-                                $new_heightss = 900;
-                                $filess = $imagevalue;
-                                $fileNamess = $filess->getRealPath();
-                                $uploadPathss = public_path('images/');
-                                $fileExtss = $file->getClientOriginalExtension();
-                                $imgnamess = $i."sponthump_";
-                                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                                // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                                // $imagevalue->move(public_path('images'), $imageNames);
-                                $AllBannerImage = new AllBannerImage;
-                                $AllBannerImage->bannerimageID = $notification->id;
-                                $AllBannerImage->image = $imageNames;
-                                $AllBannerImage->bannertype = 3;
-                                $AllBannerImage->save();
-                                $i++;
-                            }
-                        }
-                        // banner
-                        if($userlanguages==2){
-                            $notimessages = $messagear;
-                            $notititles = $titlear;
-                        }else{
-                            $notimessages = $message;
-                            $notititles = $title;
-                        }
-                        if($sendpush==1){
-                            $this->send_notification($devicetoken, $notimessages, $notititles);
-                        }                              
-                    }
-                }
-                echo 1;
-                if(session::get('usertype')==2){
-                    $log = array(
-                        'staff_id'=>session::get('id'),
-                        'logDate'=>date('Y-m-d'),
-                        'event_name'=>"Send Advice",
-                        'event_category'=>21,
-                        'event_id'=>0,
-                    );
-                    // print_r($log);
-                    $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-                }
+        $checkposition =  Advice::orderBy('position','DESC')->limit(1);
+        if($checkposition->count()==0){
+            $position = 1;
+        }else{
+            $position = $checkposition->value('position')+1;
+        }
 
-            }else{
-                foreach($user as $value){
+        $notification = new Advice;
+        $notification->UserID = $advicetype; //advice type 1=Genral 2=Sponser 
+        $notification->title = $title;
+        $notification->message = $message;
+        $notification->type = $type;
+        $notification->url = $url;
+        $notification->image = $imageName;
+        $notification->sponser_name = $sponser_name;                    
+        $notification->sponser_icon = $sponser_icon;
+        $notification->status = 1;                    
+        $notification->title_ar = $titlear;                    
+        $notification->message_ar = $messagear;
+        $notification->sponser_name_ar = $sponser_namear;
+        $notification->expire_date = $expire_date;
+        $notification->sendpush = $sendpush;
+        $notification->position = $position;
+        $notification->save();
+        // banner
+        if(!empty($request->images)){
+            $i=1;
+            foreach($request->images as $imagevalue){
+                //upload images
+                $new_widthss = 1179;
+                $new_heightss = 900;
+                $filess = $imagevalue;
+                $fileNamess = $filess->getRealPath();
+                $uploadPathss = public_path('images/');
+                $fileExtss = $filess->getClientOriginalExtension();
+                $imgnamess = $i."sponthump_";
+                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                $AllBannerImage = new AllBannerImage;
+                $AllBannerImage->bannerimageID = $notification->id;
+                $AllBannerImage->image = $imageNames;
+                $AllBannerImage->bannertype = 3;
+                $AllBannerImage->save();
+                $i++;
+            }
+        }
+        
+        if($advicetype==2){
+            foreach($user as $value){
+                if($value!=0){
                     $userlist = User::find($value);
                     $devicetoken = $userlist->deviceToken;
-                    $userlanguages = $userlist->language;
-                    //$this->sendNotifications($devicetoken,$title,$message);
-                    $notification = new Advice;
-                    $notification->UserID = $value;
-                    $notification->title = $title;
-                    $notification->message = $message;
-                    $notification->type = $type;
-                    $notification->url = $url;
-                    $notification->image = $imageName;
-                    $notification->sponser_name = $sponser_name;
-                    $notification->sponser_icon = $sponser_icon;
-                    $notification->status = 1;
-                    $notification->title_ar = $titlear;                    
-                    $notification->message_ar = $messagear;
-                    $notification->sponser_name_ar = $sponser_namear;
-                    $notification->expire_date = $expire_date;
-                    $notification->sendpush = $sendpush;
-                    $notification->save();
-                    // banner
-                    if(!empty($request->images)){
-                        $i=1;
-                        foreach($request->images as $imagevalue){
-                            //upload images
-                            $new_widthss = 1179;
-                            $new_heightss = 900;
-                            $filess = $imagevalue;
-                            $fileNamess = $filess->getRealPath();
-                            $uploadPathss = public_path('images/');
-                            $fileExtss = $filess->getClientOriginalExtension();
-                            $imgnamess = $i."sponthump_";
-                            $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                            // $imagevalue->move(public_path('images'), $imageNames);
-                            $AllBannerImage = new AllBannerImage;
-                            $AllBannerImage->bannerimageID = $notification->id;
-                            $AllBannerImage->image = $imageNames;
-                            $AllBannerImage->bannertype = 3;
-                            $AllBannerImage->save();
-                            $i++;
-                        }
-                    }
-                    // banner
+                    $userlanguages = $userlist->language;                
+                    $AdviceNotificationUser = new AdviceNotificationUser;
+                    $AdviceNotificationUser->notifytype = 1;
+                    $AdviceNotificationUser->userID = $value;
+                    $AdviceNotificationUser->notifyID = $notification->id;
+                    $AdviceNotificationUser->status = 1;
+                    $AdviceNotificationUser->save();
+                    
                     if($userlanguages==2){
                         $notimessages = $messagear;
                         $notititles = $titlear;
@@ -694,62 +376,10 @@ class KnowledgeCenterController extends Controller
                         $this->send_notification($devicetoken, $notimessages, $notititles);
                     }
                 }
-                echo 1;
-                if(session::get('usertype')==2){
-                    $log = array(
-                        'staff_id'=>session::get('id'),
-                        'logDate'=>date('Y-m-d'),
-                        'event_name'=>"Send Advice",
-                        'event_category'=>21,
-                        'event_id'=>0,
-                    );
-                    // print_r($log);
-                    $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-                }
-
             }
+            echo 1;
+
         }else{
-            $notification = new Advice;
-            $notification->UserID = 0;
-            $notification->title = $title;
-            $notification->message = $message;
-            $notification->type = $type;
-            $notification->url = $url;
-            $notification->image = $imageName;
-            $notification->sponser_name = $sponser_name;
-            $notification->sponser_icon = $sponser_icon;
-            $notification->status = 1;
-            $notification->title_ar = $titlear;                    
-            $notification->message_ar = $messagear;
-            $notification->sponser_name_ar = $sponser_namear;
-            $notification->expire_date = $expire_date;
-            $notification->sendpush = $sendpush;
-            $notification->save();
-            // banner
-            if(!empty($request->images)){
-                $i=1;
-                foreach($request->images as $imagevalue){
-                    //upload images
-                    $new_widthss = 1179;
-                    $new_heightss = 900;
-                    $filess = $imagevalue;
-                    $fileNamess = $filess->getRealPath();
-                    $uploadPathss = public_path('images/');
-                    $fileExtss = $file->getClientOriginalExtension();
-                    $imgnamess = $i."sponthump_";
-                    $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                    // $imageNames = $i.time().'.'.$imagevalue->extension();      
-                    // $imagevalue->move(public_path('images'), $imageNames);
-                    $AllBannerImage = new AllBannerImage;
-                    $AllBannerImage->bannerimageID = $notification->id;
-                    $AllBannerImage->image = $imageNames;
-                    $AllBannerImage->bannertype = 3;
-                    $AllBannerImage->save();
-                    $i++;
-                }
-            }
-            // banner
-
             $user = User::where('status',1)->get();
             foreach($user as $value){
                 $devicetoken = $value->deviceToken;
@@ -767,7 +397,6 @@ class KnowledgeCenterController extends Controller
                 
             }
             echo 1;
-
         }
 
     }
@@ -796,8 +425,10 @@ class KnowledgeCenterController extends Controller
         $data['active'] = "advice";
         $data['admin']=Admin::find($admin_id);
         $adviceID = base64_decode($request->key);
+        $data['language'] = base64_decode($request->lang);
         $data['data'] = Advice::where('id',$adviceID)->first();
         $data['AllBannerImage'] = AllBannerImage::where('bannerimageID',$adviceID)->where('bannertype',3)->get();
+        $data['userlist'] = AdviceNotificationUser::where('notifyID',$adviceID)->where('notifytype',1)->get();
         //rating
         $avgStar = AdviceReview::where('adviceID',$adviceID)->avg('Rate');
         $data['rating'] = "".$avgStar;
@@ -819,6 +450,45 @@ class KnowledgeCenterController extends Controller
         }
         $data['review'] = $review_array;
         return view('admin.advicedetail', $data);
+    }
+    public function change_advice_status(Request $request){
+        $id = $request->id;
+        $status = $request->status;
+        $category = Advice::find($id);
+        $category->status = $status;
+        $category->save();
+        if(session::get('usertype')==2){
+            $log = array(
+                'staff_id'=>session::get('id'),
+                'logDate'=>date('Y-m-d'),
+                'event_name'=>"change Advice status",
+                'event_category'=>21,
+                'event_id'=>id,
+            );
+            // print_r($log);
+            $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+        }
+    }
+    public function updateadviceOrder(Request $request){
+        $arr=$request->allData;
+        $num=0;
+        for($i=0;$i<count($arr);$i++)
+        {
+            $brand = Advice::find($arr[$i]);
+            $brand->position = $num=$num+1;
+            $brand->save();
+        }
+        if(session::get('usertype')==2){
+            $log = array(
+                'staff_id'=>session::get('id'),
+                'logDate'=>date('Y-m-d'),
+                'event_name'=>"Update Advice Order",
+                'event_category'=>21,
+                'event_id'=>0,
+            );
+            // print_r($log);
+            $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
+        } 
     }
 
     //translation

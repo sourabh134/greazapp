@@ -53,7 +53,8 @@ class KnowledgeCenterController extends Controller
             $data['banner'] = $bannerArray;
             //advice
             $adviceArray = array();
-            $advice = Advice::whereIn('UserID',[$userID,0])->where('status',1)->get();
+            //$advice = Advice::whereIn('UserID',[$userID,0])->where('status',1)->get();
+            $advice = Advice::where('status',1)->get();
             foreach($advice as $advlaue){
                 $ad['id'] = $advlaue->id;                
                 //$ad['image'] = $advlaue->image;
