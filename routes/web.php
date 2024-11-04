@@ -248,6 +248,7 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::post('/admin/delete_advice', 'delete_advice');
         Route::get('/admin/advicedetail', 'advicedetail');
         Route::get('/admin/translation', 'translation');
+        Route::get('/admin/translationdetail', 'translationdetail');
         Route::get('/admin/addtranslation', 'addtranslation');
         Route::post('/admin/inserttranslation', 'inserttranslation');
         Route::post('/admin/delete_translation', 'delete_translation');

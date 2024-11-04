@@ -18,7 +18,10 @@ class MagazineController extends Controller
         $data['admin']=Admin::find($admin_id);
         $data['title'] = "Magazine";
         $data['active'] = "magazine";
-        $data['data'] = Magazine::where('status','!=',2)->orderBy('position','ASC')->get();
+        $data['data'] = Magazine::where('status','!=',2)->where('type',1)->orderBy('position','ASC')->get();
+        $data['review'] = Magazine::where('status','!=',2)->where('type',2)->orderBy('position','ASC')->get();
+        $data['video'] = Magazine::where('status','!=',2)->where('type',3)->orderBy('position','ASC')->get();
+        $data['event'] = Magazine::where('status','!=',2)->where('type',4)->orderBy('position','ASC')->get();
         return view('admin.magazine', $data);
     }
 
@@ -347,7 +350,8 @@ class MagazineController extends Controller
             $admin_id = session::get('id');
             $data['admin']=Admin::find($admin_id);
             $data['title'] = "Magazine";
-            $data['active'] = "magazine";          
+            $data['active'] = "magazine";
+            $data['language'] = base64_decode($request->lang);          
             $data['news'] = Magazine::where('id',$magazineID)->first();
             //review
             $data['reviews'] = MagazineReview::where('magazineID',$magazineID)->orderBy('id','DESC')->get();            

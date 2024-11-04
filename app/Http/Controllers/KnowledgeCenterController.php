@@ -202,12 +202,6 @@ class KnowledgeCenterController extends Controller
         $data['title'] = "Gearz Advice";
         $data['active'] = "advice";
         $data['admin']=Admin::find($admin_id);
-        // $distinctRecords = Advice::select('uniqcode', 'status','title','title_ar','id') // Replace with your actual columns
-        // ->whereIn('status', [1, 0])
-        // ->distinct()
-        // ->get();
-        //print_r($distinctRecords);
-        //die;
         $data['data'] = Advice::whereIn('status',[1,0])->get();
         return view('admin.advice', $data);
     }
@@ -219,7 +213,31 @@ class KnowledgeCenterController extends Controller
         $data['admin']=Admin::find($admin_id);
         $data['user'] = User::where('status',1)->get();
         $data['brand'] = Brand::where('status',1)->get();
-        $data['country'] = Country::where('status',1)->get();        
+        $data['country'] = Country::where('status',1)->get();
+        $adviceID = base64_decode($request->key);
+        if(isset($request->key)){
+            $data['data'] = Advice::where('id',$adviceID)->first();
+            $data['brandbanner'] = AllBannerImage::where('bannertype',3)->where('bannerimageID',$adviceID)->get();
+            $alluser = AdviceNotificationUser::where('notifytype',1)->where('notifyID',$adviceID);
+            if($alluser->count()!=0){
+                $data['brands'] = $alluser->value('brandID');
+                $data['gender'] = $alluser->value('gendervalue');
+                $data['age'] = $alluser->value('agevalue');
+                $data['countrys'] = $alluser->value('countryID');
+                $data['state'] = $alluser->value('stateID');
+                $data['city'] = $alluser->value('cityID');
+
+            }else{
+                $data['brands'] = "";
+                $data['gender'] = "";
+                $data['age'] = "";
+                $data['countrys'] = "";
+                $data['state'] = "";
+                $data['city'] = "";
+            }
+            $data['allusers'] = $alluser->get();
+        }
+              
         return view('admin.sendadvice', $data);
     }
 
@@ -274,8 +292,6 @@ class KnowledgeCenterController extends Controller
     }
     public function insertadvice(Request $request){
         $user = $request->user;
-        // print_r($user);
-        // die;
         $title = $request->name;
         $titlear = $request->namear;
         $message = $request->info;
@@ -312,60 +328,86 @@ class KnowledgeCenterController extends Controller
         }else{
             $position = $checkposition->value('position')+1;
         }
+        if($request->id==""){
 
-        $notification = new Advice;
-        $notification->UserID = $advicetype; //advice type 1=Genral 2=Sponser 
-        $notification->title = $title;
-        $notification->message = $message;
-        $notification->type = $type;
-        $notification->url = $url;
-        $notification->image = $imageName;
-        $notification->sponser_name = $sponser_name;                    
-        $notification->sponser_icon = $sponser_icon;
-        $notification->status = 1;                    
-        $notification->title_ar = $titlear;                    
-        $notification->message_ar = $messagear;
-        $notification->sponser_name_ar = $sponser_namear;
-        $notification->expire_date = $expire_date;
-        $notification->sendpush = $sendpush;
-        $notification->position = $position;
-        $notification->save();
-        // banner
-        if(!empty($request->images)){
-            $i=1;
-            foreach($request->images as $imagevalue){
-                //upload images
-                $new_widthss = 1179;
-                $new_heightss = 900;
-                $filess = $imagevalue;
-                $fileNamess = $filess->getRealPath();
-                $uploadPathss = public_path('images/');
-                $fileExtss = $filess->getClientOriginalExtension();
-                $imgnamess = $i."sponthump_";
-                $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                $AllBannerImage = new AllBannerImage;
-                $AllBannerImage->bannerimageID = $notification->id;
-                $AllBannerImage->image = $imageNames;
-                $AllBannerImage->bannertype = 3;
-                $AllBannerImage->save();
-                $i++;
+            $notification = new Advice;
+            $notification->UserID = $advicetype; //advice type 1=Genral 2=Sponser 
+            $notification->title = $title;
+            $notification->message = $message;
+            $notification->type = $type;
+            $notification->url = $url;
+            $notification->image = $imageName;
+            $notification->sponser_name = $sponser_name;                    
+            $notification->sponser_icon = $sponser_icon;
+            $notification->status = 1;                    
+            $notification->title_ar = $titlear;                    
+            $notification->message_ar = $messagear;
+            $notification->sponser_name_ar = $sponser_namear;
+            $notification->expire_date = $expire_date;
+            $notification->sendpush = $sendpush;
+            $notification->position = $position;
+            $notification->save();
+            // banner
+            if(!empty($request->images)){
+                $i=1;
+                foreach($request->images as $imagevalue){
+                    //upload images
+                    $new_widthss = 1179;
+                    $new_heightss = 900;
+                    $filess = $imagevalue;
+                    $fileNamess = $filess->getRealPath();
+                    $uploadPathss = public_path('images/');
+                    $fileExtss = $filess->getClientOriginalExtension();
+                    $imgnamess = $i."sponthump_";
+                    $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                    $AllBannerImage = new AllBannerImage;
+                    $AllBannerImage->bannerimageID = $notification->id;
+                    $AllBannerImage->image = $imageNames;
+                    $AllBannerImage->bannertype = 3;
+                    $AllBannerImage->save();
+                    $i++;
+                }
             }
-        }
-        
-        if($advicetype==2){
-            foreach($user as $value){
-                if($value!=0){
-                    $userlist = User::find($value);
-                    $devicetoken = $userlist->deviceToken;
-                    $userlanguages = $userlist->language;                
-                    $AdviceNotificationUser = new AdviceNotificationUser;
-                    $AdviceNotificationUser->notifytype = 1;
-                    $AdviceNotificationUser->userID = $value;
-                    $AdviceNotificationUser->notifyID = $notification->id;
-                    $AdviceNotificationUser->status = 1;
-                    $AdviceNotificationUser->save();
-                    
-                    if($userlanguages==2){
+            
+            if($advicetype==2){
+                foreach($user as $value){
+                    if($value!=0){
+                        $userlist = User::find($value);
+                        $devicetoken = $userlist->deviceToken;
+                        $userlanguages = $userlist->language;                
+                        $AdviceNotificationUser = new AdviceNotificationUser;
+                        $AdviceNotificationUser->notifytype = 1;
+                        $AdviceNotificationUser->userID = $value;
+                        $AdviceNotificationUser->notifyID = $notification->id;
+                        $AdviceNotificationUser->brandID = $request->brand;
+                        $AdviceNotificationUser->agevalue = $request->age;
+                        $AdviceNotificationUser->gendervalue = $request->gender;
+                        $AdviceNotificationUser->countryID = $request->country;
+                        $AdviceNotificationUser->stateID = $request->state;
+                        $AdviceNotificationUser->cityID = $request->city;
+                        $AdviceNotificationUser->status = 1;
+                        $AdviceNotificationUser->save();
+                        
+                        if($userlanguages==2){
+                            $notimessages = $messagear;
+                            $notititles = $titlear;
+                        }else{
+                            $notimessages = $message;
+                            $notititles = $title;
+                        }
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessages, $notititles);
+                        }
+                    }
+                }
+                echo 1;
+
+            }else{
+                $user = User::where('status',1)->get();
+                foreach($user as $value){
+                    $devicetoken = $value->deviceToken;
+                    $userlanguage = $value->language;
+                    if($userlanguage==2){
                         $notimessages = $messagear;
                         $notititles = $titlear;
                     }else{
@@ -375,37 +417,116 @@ class KnowledgeCenterController extends Controller
                     if($sendpush==1){
                         $this->send_notification($devicetoken, $notimessages, $notititles);
                     }
+                    
                 }
+                echo 1;
             }
-            echo 1;
-
         }else{
-            $user = User::where('status',1)->get();
-            foreach($user as $value){
-                $devicetoken = $value->deviceToken;
-                $userlanguage = $value->language;
-                if($userlanguage==2){
-                    $notimessages = $messagear;
-                    $notititles = $titlear;
-                }else{
-                    $notimessages = $message;
-                    $notititles = $title;
+            $notification = Advice::find($request->id);
+            $notification->UserID = $advicetype; //advice type 1=Genral 2=Sponser 
+            $notification->title = $title;
+            $notification->message = $message;
+            $notification->type = $type;
+            $notification->url = $url;
+            $notification->image = $imageName;
+            $notification->sponser_name = $sponser_name;                    
+            $notification->sponser_icon = $sponser_icon;
+            $notification->status = 1;                    
+            $notification->title_ar = $titlear;                    
+            $notification->message_ar = $messagear;
+            $notification->sponser_name_ar = $sponser_namear;
+            $notification->expire_date = $expire_date;
+            $notification->sendpush = $sendpush;
+            $notification->position = $position;
+            $notification->save();
+            // banner
+            if(!empty($request->images)){
+                $i=1;
+                foreach($request->images as $imagevalue){
+                    //upload images
+                    $new_widthss = 1179;
+                    $new_heightss = 900;
+                    $filess = $imagevalue;
+                    $fileNamess = $filess->getRealPath();
+                    $uploadPathss = public_path('images/');
+                    $fileExtss = $filess->getClientOriginalExtension();
+                    $imgnamess = $i."sponthump_";
+                    $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
+                    $AllBannerImage = new AllBannerImage;
+                    $AllBannerImage->bannerimageID = $request->id;
+                    $AllBannerImage->image = $imageNames;
+                    $AllBannerImage->bannertype = 3;
+                    $AllBannerImage->save();
+                    $i++;
                 }
-                if($sendpush==1){
-                    $this->send_notification($devicetoken, $notimessages, $notititles);
-                }
-                
             }
-            echo 1;
+            
+            if($advicetype==2){
+                foreach($user as $value){
+                    if($value!=0){
+                        $userlist = User::find($value);
+                        $devicetoken = $userlist->deviceToken;
+                        $userlanguages = $userlist->language;
+                        $check_user = AdviceNotificationUser::where('notifytype',1)->where('notifyID',$request->id)->where('userID',$value)->count();
+                        if($check_user==0){
+                            $AdviceNotificationUser = new AdviceNotificationUser;
+                            $AdviceNotificationUser->notifytype = 1;
+                            $AdviceNotificationUser->userID = $value;
+                            $AdviceNotificationUser->notifyID = $request->id;
+                            $AdviceNotificationUser->brandID = $request->brand;
+                            $AdviceNotificationUser->agevalue = $request->age;
+                            $AdviceNotificationUser->gendervalue = $request->gender;
+                            $AdviceNotificationUser->countryID = $request->country;
+                            $AdviceNotificationUser->stateID = $request->state;
+                            $AdviceNotificationUser->cityID = $request->city;
+                            $AdviceNotificationUser->status = 1;
+                            $AdviceNotificationUser->save();
+                        }
+                        
+                        if($userlanguages==2){
+                            $notimessages = $messagear;
+                            $notititles = $titlear;
+                        }else{
+                            $notimessages = $message;
+                            $notititles = $title;
+                        }
+                        if($sendpush==1){
+                            $this->send_notification($devicetoken, $notimessages, $notititles);
+                        }
+                    }
+                }
+                echo 1;
+
+            }else{
+                $user = User::where('status',1)->get();
+                foreach($user as $value){
+                    $devicetoken = $value->deviceToken;
+                    $userlanguage = $value->language;
+                    if($userlanguage==2){
+                        $notimessages = $messagear;
+                        $notititles = $titlear;
+                    }else{
+                        $notimessages = $message;
+                        $notititles = $title;
+                    }
+                    if($sendpush==1){
+                        $this->send_notification($devicetoken, $notimessages, $notititles);
+                    }
+                    
+                }
+                echo 1;
+            }
         }
 
     }
 
     public function delete_advice(Request $request){
         $id = $request->id;
-        $category = Advice::find($id);
-        $category->status = 2;
-        $category->save();
+        $adviceID = explode(",",$request->id);
+        $category = Advice::whereIn('id', $adviceID)->update(['status' => 2]);;
+        //$category = Advice::find($id);
+        //$category->status = 2;
+        //$category->save();
         if(session::get('usertype')==2){
             $log = array(
                 'staff_id'=>session::get('id'),
@@ -491,6 +612,11 @@ class KnowledgeCenterController extends Controller
         } 
     }
 
+    // public function filter_advicetypedata(Request $request){
+
+
+    // }
+
     //translation
     public function translation(Request $request){
         $admin_id = Session::get('id');
@@ -499,6 +625,16 @@ class KnowledgeCenterController extends Controller
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Translation::where('status',1)->get();        
         return view('admin.translation', $data);
+    }
+    public function translationdetail(Request $request){
+        $admin_id = Session::get('id');
+        $data['title'] = "Advice Detail";
+        $data['active'] = "advice";
+        $data['admin']=Admin::find($admin_id);
+        $translationID = base64_decode($request->key);
+        $data['language'] = base64_decode($request->lang);
+        $data['data'] = Translation::where('id',$translationID)->first();        
+        return view('admin.translationdetail', $data);
     }
 
     public function addtranslation(Request $request){

@@ -37,7 +37,11 @@
         <div class="white_card card_height_100 mb_20 ">
             <!-- <h2 class="card-title text-center p-5">Brands</h2> -->
             <div class="white_card_body text-center">
-                <h3 class="mb-5">{{$news->heading}}</h3>
+                <h3 class="mb-5"><?php if ($language == 2) {
+                    echo $news->heading_ar;
+                } else {
+                    echo $news->heading;
+                } ?></h3>
 
                 <div class="container">
                     <div class="row">
@@ -51,29 +55,55 @@
                         <div class="col-md-6">
                             <?php if ($news->videourl != '') { ?>
                                 <div class="form-group">
-                                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/shW6rdfHuPI"></iframe>
+                                    {{-- <iframe width="100%" height="315" src="https://www.youtube.com/embed/shW6rdfHuPI"></iframe> --}}
                                 </div>
                             <?php } ?>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group p-3">
-                                <span class="float-start"><strong>Posted By:</strong> {{$news->postedBy}} </span>
+                                <span class="float-start"><strong>Posted By:</strong> <?php if ($language == 2) {
+                                    echo $news->postedBy_ar;
+                                } else {
+                                    echo $news->postedBy;
+                                } ?></span>
                                 <span class="float-end"> {{date('M d,Y',strtotime($news->postedDate))}} <?php if ($news->end_date != '') { ?>- {{date('M d,Y',strtotime($news->end_date))}}<?php } ?></span>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <?php if ($news->type == '4') { ?>
                                 <div class="form-group p-3">
-                                    <a href=""><i class="fa fa-facebook"></i></a> <a href=""><i class="fa fa-instagram"></i></a> <a href=""><i class="fa fa-twitter"></i></a>
+                                    <a href="{{$news->facebook}}"><i class="fa fa-facebook"></i></a> <a href="{{$news->instagram}}"><i class="fa fa-instagram"></i></a> <a href="{{$news->twitter}}"><i class="fa fa-twitter"></i></a> <a href="{{$news->linkedin}}"><i class="fa fa-linkedin"></i></a>
                                 </div>
                                 <div class="form-group p-3 reviewpara">
-                                    <span class="float-start">{{$news->address}}</span>
+                                    <span class="float-start">Address: {{$news->address}}</span>
+                                </div>
+                                <div class="form-group p-3 reviewpara">
+                                    <span class="float-start">Contact: {{$news->contact_number}}</span>
+                                    
+                                </div>
+                                <div class="form-group p-3 reviewpara">
+                                    
+                                    <span class="float-start">Website: {{$news->website}}</span>
                                 </div>
                             <?php } ?>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group py-4 reviewpara">
-                                <p>{{$news->description}}</p>
+                                <p><?php if ($language == 2) {
+                                    echo $news->description_ar;
+                                } else {
+                                    echo $news->description;
+                                } ?></p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group p-3 reviewpara">
+                                <span class="float-start"><?php if ($language == 2) {
+                                    echo $news->tag_name_ar;
+                                } else {
+                                    echo $news->tag_name;
+                                } ?></span>  
+                                <span class="float-start"><img src="{{ url('public/images/'.$news->tag_icon) }}" width="100px" height="100px" /></span>
                             </div>
                         </div>
                     </div>

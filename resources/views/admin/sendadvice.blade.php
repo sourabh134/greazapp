@@ -1,5 +1,8 @@
 @include('admin.includes.header')
-<style>
+<?php if(isset($data->id)){
+    if($data->UserID==1){
+ ?> 
+ <style>
     .brand {
         display: none;
     }
@@ -21,6 +24,160 @@
     .select2-container {
         display: block !important;
     }
+    </style>
+ <?php }else{
+    if($data->type==1){
+ ?>
+ <style>
+    .brand {
+        display: none;
+    }
+    .age {
+        display: none;
+    }
+    .gender {
+        display: none;
+    }
+    .city {
+        display: none;
+    }
+    .statecity {
+        display: none;
+    }
+    .sponseradvice {
+        display: block;
+    }
+    .select2-container {
+        display: block !important;
+    }
+    </style>
+ <?php }else if($data->type==2){ ?>
+    <style>
+        .brand {
+            display: block;
+        }
+        .age {
+            display: none;
+        }
+        .gender {
+            display: none;
+        }
+        .city {
+            display: none;
+        }
+        .statecity {
+            display: none;
+        }
+        .sponseradvice {
+            display: block;
+        }
+        .select2-container {
+            display: block !important;
+        }
+        </style>
+<?php }else if($data->type==3){ ?>
+    <style>
+        .brand {
+            display: none;
+        }
+        .age {
+            display: block;
+        }
+        .gender {
+            display: none;
+        }
+        .city {
+            display: none;
+        }
+        .statecity {
+            display: none;
+        }
+        .sponseradvice {
+            display: block;
+        }
+        .select2-container {
+            display: block !important;
+        }
+        </style>  
+<?php }else if($data->type==4){ ?>
+    <style>
+        .brand {
+            display: none;
+        }
+        .age {
+            display: none;
+        }
+        .gender {
+            display: block;
+        }
+        .city {
+            display: none;
+        }
+        .statecity {
+            display: none;
+        }
+        .sponseradvice {
+            display: block;
+        }
+        .select2-container {
+            display: block !important;
+        }
+        </style>  
+<?php }else if($data->type==5){ ?>
+    <style>
+        .brand {
+            display: none;
+        }
+        .age {
+            display: none;
+        }
+        .gender {
+            display: none;
+        }
+        .city {
+            display: block;
+        }
+        .statecity {
+            display: block;
+        }
+        .sponseradvice {
+            display: block;
+        }
+        .select2-container {
+            display: block !important;
+        }
+        </style>
+    <?php } ?>  
+
+<?php } ?>
+
+<?php }else{ ?>
+    <style>
+        .brand {
+            display: none;
+        }
+        .age {
+            display: none;
+        }
+        .gender {
+            display: none;
+        }
+        .city {
+            display: none;
+        }
+        .statecity {
+            display: none;
+        }
+        .sponseradvice {
+            display: none;
+        }
+        .select2-container {
+            display: block !important;
+        }
+        </style>
+<?php } ?>
+<style>
+    
     .form-check-input:checked {
         background-color: #766c2c;
         border-color: #766c2c;
@@ -93,8 +250,8 @@
                                 <div class="col-sm-6">
                                     <label for="advicetype" class=" col-form-label">Advice Type</label>
                                     <select name="advicetype" id="advicetype" class="form-select">
-                                        <option value="1">General Advice</option>
-                                        <option value="2">Sponser Advice</option>
+                                        <option value="1" <?php if(isset($data->id)){ if($data->UserID==1){ echo"Selected"; } } ?>>General Advice</option>
+                                        <option value="2" <?php if(isset($data->id)){ if($data->UserID==2){ echo"Selected"; } } ?>>Sponser Advice</option>
                                     </select>
                                     
                                 </div>
@@ -103,11 +260,11 @@
                                 <div class="col-sm-6">
                                     <label for="usertype" class=" col-form-label">Users Type</label>
                                     <select name="usertype" id="usertype" class="form-select">
-                                        <option value="1">All user</option>
-                                        <option value="2">User Model</option>
-                                        <option value="3">User Age</option>
-                                        <option value="4">User Gender</option>
-                                        <option value="5">User City</option>
+                                        <option value="1" <?php if(isset($data->id)){ if($data->type==1){ echo"Selected"; } } ?>>All user</option>
+                                        <option value="2" <?php if(isset($data->id)){ if($data->type==2){ echo"Selected"; } } ?>>User Model</option>
+                                        <option value="3" <?php if(isset($data->id)){ if($data->type==3){ echo"Selected"; } } ?>>User Age</option>
+                                        <option value="4" <?php if(isset($data->id)){ if($data->type==4){ echo"Selected"; } } ?>>User Gender</option>
+                                        <option value="5" <?php if(isset($data->id)){ if($data->type==5){ echo"Selected"; } } ?>>User City</option>
 
                                     </select>
                                     <div class="text-danger" id="usertype_error"></div>
@@ -117,7 +274,7 @@
                                     <select name="brand" id="brand" class="form-select">
                                         <option value="">Choose</option>                                        
                                         @foreach ($brand as $val)
-                                            <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                            <option value="{{ $val->id }}" <?php if(isset($data->id)){ if($brands==$val->id){ echo "Selected"; } } ?>>{{ $val->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="text-danger" id="brand_error"></div>
@@ -125,7 +282,7 @@
                                 {{-- age --}}
                                 <div class="col-sm-6 age">
                                     <label for="age" class=" col-form-label">Age</label>
-                                    <input type="number" name="age" id="age" class="form-control">
+                                    <input type="number" name="age" id="age" class="form-control" value="<?php if(isset($data->id)){ echo $age;  } ?>">
                                     <div class="text-danger" id="age_error"></div>
                                 </div>
                                 {{-- gender --}}
@@ -133,9 +290,9 @@
                                     <label for="gender" class="col-form-label">Gender</label>
                                     <select name="gender" id="gender" class="form-select">
                                         <option value="">Choose</option>                                        
-                                        <option value="1">Male</option>
-                                        <option value="2">Female</option>
-                                        <option value="3">Other</option>
+                                        <option value="1" <?php if(isset($data->id)){ if($gender==1){ echo"Selected"; } } ?>>Male</option>
+                                        <option value="2" <?php if(isset($data->id)){ if($gender==2){ echo"Selected"; } } ?>>Female</option>
+                                        <option value="3" <?php if(isset($data->id)){ if($gender==3){ echo"Selected"; } } ?>>Other</option>
                                     </select>
                                     <div class="text-danger" id="gender_error"></div>
                                 </div>
@@ -145,7 +302,7 @@
                                     <select name="country" id="country" class="form-select">
                                         <option value="">Choose</option>                                        
                                         @foreach($country as $countryvalue)
-                                            <option value="{{$countryvalue->id}}">{{$countryvalue->name}}</option>
+                                            <option value="{{$countryvalue->id}}" <?php if(isset($data->id)){ if($countrys==$countryvalue->id){ echo"Selected"; } } ?>>{{$countryvalue->name}}</option>
                                         @endforeach
                                     </select>
                                     <div class="text-danger" id="country_error"></div>
@@ -156,12 +313,25 @@
                                 <div class="col-sm-6">
                                     <label for="state" class=" col-form-label">State</label>
                                     <select name="state" id="state" class="form-select">
+                                        <?php if(isset($data->id)){
+                                            $states = App\Models\State::where('country_id',$countrys)->get();
+                                            foreach($states as $svalue){
+                                        ?>
+                                            <option value="{{$svalue->id}}" <?php if(isset($data->id)){ if($state==$svalue->id){ echo"Selected"; } } ?>>{{$svalue->name}}</option>
+                                        <?php } } ?>
                                     </select>
                                     <div class="text-danger" id="state_error"></div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="city" class=" col-form-label">City</label>
                                     <select name="city" id="city" class="form-select">
+                                        <?php if(isset($data->id)){
+                                            
+                                            $city = App\Models\City::where('state_id',$state)->get();
+                                            foreach($city as $cvalue){
+                                        ?>
+                                            <option value="{{$cvalue->id}}" <?php if(isset($data->id)){ if($city==$cvalue->id){ echo"Selected"; } } ?>>{{$cvalue->name}}</option>
+                                        <?php } } ?>
                                     </select>
                                     <div class="text-danger" id="city_error"></div>
                                 </div>
@@ -174,7 +344,7 @@
                                         class="js-example-basic-single form-control" onchange="toggleSelectAll(this)">
                                         <option value="0">All</option>
                                         @foreach ($user as $value)
-                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                            <option value="{{ $value->id }}" <?php if(isset($data->id)){ foreach($allusers as $avalue){ if($avalue->userID==$value->id){ echo"Selected"; } } } ?>>{{ $value->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="text-danger" id="user_error"></div>
@@ -185,33 +355,33 @@
                                     <label for="name" class=" col-form-label">Title (English)</label>
                                     <input type="text" name="name" class="form-control name" placeholder="Title (English)"
                                         id="name"
-                                        value="" required>
+                                        value="@if(isset($data->id)){{$data->title}}@endif" required>
                                     <div class="text-danger" id="name_error"></div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="namear" class=" col-form-label">Title (Arabic)</label>
                                     <input type="text" name="namear" class="form-control namear" placeholder="Title (Arabic)"
                                         id="namear"
-                                        value="" required>
+                                        value="@if(isset($data->id)){{$data->title_ar}}@endif" required>
                                     <div class="text-danger" id="namear_error"></div>
                                 </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-sm-12">
                                     <label for="info" class=" col-form-label">Message (English)</label>
-                                    <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Message (English)"></textarea>
+                                    <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Message (English)">@if(isset($data->id)){{$data->message}}@endif</textarea>
                                     <div class="text-danger" id="info_error"></div>
                                 </div>
                                 <div class="col-sm-12">
                                     <label for="infoar" class=" col-form-label">Message (Arabic)</label>
-                                    <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Message (Arabic)"></textarea>
+                                    <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Message (Arabic)">@if(isset($data->id)){{$data->message_ar}}@endif</textarea>
                                     <div class="text-danger" id="infoar_error"></div>
                                 </div>
                                 <div class="row ui">
                                     <div class="col-sm-6">
                                         <label for="url" class="col-form-label">URL</label>
                                         <input type="url" name="url" class="form-control" placeholder="URL"
-                                            id="url" value="">
+                                            id="url" value="@if(isset($data->id)){{$data->url}}@endif">
                                         <div class="text-danger" id="url_error"></div>
                                     </div>
                                     {{-- <div class="col-sm-6">
@@ -259,7 +429,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="sponser_namear" class="col-form-label">Sponser Name (Arabic)</label>
-                                        <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>               
+                                        <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name_ar}}@endif" required>               
                                         <div class="text-danger" id="sponser_namear_error"></div>
                                       </div>
                                   </div>
@@ -283,7 +453,7 @@
                                     <div class="col-md-1">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="sendpush"
-                                                id="exampleRadios1" value="1" checked>
+                                                id="exampleRadios1" value="1" <?php if(isset($data->id)){ if($data->sendpush==1){ echo "checked"; } }else{ echo "checked"; } ?> >
                                             <label class="form-check-label" for="exampleRadios1">
                                                 Yes
                                             </label>
@@ -292,7 +462,7 @@
                                     <div class="col-md-1">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="sendpush"
-                                                id="exampleRadios2" value="0">
+                                                id="exampleRadios2" value="0" <?php if(isset($data->id)){ if($data->sendpush==0){ echo "checked"; } }?>>
                                             <label class="form-check-label" for="exampleRadios2">
                                                 No
                                             </label>
@@ -588,14 +758,14 @@
       }
     }
     
-    if(!images){      
-        $('#user_error').text("");
-        $('#name_error').text("");
-        $('#info_error').text("");
-        $('#url_error').text("");
-        $('#image_error').text("The field is required.");
-        return false;      
-    }
+    // if(!images){      
+    //     $('#user_error').text("");
+    //     $('#name_error').text("");
+    //     $('#info_error').text("");
+    //     $('#url_error').text("");
+    //     $('#image_error').text("The field is required.");
+    //     return false;      
+    // }
     if(!sponser_name){      
         $('#user_error').text("");
         $('#name_error').text("");
@@ -605,16 +775,16 @@
         $('#sponser_name_error').text("The field is required.");
         return false;      
     }
-    if(!sponserlogo){      
-        $('#user_error').text("");
-        $('#name_error').text("");
-        $('#info_error').text("");
-        $('#url_error').text("");
-        $('#image_error').text("");
-        $('#sponser_name_error').text("");
-        $('#sponser_error').text("The field is required.");
-        return false;      
-    }    
+    // if(!sponserlogo){      
+    //     $('#user_error').text("");
+    //     $('#name_error').text("");
+    //     $('#info_error').text("");
+    //     $('#url_error').text("");
+    //     $('#image_error').text("");
+    //     $('#sponser_name_error').text("");
+    //     $('#sponser_error').text("The field is required.");
+    //     return false;      
+    // }    
     // if(!expire_date){      
     //     $('#user_error').text("");
     //     $('#name_error').text("");
@@ -717,6 +887,24 @@
               return b.files
           }
   });
+  </script>
+  <script>
+    function bannerimagedelete(th){
+      var id = th;
+      var token = "<?=csrf_token()?>";
+      $.ajax({
+          type:'POST',
+          url:'{{url("/admin/deleteimage")}}',
+          data  :{id:id,_token:token},
+          success:function(data){
+            console.log(data);
+            if($.trim(data)=="1"){
+              location.reload();
+            }          
+          }
+          
+      });
+    }
   </script>
 
 

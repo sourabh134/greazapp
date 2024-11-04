@@ -32,11 +32,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Title (English)</th>
-                                <th scope="col">Title (Arabic)</th>
-                                <th scope="col">Message (English)</th>
-                                <th scope="col">Message (Arabic)</th>
-                                <th scope="col">Keyword (English)</th>
-                                <th scope="col">Keyword (Arabic)</th>
+                                <th scope="col">Title (Arabic)</th>                               
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -48,12 +44,10 @@
                             <tr>
                                 <td>{{$i}}</td>                                
                                 <td><img class="img-fluid" src="<?php if($value->image!=''){ echo url("public/images/".$value->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt width="100" height="100"></td>
-                                <td>{{$value->title}}</td>
-                                <td>{{$value->titlear}}</td>
-                                <td>{{$value->message}}</td>
-                                <td>{{$value->messagear}}</td>
-                                <td>{{$value->searchkeyword}}</td>
-                                <td>{{$value->searchkeyword_ar}}</td>
+                                <td><a
+                                    href="{{ url('admin/translationdetail?key=' . base64_encode($value->id) . '&lang=' . base64_encode(1)) }}">{{$value->title}}</a></td>
+                                <td><a
+                                    href="{{ url('admin/translationdetail?key=' . base64_encode($value->id) . '&lang=' . base64_encode(2)) }}">{{$value->titlear}}</a></td>                                
                                 <td><a href="{{url('admin/addtranslation?key='.base64_encode($value->id))}}"><i class="fa fa-edit"></i></a> | <a class="delete" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>                               
                             </tr>
                         @php
