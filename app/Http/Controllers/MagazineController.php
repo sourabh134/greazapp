@@ -58,8 +58,8 @@ class MagazineController extends Controller
         if($request->id==""){
             //image upload
             if($request->images!=''){
-                $new_width = 100;
-                $new_height = 100;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('images');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');
@@ -166,8 +166,8 @@ class MagazineController extends Controller
         }else{  
             //image upload
             if($request->images!=''){
-                $new_width = 100;
-                $new_height = 100;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('images');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');

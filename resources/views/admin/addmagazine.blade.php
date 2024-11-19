@@ -172,7 +172,7 @@
                 <div class="col-md-6">
                   <label for="images" class="col-form-label">Image</label>
                   <input type="file" name="images"class="form-control files mb-2" placeholder="images" id="images" accept=".jpeg, .jpg, .png, .gif">
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <div class="text-center">
                     <img id="previewImg" class="mt-2" src="<?php if(isset($data->id)){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   </div>
@@ -181,7 +181,7 @@
                 <div class="col-md-6">
                   <label for="tag_icon" class="col-form-label">Tag Icon</label>
                   <input type="file" name="tag_icon" id="tag_icon" class="form-control file mb-2" placeholder="Logo" accept=".jpeg,.jpg,.png,.gif" >
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                   <div class="text-center">
                     <img id="previewImgtag" class="mt-2" src="<?php if(isset($data->id)){ if($data->tag_icon!=''){ echo url("public/images/".$data->tag_icon);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   </div>

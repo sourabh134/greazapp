@@ -22,19 +22,21 @@
               @csrf
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (Arabic)</label>
+                  <label for="name" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>
                 <div class="col-sm-12"> 
-                  <label for="image" class="col-form-label">Image</label>
+                  <label for="image" class="col-form-label">Image<?php if(isset($data->id)){}else {
+                    echo "<em>*</em>";
+                  } ?></label>
                   <input type="file" name="image" class="form-control mb-2" id="image" <?php if(!isset($data->id)){ echo "required"; } ?> accept=".jpeg, .jpg, .png,.gif">
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                   <img id="previewImg" class="mt-2" src="<?php if(isset($data->id)){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="40px">
                   <div class="text-danger" id="image_error"></div>
                 </div>

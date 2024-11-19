@@ -604,8 +604,8 @@ class CarController extends Controller
         $exteriorimg = $request->exteriorimg;
         $testimg = $request->testimg;
         if($interiorimg!=''){
-            $new_width = 1179;
-            $new_height = 900;
+            $new_width = 720;
+            $new_height = 480;
             $file = $request->file('interiorimg');
             $fileName = $file->getRealPath();
             $uploadPath = public_path('images/car/');
@@ -623,8 +623,8 @@ class CarController extends Controller
             $in_image_table->save();
         }
         if($exteriorimg!=''){
-            $new_widthe = 1179;
-            $new_heighte = 900;
+            $new_widthe = 720;
+            $new_heighte = 480;
             $filee = $request->file('exteriorimg');
             $fileNamee = $filee->getRealPath();
             $uploadPathe = public_path('images/car/');
@@ -641,8 +641,8 @@ class CarController extends Controller
             $ex_image_table->save();
         }
         if($testimg!=''){
-            $new_widtht = 1179;
-            $new_heightt = 900;
+            $new_widtht = 720;
+            $new_heightt = 480;
             $filet = $request->file('testimg');
             $fileNamet = $filet->getRealPath();
             $uploadPatht = public_path('images/car/');

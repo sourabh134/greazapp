@@ -39,11 +39,7 @@
     <div class="row">
       <div class="col-md-10">
         <h4 class="f_s_30 f_w_700 text_white mb-4"><a href="javascript:history.back()" class="back_button" title="Back"><i class="fa fa-arrow-left"></i></a> <?php if(isset($welcome_image)){ echo "Update"; }else{ echo "Add"; } ?> Welcome Image</h4>
-            <!-- <ol class="breadcrumb page_bradcam mb-0">
-              <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('admin/welcome_images') }}">Welcome Images</a></li>
-              <li class="breadcrumb-item active"><?php if(isset($welcome_image)){ echo "Update"; }else{ echo "Add"; } ?> Welcome Image</li>
-            </ol> -->
+            
         <div class="card p-4">
           <div class="card-body">
             <!-- @if(Session::has('message'))
@@ -58,12 +54,12 @@
               
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control" placeholder="Name (English)" id="name" value="<?php if(isset($welcome_image)){ echo $welcome_image->name; } ?>">
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-sm-6">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control" placeholder="Name (Arabic)" id="namear" value="<?php if(isset($welcome_image)){ echo $welcome_image->name_ar; } ?>">
                   <div class="text-danger" id="namear_error"></div>
                 </div>
@@ -106,34 +102,34 @@
               {{-- page --}}
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="start_date" class="col-form-label">Start Date</label>
+                  <label for="start_date" class="col-form-label">Start Date<em>*</em></label>
                   <input type="date" name="start_date" class="form-control" id="start_date" min="<?=date('Y-m-d')?>" value="<?php if(isset($welcome_image)){ echo $welcome_image->start_date; }else{ echo date('Y-m-d'); } ?>">
                   <div class="text-danger" id="start_date_error"></div>
                 </div>
               
                 <div class="col-sm-6">
-                  <label for="end_date" class="col-form-label">Expiry Date</label>
+                  <label for="end_date" class="col-form-label">Expiry Date<em>*</em></label>
                   <input type="date" name="end_date" class="form-control" id="end_date" min="<?=date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'))?>" value="<?php if(isset($welcome_image)){ echo $welcome_image->end_date; }else{ echo date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day')); } ?>">
                   <div class="text-danger" id="end_date_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="info" class="col-form-label">Description (English)</label>
+                  <label for="info" class="col-form-label">Description (English)<em>*</em></label>
                   <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Description (English)"><?php if(isset($welcome_image)){ echo $welcome_image->discription; } ?></textarea>
                   <div class="text-danger" id="info_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="infoar" class="col-form-label">Description (Arabic)</label>
+                  <label for="infoar" class="col-form-label">Description (Arabic)<em>*</em></label>
                   <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Description (Arabic)"><?php if(isset($welcome_image)){ echo $welcome_image->discription_ar; } ?></textarea>
                   <div class="text-danger" id="infoar_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <label for="image_time" class="col-form-label">Image Time (Second)</label>
+                  <label for="image_time" class="col-form-label">Image Time (Second)<em>*</em></label>
                   <select name="image_time" id="image_time" class="form-select">
                     <option value="">Select time</option>
                     <?php for ($i=1; $i <=10; $i++) { ?>
@@ -146,9 +142,11 @@
               </div>
               <div class="row mb-3">
                 <div class="col-sm-12">
-                  <label for="image" class="col-form-label">Upload Image</label>
+                  <label for="image" class="col-form-label">Upload Image<?php if(isset($welcome_image)){}else {
+                    echo "<em>*</em>";
+                  } ?></label>
                   <input type="file" name="image" class="form-control mb-2" id="image" accept=".jpeg, .jpg, .png,.gif" <?php if(!isset($welcome_image)){ echo "required"; } ?>>
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <div class="text-center">
                     <img id="preview" class="my-2" src="<?php if(isset($welcome_image)){ echo url("public/img/welcome_images/".$welcome_image->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   </div>

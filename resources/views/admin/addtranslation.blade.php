@@ -85,7 +85,7 @@
                                     <div class="col-md-6">
                                         <label for="sponser_icon" class="col-form-label">Image</label>
                                         <input type="file" name="sponser_icon" id="sponserlogo" class="form-control file mb-2" placeholder="Logo" accept=".jpeg, .jpg, .png, .gif"  onchange="sponserFiles(this);">
-                                        {{-- <span class="text-danger"><b>Note : </b>Dimension 100px * 100px</span><br> --}}
+                                        <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                                         <img id="previewImgss" class="mt-2" src="<?php if(isset($data->id)){ if($data->image!=''){ echo url("public/images/".$data->image);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                                         <div class="text-danger" id="sponser_error"></div>
                                       </div>

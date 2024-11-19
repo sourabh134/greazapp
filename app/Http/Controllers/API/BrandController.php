@@ -30,19 +30,29 @@ class BrandController extends Controller
     public function allBrand(Request $request){
         $userID = $request->userID;
         $language = $request->language;
+        $categoryID = $request->categoryID;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
-            $brandpopcount = Brand::where('status',1)->where('popular',1)->count();
-            if($brandpopcount!=0){
-                $popular = Brand::where('status',1)->orderby('popular','DESC')->orderby('position','ASC')->get();
+            if($categoryID!=""){
+                $brandpopcount = Brand::where('status',1)->where('popular',1)->where('categoryID',$categoryID)->count();
+                if($brandpopcount!=0){
+                    $popular = Brand::where('status',1)->where('categoryID',$categoryID)->orderby('popular','DESC')->orderby('position','ASC')->get();
+                }else{
+                    $popular = Brand::where('status',1)->where('categoryID',$categoryID)->orderby('name','ASC')->get();
+                }
             }else{
-                $popular = Brand::where('status',1)->orderby('name','ASC')->get();
+                $brandpopcount = Brand::where('status',1)->where('popular',1)->where('categoryID',1)->count();
+                if($brandpopcount!=0){
+                    $popular = Brand::where('status',1)->where('categoryID',1)->orderby('popular','DESC')->orderby('position','ASC')->get();
+                }else{
+                    $popular = Brand::where('status',1)->where('categoryID',1)->orderby('name','ASC')->get();
+                }
             }
             //$popular = Brand::where('status',1)->orderBy('name','ASC')->get();
             $popularBrandArray = array();
@@ -65,7 +75,7 @@ class BrandController extends Controller
                     $datap['fav'] = "0";
                 }else{
                     $datap['fav'] = "1";
-                }                 
+                }
                 array_push($popularBrandArray,$datap);
             }
             return response()->json(['success'=>'true','message'=>'','result'=>$popularBrandArray], 200);
@@ -79,18 +89,18 @@ class BrandController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($brandID==null){
-            $err_array[]='brandID';    
+            $err_array[]='brandID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             //about
-            $brand = Brand::where('id',$brandID)->where('status',1)->first();            
-            $datap['id'] = $brand->id;            
+            $brand = Brand::where('id',$brandID)->where('status',1)->first();
+            $datap['id'] = $brand->id;
             $datap['logo'] = $brand->logo;
             $datap['website'] = $brand->website;
             $datap['youtube'] = $brand->youtube;
@@ -111,7 +121,7 @@ class BrandController extends Controller
                 $datap['sponser_name'] = $brand->sponser_name;
                 $datap['description'] = $brand->description;
             }
-            
+
             //agent
             $agentBrand = AgentBrand::where('brandID',$brandID)->get();
             $agenciesArray = array();
@@ -119,11 +129,11 @@ class BrandController extends Controller
                 $agencies = Agent::where('id',$vagent->agentID)->where('status',1);
                 if($agencies->count()!=0){
                     $aggvalue = $agencies->first();
-                    $dataa['id'] = $aggvalue->id;                    
-                    $dataa['logo'] = $aggvalue->logo;                    
+                    $dataa['id'] = $aggvalue->id;
+                    $dataa['logo'] = $aggvalue->logo;
                     $dataa['images'] = $aggvalue->images;
                     $dataa['type'] = $aggvalue->type;
-                    $dataa['tag_icon'] = $aggvalue->tag_icon;                    
+                    $dataa['tag_icon'] = $aggvalue->tag_icon;
                     if($language==2){
                         $dataa['name'] = $aggvalue->name_ar;
                         $dataa['description'] = $aggvalue->discription_ar;
@@ -147,7 +157,7 @@ class BrandController extends Controller
             $vehicleArray = array();
             $vehiclebanner = array();
             $current_year = date('Y');
-            $modeldata = CarModel::where('brandID',$brandID)->get();            
+            $modeldata = CarModel::where('brandID',$brandID)->get();
             foreach($modeldata as $modelvalue){
                 $datavehicle['id'] = $modelvalue->id;
                 $datavehicle['year'] = "2023";
@@ -156,7 +166,7 @@ class BrandController extends Controller
                     if($vehicleimg->first()->image_type==1){
                         $datavehicle['image'] = url('public/images/car/'.$vehicleimg->first()->image);
                         //$datavehicleimg['image'] = url('public/images/car/'.$vehicleimg->first()->image);
-                        
+
                     }else{
                         $datavehicle['image'] = $vehicleimg->first()->image;
                         //$datavehicleimg['image'] = $vehicleimg->first()->image;
@@ -174,16 +184,16 @@ class BrandController extends Controller
                 }else{
                     $datavehicle['name'] = $modelvalue->name;
                     $datavehicle['description'] = "";
-                }                
+                }
                 array_push($vehicleArray,$datavehicle);
 
                 $vehicleimgs = CarImage::where('modelID',$modelvalue->id)->skip(0)->take(1)->get();
                 foreach($vehicleimgs as $vimg){
                     $datavehicleimg['id'] = $vimg->id;
-                    if($vimg->image_type==1){                        
+                    if($vimg->image_type==1){
                         $datavehicleimg['image'] = url('public/images/car/'.$vimg->image);
-                        
-                    }else{                        
+
+                    }else{
                         $datavehicleimg['image'] = $vimg->image;
                     }
                     //array_push($vehiclebanner,$datavehicleimg);
@@ -211,11 +221,11 @@ class BrandController extends Controller
             //             $datavehicleimg['image'] =$CarImage->first()->image;
             //         }
             //         array_push($vehiclebanner,$datavehicleimg);
-                    
+
             //     }else{
             //         $datavehicle['image'] ="";
             //     }
-                
+
             //     $datavehicle['modelID'] = $carvalue->modelID;
             //     if($language==2){
             //         $datavehicle['name'] = $carvalue->name;
@@ -223,7 +233,7 @@ class BrandController extends Controller
             //     }else{
             //         $datavehicle['name'] = $carvalue->name;
             //         $datavehicle['description'] = $carvalue->description;
-            //     }                
+            //     }
             //     array_push($vehicleArray,$datavehicle);
             // }
             $arr['about'] = $datap;
@@ -268,23 +278,23 @@ class BrandController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($brandID==null){
-            $err_array[]='brandID';    
+            $err_array[]='brandID';
         }
         if($rate==null){
-            $err_array[]='rate';    
+            $err_array[]='rate';
         }
         if($title==null){
-            $err_array[]='title';    
+            $err_array[]='title';
         }
         if($message==null){
-            $err_array[]='message';    
+            $err_array[]='message';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "أشكركم على التصنيف";
@@ -293,7 +303,7 @@ class BrandController extends Controller
                 $msg_success = "Thank you for rating";
                 $msg_failed = "Already rating given for this brand";
             }
-            $check = BrandReview::where('userID',$userID)->where('brandID',$brandID)->count();            
+            $check = BrandReview::where('userID',$userID)->where('brandID',$brandID)->count();
             if($check==0){
                 $review = new BrandReview;
                 $review->brandID = $brandID;

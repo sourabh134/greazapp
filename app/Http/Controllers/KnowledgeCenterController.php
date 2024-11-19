@@ -39,6 +39,7 @@ class KnowledgeCenterController extends Controller
     public function sponserBanners(Request $request){
         $admin_id = session::get('id');
         $data['active'] = "advice";
+        $data['active1'] = "sponserBanners";
         $data['banners']=SponserBanner::orderBy('position_id', 'asc')->get();
         $data['admin']=Admin::find($admin_id);
         return view('admin.sponserbanners', $data);
@@ -46,6 +47,7 @@ class KnowledgeCenterController extends Controller
 
     public function addSponserBanner(Request $request){
         $data['active'] = "advice";
+        $data['active1'] = "sponserBanners";
         if($request->id){
             $data['banner']=SponserBanner::find($request->id);
         }
@@ -68,8 +70,8 @@ class KnowledgeCenterController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('image');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('img/banners/');
@@ -201,6 +203,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Gearz Advice";
         $data['active'] = "advice";
+        $data['active1'] = "advice";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Advice::whereIn('status',[1,0])->get();
         return view('admin.advice', $data);
@@ -210,6 +213,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Gearz Advice";
         $data['active'] = "advice";
+        $data['active1'] = "advice";
         $data['admin']=Admin::find($admin_id);
         $data['user'] = User::where('status',1)->get();
         $data['brand'] = Brand::where('status',1)->get();
@@ -352,8 +356,8 @@ class KnowledgeCenterController extends Controller
                 $i=1;
                 foreach($request->images as $imagevalue){
                     //upload images
-                    $new_widthss = 1179;
-                    $new_heightss = 900;
+                    $new_widthss = 720;
+                    $new_heightss = 480;
                     $filess = $imagevalue;
                     $fileNamess = $filess->getRealPath();
                     $uploadPathss = public_path('images/');
@@ -444,8 +448,8 @@ class KnowledgeCenterController extends Controller
                 $i=1;
                 foreach($request->images as $imagevalue){
                     //upload images
-                    $new_widthss = 1179;
-                    $new_heightss = 900;
+                    $new_widthss = 720;
+                    $new_heightss = 480;
                     $filess = $imagevalue;
                     $fileNamess = $filess->getRealPath();
                     $uploadPathss = public_path('images/');
@@ -544,6 +548,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Advice Detail";
         $data['active'] = "advice";
+        $data['active1'] = "advice";
         $data['admin']=Admin::find($admin_id);
         $adviceID = base64_decode($request->key);
         $data['language'] = base64_decode($request->lang);
@@ -622,6 +627,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "GearZ Dictionary";
         $data['active'] = "advice";
+        $data['active1'] = "translation";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Translation::where('status',1)->get();        
         return view('admin.translation', $data);
@@ -630,6 +636,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Advice Detail";
         $data['active'] = "advice";
+        $data['active1'] = "translation";
         $data['admin']=Admin::find($admin_id);
         $translationID = base64_decode($request->key);
         $data['language'] = base64_decode($request->lang);
@@ -641,6 +648,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "GearZ Dictionary";
         $data['active'] = "advice";
+        $data['active1'] = "translation";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = Translation::where('id',$id)->first();        
@@ -655,8 +663,8 @@ class KnowledgeCenterController extends Controller
                 if($check_titlear==0){
                     //image upload
                     if($request->sponser_icon!=''){
-                        $new_width = 1179;
-                        $new_height = 900;
+                        $new_width = 720;
+                        $new_height = 480;
                         $file = $request->file('sponser_icon');
                         $fileName = $file->getRealPath();
                         $uploadPath = public_path('images/');
@@ -700,8 +708,8 @@ class KnowledgeCenterController extends Controller
         }else{
             //image upload
             if($request->sponser_icon!=''){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('sponser_icon');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');
@@ -768,6 +776,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Image Section";
         $data['active'] = "advice";
+        $data['active1'] = "knowledgeimagesection";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = KnowledgeImageSection::all();        
         return view('admin.knowledgeimagesection', $data);
@@ -777,6 +786,7 @@ class KnowledgeCenterController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Image Section";
         $data['active'] = "advice";
+        $data['active1'] = "knowledgeimagesection";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = KnowledgeImageSection::where('id',$id)->first();        
@@ -787,8 +797,8 @@ class KnowledgeCenterController extends Controller
         if($request->id==""){          
             //image upload
             if($request->sponser_icon!=''){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('sponser_icon');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');
@@ -820,8 +830,8 @@ class KnowledgeCenterController extends Controller
         }else{
             //image upload
             if($request->sponser_icon!=''){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('sponser_icon');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');

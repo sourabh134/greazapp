@@ -72,14 +72,14 @@
             <form method="post" id="saveform" enctype="multipart/form-data">
             @csrf
             <div class="row mb-3">
-              <label for="name" class="col-sm-2 col-form-label">Name</label>
+              <label for="name" class="col-sm-2 col-form-label">Name<em>*</em></label>
               <div class="col-sm-10">
                 <input type="text" name="name" class="form-control name" placeholder="Name" id="name" value="@if(isset($data->id)){{$data->name}}@endif">
                 <div class="text-danger" id="name_error"></div>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="username" class="col-sm-2 col-form-label">Username</label>
+              <label for="username" class="col-sm-2 col-form-label">Username<em>*</em></label>
               <div class="col-sm-10">
                 <input type="text" name="username" class="form-control username" placeholder="Username" id="username" value="@if(isset($data->id)){{$data->username}}@endif">
                 <div class="text-danger" id="username_error"></div>
@@ -87,7 +87,7 @@
             </div>
             <?php if(isset($data->id)){ }else{?>
             <div class="row mb-3">
-              <label for="email" class="col-sm-2 col-form-label">Email</label>
+              <label for="email" class="col-sm-2 col-form-label">Email<em>*</em></label>
               <div class="col-sm-10">
                 <input type="text" name="email" class="form-control" placeholder="Email" id="email" value="@if(isset($data->id)){{$data->email}}@endif">
                 <div class="text-danger" id="email_error"></div>               
@@ -95,7 +95,7 @@
             </div>
             <?php } ?>
             <div class="row mb-3">
-              <label for="phone" class="col-sm-2 col-form-label">Mobile No.</label>
+              <label for="phone" class="col-sm-2 col-form-label">Mobile No.<em>*</em></label>
               <div class="col-sm-10">
                 <input type="text" name="phone" class="form-control" placeholder="Mobile No." id="phone" value="@if(isset($data->id)){{$data->phone}}@endif"> 
                 <div class="text-danger" id="phone_error"></div>              
@@ -110,7 +110,7 @@
             </div>
             <?php if(isset($data->id)){ }else{?>
             <div class="row mb-3">
-              <label for="password" class="col-sm-2 col-form-label">Password</label>
+              <label for="password" class="col-sm-2 col-form-label">Password<em>*</em></label>
               <div class="col-sm-10">
                 <input type="password" name="password" class="form-control" placeholder="Password" id="password" value="@if(isset($data->id)){{$data->password}}@endif"> 
                 <div class="text-danger" id="password_error"></div>              
@@ -118,7 +118,9 @@
             </div> 
             <?php } ?>           
             <div class="row mb-3">
-              <label for="logo" class="col-sm-2 col-form-label">Profile Image</label>
+              <label for="logo" class="col-sm-2 col-form-label">Profile Image<?php if(isset($data->id)){}else {
+                echo "<em>*</em>";
+              } ?></label>
               <div class="col-sm-10">
                 <input type="file" name="image" class="form-control file" placeholder="Logo" id="logo" accept=".jpeg, .jpg, .png"  onchange="previewFile(this);">
                 <img id="previewImg" src="<?php if(isset($data->id)){ echo url("public/img/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
@@ -130,7 +132,7 @@
             <!-- permission --> 
             <div class="row mb-3">
               <div class="col-sm-2">
-                <label for="permission" class=" col-form-label">Permission</label>
+                <label for="permission" class=" col-form-label">Permission<em>*</em></label>
                 <div class="text-danger" id="permission_error"></div> 
               </div>
               <div class="col-sm-10">

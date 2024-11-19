@@ -172,7 +172,7 @@
                                     <div class="col-sm-6">
                                         <label for="image" class="col-form-label">Upload Image</label>
                                         <input type="file" name="image" accept="image/*" class="form-control" id="image">
-                                        {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                                        <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                                         <img id="previewImg" src="../public/img/image-preview.png" alt="Placeholder"
                                             width="100px">
                                         <div class="text-danger" id="image_error"></div>

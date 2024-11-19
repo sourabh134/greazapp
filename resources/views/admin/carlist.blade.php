@@ -41,7 +41,7 @@
                                 <th scope="col">Classes</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Description</th>
+                                {{-- <th scope="col">Description</th> --}}
                                 <th scope="col">No. of Click</th>
                                 <th scope="col">Brochure</th>
                                 <th scope="col">Status</th>
@@ -61,7 +61,7 @@
                                 <td>{{App\Models\CarClasses::where('id',$value->classesID)->first()->name}}</td>
                                 <td>{{$value->year}}</td>
                                 <td><a href="{{url('admin/cardetail?key='.base64_encode($value->id))}}">{{$value->name}}</a></td>
-                                <td>{{$value->description}}</td>
+                                {{-- <td>{{$value->description}}</td> --}}
                                 <td>{{$value->log}}</td>
                                 <td><?php if($value->brochure!=''){ ?><a href="{{url('public/images/car/'.$value->brochure)}}" target="_blank"><i class="fa fa-file"></i></a><?php } ?></td>
                                 <td>
@@ -156,9 +156,11 @@
         </div>
         <form method="post" id="saveformbrochure" enctype="multipart/form-data">
         @csrf
-            <div class="col-md-12  mb-3">
-                <label for="brochure" class="col-form-label">Brochure</label>
-                <input type="file" name="brochure" id="brochure" class="form-control file" placeholder="Brochure" accept=".pdf">                
+            <div class="modal-body"> 
+                <div class="col-md-12  mb-3">
+                    <label for="brochure" class="col-form-label">Brochure</label>
+                    <input type="file" name="brochure" id="brochure" class="form-control file" placeholder="Brochure" accept=".pdf">                
+                </div>
             </div>
             
             <div class="modal-footer">

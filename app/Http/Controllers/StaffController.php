@@ -16,6 +16,8 @@ class StaffController extends Controller
         $admin_id = session::get('id');
         $data['data']=Admin::where('userType', '2')->get();
         $data['admin']=Admin::find($admin_id);
+        $data['active'] = "master";
+        $data['active1'] = "Staff";
         return view('admin.stafflist', $data);
     }
 
@@ -24,6 +26,8 @@ class StaffController extends Controller
         $id = base64_decode($request->key);
         $data['data']=Admin::where('id', $id)->first();
         $data['admin']=Admin::find($admin_id);
+        $data['active'] = "master";
+        $data['active1'] = "Staff";
         //$data['AccessRight']=AccessRight::where('status',1)->get();
         $data['ManagementSection']=ManagementSection::where('status',1)->get();
         return view('admin.addstaff', $data);
@@ -40,8 +44,8 @@ class StaffController extends Controller
                 if($check_email==0){
                     if($request->image!=''){
                         //image upload
-                        $new_width = 100;
-                        $new_height = 100;
+                        $new_width = 720;
+                        $new_height = 900;
                         $file = $request->file('image');
                         $fileName = $file->getRealPath();
                         $uploadPath = public_path('img/');
@@ -94,8 +98,8 @@ class StaffController extends Controller
             if($request->image!=''){
                 
                 //image upload
-                $new_width = 100;
-                $new_height = 100;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('image');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('img/');
@@ -135,6 +139,8 @@ class StaffController extends Controller
 
     public function log(Request $request){
         $admin_id = session::get('id');
+        $data['active'] = "master";
+        $data['active1'] = "Staff";
         $id = base64_decode($request->key);
         $data['data']=StaffLog::where('staff_id', $id)->get();
         $data['staff_name']=Admin::find($id)->name;
@@ -143,6 +149,8 @@ class StaffController extends Controller
     }
     public function logDetail(Request $request){
         $admin_id = session::get('id');
+        $data['active'] = "master";
+        $data['active1'] = "Staff";
         $id = base64_decode($request->key);
         $staff_id = base64_decode($request->id);
         $data['data']=StaffLogEvent::where('logDate', date('Y-m-d',strtotime($id)))->where('staff_id',$staff_id)->get();

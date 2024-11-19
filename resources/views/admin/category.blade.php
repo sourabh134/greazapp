@@ -1,5 +1,10 @@
 
 @include('admin.includes.header')
+<style>
+.disabled{
+    pointer-events: none; opacity: 0.5;
+}
+</style>
 
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
@@ -41,6 +46,7 @@
                             $i=1
                             @endphp
                             @foreach($data as $value)
+                            <?php $checkcategory = App\Models\Brand::where('status','!=',2)->where('categoryID',$value->id)->count(); ?>
                             <tr>
                                 <td>{{$i}}</td>
                                 <td>{{$value->name}}</td>
@@ -50,7 +56,7 @@
                                         <input class="form-check-input flexSwitchCheckChecked" type="checkbox" role="switch" id="flexSwitchCheckChecked" data-id="{{$value->id}}" <?php if($value->status==1){ echo "checked"; } ?>>                                        
                                     </div>
                                 </td>
-                                <td><a href="{{url('/admin/addCategory?key='.base64_encode($value->id))}}"><i class="fa fa-edit"></i></a> | <a class="delete" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>
+                                <td><a href="{{url('/admin/addCategory?key='.base64_encode($value->id))}}"><i class="fa fa-edit"></i></a> | <a class="delete <?php if($checkcategory!=0){ echo"disabled"; } ?>" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>
                             </tr>
                             @php
                             $i++

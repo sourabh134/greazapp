@@ -278,37 +278,48 @@ class AgentController extends Controller
             //deal
             $deal_details = DealDetail::distinct()->where('dealTypeID',$agentID)->where('dealType',2)->get(['dealID']);
             $dealArray = array();
+            //print_r($deal_details);
             foreach($deal_details as $dvalue){
                 $currentDate = date('Y-m-d');
+                //echo $dvalue->dealID;
                 //$deal = Deal::where('id',$dvalue->dealID)->where('status',1)->first();
-                $deal = Deal::where('id', $dvalue->dealID)
+                $deals = Deal::where('id', $dvalue->dealID)
                 ->where('status', 1)
                 ->where(function ($query) {
                     $query->where('whereshow', 3)
                         ->orWhere('whereshow', 2);
                 })
-                ->first();
-                $datadeal['id'] = $deal->id;
-                $datadeal['startDate'] = $deal->startDate;                
-                $datadeal['endDate'] = $deal->endDate;     
-                $datadeal['image'] = $deal->image;
-                $datadeal['tag_icon'] = $deal->tag_icon;
-                $future = strtotime(date('Y-m-d')); //Future date.
-                $timefromdb = strtotime($deal->endDate);
-                $timeleft = $timefromdb-$future;
-                $daysleft = round((($timeleft/24)/60)/60); 
-                $datadeal['remaning_day']= $daysleft;
-                if($language==2){
-                    $datadeal['name'] = $deal->name_ar;                
-                    $datadeal['discription'] = $deal->discription_ar;
-                    $datadeal['tag_name'] = $deal->tag_name_ar;
-                }else{
-                    $datadeal['name'] = $deal->name;                
-                    $datadeal['discription'] = $deal->discription;
-                    $datadeal['tag_name'] = $deal->tag_name;
-                }
-                if($deal->endDate>=$currentDate){
-                    array_push($dealArray,$datadeal);
+                ->count();
+                if($deals!=0){
+                    $deal = Deal::where('id', $dvalue->dealID)
+                    ->where('status', 1)
+                    ->where(function ($query) {
+                        $query->where('whereshow', 3)
+                            ->orWhere('whereshow', 2);
+                    })
+                    ->first();
+                    $datadeal['id'] = $deal->id;
+                    $datadeal['startDate'] = $deal->startDate;                
+                    $datadeal['endDate'] = $deal->endDate;     
+                    $datadeal['image'] = $deal->image;
+                    $datadeal['tag_icon'] = $deal->tag_icon;
+                    $future = strtotime(date('Y-m-d')); //Future date.
+                    $timefromdb = strtotime($deal->endDate);
+                    $timeleft = $timefromdb-$future;
+                    $daysleft = round((($timeleft/24)/60)/60); 
+                    $datadeal['remaning_day']= $daysleft;
+                    if($language==2){
+                        $datadeal['name'] = $deal->name_ar;                
+                        $datadeal['discription'] = $deal->discription_ar;
+                        $datadeal['tag_name'] = $deal->tag_name_ar;
+                    }else{
+                        $datadeal['name'] = $deal->name;                
+                        $datadeal['discription'] = $deal->discription;
+                        $datadeal['tag_name'] = $deal->tag_name;
+                    }
+                    if($deal->endDate>=$currentDate){
+                        array_push($dealArray,$datadeal);
+                    }
                 }
             }
             $arr['about'] = $datap;

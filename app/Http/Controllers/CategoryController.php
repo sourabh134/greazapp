@@ -15,6 +15,7 @@ class CategoryController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Category";
         $data['active'] = "master";
+        $data['active1'] = "Category";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Category::where('status','!=',2)->get();
         return view('admin.category',$data);
@@ -23,6 +24,7 @@ class CategoryController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Category";
         $data['active'] = "master";
+        $data['active1'] = "Category";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = Category::find($id);

@@ -48,6 +48,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/',[AdminController::class,'login']);
+Route::get('app/privacy',[AdminController::class,'privacyPolicy']);
 Route::get('/admin',[AdminController::class,'login']);
 Route::post('/admin/login',[AdminController::class,'admin_login']);
 Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(function(){
@@ -89,6 +90,7 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::post('/admin/insert_carcheck','insert_carcheck');
         Route::post('/admin/delete_carCheck','delete_carCheck');
         Route::post('/admin/change_carcheck_status','change_carcheck_status');
+        Route::get('/admin/carcheckdetail','carcheckdetail');
     });
     //CategoryController;
     Route::controller(CategoryController::class)->group(function(){
@@ -110,6 +112,8 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::get('/admin/popularBrands','popularBrands');
         Route::post('updateBrandOrder','updateBrandOrder');
         Route::get('/admin/add_allbrand','add_allbrand');
+        Route::post('/admin/filter_Categorydata','filter_Categorydata');
+        Route::get('/admin/brandsdetails','brandsdetails');
     });
     //ServiceTypeController;
     Route::controller(ServiceTypeController::class)->group(function(){
@@ -179,6 +183,7 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::post('/admin/insertNotification','insertNotification');
         Route::post('/admin/delete_notification','delete_notification');
         Route::post('/admin/getuser','getuser');
+        Route::get('/admin/notificationdetails','notificationdetails');
     });
     //CarController;
     Route::controller(CarController::class)->group(function(){

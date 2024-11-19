@@ -268,8 +268,8 @@ abstract class ExternalSystem
     }
 
     public static function saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname){
-        //$new_width = 1179;
-        //$new_height = 900;
+        //$new_width = 720;
+        //$new_height = 480;
         //$fileName = $_FILES['image']['tmp_name'];
         $sourceProperties = getimagesize($fileName);
         $resizeFileName = time();

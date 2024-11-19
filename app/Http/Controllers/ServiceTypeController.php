@@ -23,6 +23,7 @@ class ServiceTypeController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Service Type";
         $data['active'] = "master";
+        $data['active1'] = "ServiceType";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = ServiceType::where('status','!=',2)->get();
         return view('admin.servicetype',$data);
@@ -31,6 +32,7 @@ class ServiceTypeController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Service Type";
         $data['active'] = "master";
+        $data['active1'] = "ServiceType";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = ServiceType::find($id);
@@ -48,8 +50,8 @@ class ServiceTypeController extends Controller
             echo 3;
         }else{
             if($request->image!=''){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 100;
+                $new_height = 100;
                 $file = $request->file('image');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('images/');
@@ -183,6 +185,7 @@ class ServiceTypeController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Service";
         $data['active'] = "master";
+        $data['active1'] = "Service";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = MycarServiceTask::where('status',1)->where('userID',0)->get();
         return view('admin.service',$data);
@@ -192,6 +195,7 @@ class ServiceTypeController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Service";
         $data['active'] = "master";
+        $data['active1'] = "Service";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = MycarServiceTask::find($id);

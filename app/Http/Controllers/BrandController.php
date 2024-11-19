@@ -10,6 +10,8 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\AllBannerImage;
 use App\Models\StaffLogEvent;
+use App\Models\Viewed;
+use App\Models\MyCar;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
@@ -23,13 +25,26 @@ class BrandController extends Controller
         $data['active'] = "brand";
         $admin_id = session::get('id');
         $data['admin']=Admin::find($admin_id);
+        $data['Category'] = Category::where('status','!=',2)->get();
         $brandpopcount = Brand::where('status','!=',2)->where('popular',1)->count();
         if($brandpopcount!=0){
             $data['data'] = Brand::where('status','!=',2)->orderby('popular','DESC')->orderby('position','ASC')->get();
         }else{
             $data['data'] = Brand::where('status','!=',2)->orderby('name','ASC')->get();
-        }                
+        }
         return view('admin.brands', $data);
+    }
+
+    public function brandsdetails(Request $request){
+        $data['active'] = "brand";
+        $data['title'] = "Brand Detail";
+        $admin_id = session::get('id');
+        $data['admin'] = Admin::find($admin_id);
+        $id = base64_decode($request->key);
+        $data['language'] = base64_decode($request->lang);
+        $data['data'] = Brand::where('id',$id)->first();
+        $data['brandbanner'] = AllBannerImage::where('bannertype',1)->where('bannerimageID',$id)->get();
+        return view('admin.brandsdetails', $data);
     }
 
     public function add_allbrand($year){
@@ -84,7 +99,7 @@ class BrandController extends Controller
     }
 
     public function insert_brand(Request $request){
-        $validator = Validator::make($request->all(), 
+        $validator = Validator::make($request->all(),
             [
                 //'image' => 'mimes:jpeg,jpg,png,gif|max:2000|dimensions:max_width=100,max_height=100'
             ]
@@ -95,7 +110,7 @@ class BrandController extends Controller
         }else{
             if($request->id==""){
                 $check_name = Brand::where('name',$request->name)->count();
-                if($check_name==0){ 
+                if($check_name==0){
                     //image upload
                     if($request->image!=''){
                         $new_width = 100;
@@ -110,10 +125,10 @@ class BrandController extends Controller
                         $imageName = "";
                     }
 
-                    //$imageName = time().'.'.$request->image->extension();      
-                    //$request->image->move(public_path('images'), $imageName);                    
+                    //$imageName = time().'.'.$request->image->extension();
+                    //$request->image->move(public_path('images'), $imageName);
                     //tag icon
-                    if($request->tag_icon!=''){                        
+                    if($request->tag_icon!=''){
                         $new_widtht = 100;
                         $new_heightt = 100;
                         $filet = $request->file('tag_icon');
@@ -121,8 +136,8 @@ class BrandController extends Controller
                         $uploadPatht = public_path('images/');
                         $fileExtt = $filet->getClientOriginalExtension();
                         $imgnamet = "tagthump_";
-                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
-                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();
                         // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
@@ -137,7 +152,7 @@ class BrandController extends Controller
                         $fileExts = $file->getClientOriginalExtension();
                         $imgnames = "sponthump_";
                         $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
-                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();
                         //$request->sponser_icon->move(public_path('images'), $sponser_icon);
                     }else{
                         $sponser_icon='';
@@ -169,15 +184,15 @@ class BrandController extends Controller
                         $i=1;
                         foreach($request->images as $imagevalue){
                             //upload images
-                            $new_widthss = 1179;
-                            $new_heightss = 900;
+                            $new_widthss = 720;
+                            $new_heightss = 480;
                             $filess = $imagevalue;
                             $fileNamess = $filess->getRealPath();
                             $uploadPathss = public_path('images/');
                             $fileExtss = $file->getClientOriginalExtension();
                             $imgnamess = $i."sponthump_";
                             $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();
                             // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $brand->id;
@@ -201,7 +216,7 @@ class BrandController extends Controller
                     echo 1;
                 }else{
                     echo 2;
-                }              
+                }
             }else{
                 $check_name = Brand::where('name',$request->name)->where('id',$request->id);
                 if($check_name->count() >= 1 && $request->id != $check_name->first()->id){
@@ -221,10 +236,10 @@ class BrandController extends Controller
                         $imageName = "";
                     }
 
-                    //$imageName = time().'.'.$request->image->extension();      
-                    //$request->image->move(public_path('images'), $imageName);                    
+                    //$imageName = time().'.'.$request->image->extension();
+                    //$request->image->move(public_path('images'), $imageName);
                     //tag icon
-                    if($request->tag_icon!=''){                        
+                    if($request->tag_icon!=''){
                         $new_widtht = 100;
                         $new_heightt = 100;
                         $filet = $request->file('tag_icon');
@@ -232,8 +247,8 @@ class BrandController extends Controller
                         $uploadPatht = public_path('images/');
                         $fileExtt = $filet->getClientOriginalExtension();
                         $imgnamet = "tagthump_";
-                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);                        
-                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();
                         // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
@@ -248,7 +263,7 @@ class BrandController extends Controller
                         $fileExts = $file->getClientOriginalExtension();
                         $imgnames = "sponthump_";
                         $sponser_icon = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
-                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();      
+                        //$sponser_icon = 's'.time().'.'.$request->sponser_icon->extension();
                         //$request->sponser_icon->move(public_path('images'), $sponser_icon);
                     }else{
                         $sponser_icon='';
@@ -275,26 +290,26 @@ class BrandController extends Controller
                     }
                     if($sponser_icon!=''){
                         $brand->sponser_icon = $sponser_icon;
-                    }                   
-                    $brand->tag_name = $request->tag_name;                    
-                    $brand->tag_name_ar = $request->tag_namear;                    
-                    $brand->sponser_name = $request->sponser_name;                
-                    $brand->sponser_name_ar = $request->sponser_namear;                
+                    }
+                    $brand->tag_name = $request->tag_name;
+                    $brand->tag_name_ar = $request->tag_namear;
+                    $brand->sponser_name = $request->sponser_name;
+                    $brand->sponser_name_ar = $request->sponser_namear;
                     $brand->save();
                     //images
                     if(!empty($request->images)){
                         $i=1;
                         foreach($request->images as $imagevalue){
                            //upload images
-                            $new_widthss = 1179;
-                            $new_heightss = 900;
+                            $new_widthss = 720;
+                            $new_heightss = 480;
                             $filess = $imagevalue;
                             $fileNamess = $filess->getRealPath();
                             $uploadPathss = public_path('images/');
                             $fileExtss = $file->getClientOriginalExtension();
                             $imgnamess = $i."sponthump_";
                             $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();
                             // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $request->id;
@@ -316,7 +331,7 @@ class BrandController extends Controller
                         $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
                     }
                     echo 1;
-                }             
+                }
 
             }
         }
@@ -387,10 +402,11 @@ class BrandController extends Controller
         $data['active'] = "pbrand";
         $admin_id = session::get('id');
         $data['admin']=Admin::find($admin_id);
+        $data['Category'] = Category::where('status','!=',2)->get();
         $data['data'] = Brand::where('status','!=',2)->where('popular',1)->orderBy('position','ASC')->get();
         return view('admin.popularBrands', $data);
     }
-    
+
     public function updateBrandOrder(Request $request){
         $arr=$request->allData;
         $num=0;
@@ -410,7 +426,7 @@ class BrandController extends Controller
             );
             // print_r($log);
             $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-        } 
+        }
     }
 
     public function deleteimage(Request $request){
@@ -428,6 +444,45 @@ class BrandController extends Controller
             $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
         }
 
+    }
+
+    public function filter_Categorydata(Request $request){
+        $data = Brand::where('status','!=',2)->where('categoryID',$request->id)->orderby('popular','DESC')->orderby('position','ASC')->get();
+        $i=1;
+        foreach($data as $value){
+            if($value->logo!=''){ $img= url("public/images/".$value->logo); }else{ $img=url("public/img/image-preview.png"); }
+            if($value->status==1){ $statuschecked= "checked"; }else{ $statuschecked=""; }
+            if($value->popular==1){ $popular= "checked"; }else{ $popular=""; }
+            if($value->categoryID==1){ $addmod = '<a href="'.url('admin/carmodel?key='.base64_encode($value->id)).'" class="btn btn-warning">ADD MODEL</a>'; }else{ $addmod = ""; }
+
+            echo '<tr id="'.$value->id.'">
+                    <td><i class="fa fa-arrow-up"></i><br>Move<br><i class="fa fa-arrow-down"></i></td>
+                    <td>'.$i.'</td>
+                    <td>'.Category::where('id',$value->categoryID)->value('name').'</td>
+                    <td>
+                        <img class="img-fluid" src="'.$img.'" alt width="100" height="100">
+                    </td>
+                    <td>'.$value->name.'</td>
+                    <td>'.$value->name_ar.'</td>
+                    <td>'.Viewed::where('menu_type',1)->where('menuID',$value->id)->count().'</td>
+                    <td>'.MyCar::where('make_id',$value->id)->distinct()->count('userID').'</td>
+                    <td>'.$value->log.'</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input flexSwitchCheckChecked" type="checkbox" role="switch" id="flexSwitchCheckChecked" data-id="'.$value->id.'" '.$statuschecked.'>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input flexSwitchCheckCheckedpopular" type="checkbox" role="switch" id="flexSwitchCheckCheckedpopular" data-id="'.$value->id.'" '.$popular.'>
+                        </div>
+                    </td>
+                    <td>'.$addmod.'</td>
+                    <td><a href="'.url('admin/addBrand?key='.base64_encode($value->id)).'"><i class="fa fa-edit"></i></a> | <a class="delete" data-id="'.$value->id.'"><i class="fa fa-trash"></i></a></td>
+
+                </tr>';
+                $i++;
+        }
     }
 
 }

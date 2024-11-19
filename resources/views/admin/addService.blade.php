@@ -22,12 +22,12 @@
               @csrf
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (Arabic)</label>
+                  <label for="name" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>

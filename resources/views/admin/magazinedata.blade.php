@@ -53,9 +53,13 @@
                             <?php } ?>
                         </div>
                         <div class="col-md-6">
-                            <?php if ($news->videourl != '') { ?>
+                            <?php if ($news->videourl != '') {
+                                $urldata = explode("=",$news->videourl);
+                                $urlf=end($urldata);
+                            ?>
                                 <div class="form-group">
-                                    {{-- <iframe width="100%" height="315" src="https://www.youtube.com/embed/shW6rdfHuPI"></iframe> --}}
+                                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{$urlf}}"></iframe>
+                                    
                                 </div>
                             <?php } ?>
                         </div>

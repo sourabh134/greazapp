@@ -47,7 +47,7 @@ class ApiController extends Controller
     private $serviceAccountFile;
     function __construct()
     {
-       $this->serviceAccountFile = storage_path('gearz.json'); 
+       $this->serviceAccountFile = storage_path('gearz.json');
     }
     //User Registration
     public function registerUser(Request $request){
@@ -66,26 +66,26 @@ class ApiController extends Controller
         $license_expire_date = $request->license_expire_date;
         $deviceModel = $request->deviceModel;
         if($email==null){
-            $err_array[]='email';    
+            $err_array[]='email';
         }
         if($username==null){
-            $err_array[]='username';    
+            $err_array[]='username';
         }
         if($gender==null){
-            $err_array[]='gender';    
+            $err_array[]='gender';
         }
         if($phone==null){
-            $err_array[]='phone';    
+            $err_array[]='phone';
         }
         if($dob==null){
-            $err_array[]='dob';    
+            $err_array[]='dob';
         }
         if($deviceType==null){
-            $err_array[]='deviceType';    
+            $err_array[]='deviceType';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "لقد قمت بالتسجيل بنجاح";
@@ -97,13 +97,13 @@ class ApiController extends Controller
             $checkuser = User::where('mobile_number',$phone)->where('status',1)->count();
             if($checkuser==0){
                 if($request->DriverLicense!=''){
-                    $imageName = "f".time().'.'.$request->DriverLicense->extension();      
+                    $imageName = "f".time().'.'.$request->DriverLicense->extension();
                     $request->DriverLicense->move(public_path('images'), $imageName);
                 }else{
                     $imageName = '';
                 }
                 if($request->DriverLicenseback!=''){
-                    $DriverLicenseback = "r".time().'.'.$request->DriverLicenseback->extension();      
+                    $DriverLicenseback = "r".time().'.'.$request->DriverLicenseback->extension();
                     $request->DriverLicenseback->move(public_path('images'), $DriverLicenseback);
                 }else{
                     $DriverLicenseback = '';
@@ -124,8 +124,8 @@ class ApiController extends Controller
                     'DriverLicenseback' => $DriverLicenseback,
                     'deviceModel' => $deviceModel,
                     'status' => 1
-                ]); 
-                $users = User::find($user->id);            
+                ]);
+                $users = User::find($user->id);
                 $tokenResult = $users->createToken('GearzappToken');
                 $tokens = $tokenResult->token;
                 $tokens->expires_at = Carbon::now()->addWeeks(1);
@@ -137,7 +137,7 @@ class ApiController extends Controller
                 return response()->json(['success'=>'true','message'=>$msg_success,'token'=>$tokenResult->accessToken,'userID'=>$user->id], 200);
             }else{
                 return response()->json(['success'=>'false','message'=>$msg_failed], 200);
-            }            
+            }
         }
     }
 
@@ -149,11 +149,11 @@ class ApiController extends Controller
         $language = $request->language;
         $deviceModel = $request->deviceModel;
         if($phone==null){
-            $err_array[]='phone';    
-        }        
+            $err_array[]='phone';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "لقد قمت بتسجيل الدخول بنجاح";
@@ -164,12 +164,12 @@ class ApiController extends Controller
             }
             $data=[
                 "mobile_number"=>$request->phone,
-                "password"=>'123456',                
+                "password"=>'123456',
                 "status"=>1
             ];
             if(auth()->attempt($data)){
                 if($phone!=9711987132){
-                    $user = User::find(auth()->user()->id);            
+                    $user = User::find(auth()->user()->id);
                     $tokenResult = $user->createToken('GearzappToken');
                     $tokens = $tokenResult->token;
                     $tokens->expires_at = Carbon::now()->addWeeks(1);
@@ -192,10 +192,10 @@ class ApiController extends Controller
                     return response()->json(['success'=>'true','message'=>$msg_success,'token'=>$tokenResult->accessToken,'userID'=>$user->id,'login'=>$suc], 200);
                 }else{
                     return response()->json(['success'=>'true','message'=>$msg_success,'token'=>"",'userID'=>43,'login'=>1], 200);
-                }  
+                }
             }else{
                 return response()->json(['success'=>'false','message'=>$msg_failed,'login'=>3], 200);
-            }            
+            }
         }
     }
 
@@ -206,12 +206,12 @@ class ApiController extends Controller
         $language = $request->language;
         $deviceModel = $request->deviceModel;
         if($phone==null){
-            $err_array[]='phone';    
-        }        
+            $err_array[]='phone';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
-        }else{            
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
+        }else{
             $check_device = User::where('mobile_number',$phone);
             if($check_device->count()!=0){
                 if($check_device->first()->deviceModel == $deviceModel){
@@ -226,7 +226,7 @@ class ApiController extends Controller
                 return response()->json(['success'=>'true','message'=>"",'login'=>1], 200);
             }else{
                 return response()->json(['success'=>'true','message'=>"",'login'=>0], 200);
-            }                        
+            }
         }
     }
 
@@ -235,21 +235,21 @@ class ApiController extends Controller
         $err_array =array();
         $userID = $request->userID;
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $checkuser = User::where('id',$userID)->where('status',1);
-            if($checkuser->count()!=0){ 
+            if($checkuser->count()!=0){
                 $row = $checkuser->first();
-                $data['id'] = $row->id;                
-                $data['username'] = $row->name;                
-                $data['gender'] = $row->gender;                
-                $data['dob'] = $row->dob;                
-                $data['email'] = $row->email;                
-                $data['mobile_number'] = $row->mobile_number;                
+                $data['id'] = $row->id;
+                $data['username'] = $row->name;
+                $data['gender'] = $row->gender;
+                $data['dob'] = $row->dob;
+                $data['email'] = $row->email;
+                $data['mobile_number'] = $row->mobile_number;
                 $data['DriverLicense'] = $row->DriverLicense;
                 $data['DriverLicenseback'] = $row->DriverLicenseback;
                 $data['license_expire_date'] = $row->license_expire_date;
@@ -260,7 +260,7 @@ class ApiController extends Controller
                 return response()->json(['success'=>'true','message'=>'','result'=>$data], 200);
             }else{
                 return response()->json(['success'=>'false','message'=>''], 200);
-            }            
+            }
         }
     }
 
@@ -279,17 +279,17 @@ class ApiController extends Controller
         $userID = $request->userID;
         $language = $request->language;
         if($email==null){
-            $err_array[]='email';    
+            $err_array[]='email';
         }
         if($username==null){
-            $err_array[]='username';    
+            $err_array[]='username';
         }
         if($phone==null){
-            $err_array[]='phone';    
+            $err_array[]='phone';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "لقد قمت بالتحديث بنجاح";
@@ -303,19 +303,19 @@ class ApiController extends Controller
                 return response()->json(['success'=>'false','message'=>$msg_failed], 200);
             }else{
                 if($request->DriverLicense!=''){
-                    $imageName = "f".time().'.'.$request->DriverLicense->extension();      
+                    $imageName = "f".time().'.'.$request->DriverLicense->extension();
                     $request->DriverLicense->move(public_path('images'), $imageName);
                 }else{
                     $imageName = '';
                 }
                 if($request->DriverLicenseback!=''){
-                    $DriverLicenseback = "r".time().'.'.$request->DriverLicenseback->extension();      
+                    $DriverLicenseback = "r".time().'.'.$request->DriverLicenseback->extension();
                     $request->DriverLicenseback->move(public_path('images'), $DriverLicenseback);
                 }else{
                     $DriverLicenseback = '';
                 }
                 if($request->profileImage!=''){
-                    $imageName1 = time().'.'.$request->profileImage->extension();      
+                    $imageName1 = time().'.'.$request->profileImage->extension();
                     $request->profileImage->move(public_path('images'), $imageName1);
                 }else{
                     $imageName1 = '';
@@ -340,9 +340,9 @@ class ApiController extends Controller
                 }
                 $user->save();
                 return response()->json(['success'=>'true','message'=>$msg_success], 200);
-            }            
+            }
         }
-        
+
     }
 
     //Dashboard
@@ -351,11 +351,11 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $currentDate = date('Y-m-d');
             $banner = Banner::where('end_date','>=',$currentDate)->where('status',1)->orderBy('position_id', 'asc')->get();
@@ -370,15 +370,15 @@ class ApiController extends Controller
                     $data['name'] = $value->name_ar;
                 }else{
                     $data['name'] = $value->name;
-                }                    
+                }
                 $data['start_date'] = $value->start_date;
                 $data['end_date'] = $value->end_date;
                 if($value->start_date<=$currentDate){
                     array_push($bannerArray,$data);
-                }           
+                }
             }
             //popularbrand
-            $popular = Brand::where('status',1)->where('popular',1)->orderBy('position','ASC')->get();
+            $popular = Brand::where('status',1)->where('popular',1)->where('categoryID',1)->orderBy('position','ASC')->get();
             $popularBrandArray = array();
             foreach($popular as $popValue){
                 $datap['id'] = $popValue->id;
@@ -386,11 +386,11 @@ class ApiController extends Controller
                     $datap['name'] = $popValue->name_ar;
                 }else{
                     $datap['name'] = $popValue->name;
-                }                    
+                }
                 $datap['logo'] = $popValue->logo;
                 array_push($popularBrandArray,$datap);
             }
-            
+
             //agencies
             $agencies = Agent::where('status',1)->where('popular',1)->orderBy('position','ASC')->get();
             $agenciesArray = array();
@@ -400,14 +400,14 @@ class ApiController extends Controller
                     $dataa['name'] = $aggvalue->name_ar;
                 }else{
                     $dataa['name'] = $aggvalue->name;
-                }                    
+                }
                 $dataa['logo'] = $aggvalue->logo;
                 if($language==2){
                     $dataa['description'] = $aggvalue->discription_ar;
                 }else{
                     $dataa['description'] = $aggvalue->description;
                 }
-                
+
                 $dataa['images'] = $aggvalue->images;
                 $dataa['tag_icon'] = $aggvalue->tag_icon;
                 if($language==2){
@@ -415,7 +415,7 @@ class ApiController extends Controller
                 }else{
                     $dataa['tag_name'] = $aggvalue->tag_name;
                 }
-                
+
                 $checkagentfav = AgentFavorite::where('userID',$userID)->where('agentID',$aggvalue->id)->count();
                 if($checkagentfav!=0){
                     $dataa['favorite']=1;
@@ -437,9 +437,9 @@ class ApiController extends Controller
             }
             $newsarray = array();
             foreach($news as $nvalue){
-                $datanews['id'] = $nvalue->id;                    
+                $datanews['id'] = $nvalue->id;
                 $datanews['image'] = $nvalue->image;
-                $datanews['videourl'] = $nvalue->videourl;                    
+                $datanews['videourl'] = $nvalue->videourl;
                 $datanews['postedDate'] = $nvalue->postedDate;
                 $datanews['tag_icon'] = $nvalue->tag_icon;
                 if($language==2){
@@ -474,7 +474,7 @@ class ApiController extends Controller
                     }else{
                         $datavehicle['image'] =$CarImage->first()->image;
                     }
-                    
+
                 }else{
                     $datavehicle['image'] ="";
                 }
@@ -483,35 +483,35 @@ class ApiController extends Controller
                 }else{
                     $datavehicle['name'] = $carvalue->name;
                 }
-                
+
                 $datavehicle['modelID'] = $carvalue->modelID;
                 $datavehicle['year'] = $carvalue->year;
-                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$carvalue->id);                
+                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$carvalue->id);
                 if($VehicleTrimEnginecount->count()!=0){
                     $VehicleTrimEngine = $VehicleTrimEnginecount->first();
                     if($VehicleTrimEngine->transmission!=''){
-                        if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                        if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                             if($language==2){
                                 $geartype = "تلقائي";
                             }else{
                                 $geartype = "Automatic";
                             }
-                            
+
                         }else{
                             if($language==2){
                                 $geartype = "يدوي";
                             }else{
                                 $geartype = "Manual";
                             }
-                            
+
                         }
                     }else{
                         $geartype = "";
                     }
-                }                   
+                }
                 // $VehicleTrimEngine = VehicleTrimEngine::where('vehicleID',$carvalue->id)->first();
                 // if()
-                // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                 //    $geartype = "Automatic";
                 // }else{
                 //     $geartype = "Manual";
@@ -551,7 +551,7 @@ class ApiController extends Controller
                     }else{
                         $datadeal['typesofdeal_name'] = "";
                     }
-                    
+
                 }else{
                     $datadeal['name'] = $dealvalue->name;
                     $datadeal['tag_name'] = $dealvalue->tag_name;
@@ -559,10 +559,10 @@ class ApiController extends Controller
                         $datadeal['typesofdeal_name'] = DealType::find($dealvalue->typesofdeal)->name;
                     }else{
                         $datadeal['typesofdeal_name'] = "";
-                    }                        
+                    }
                 }
                 array_push($dealArray,$datadeal);
-            }                
+            }
             $arr['banner'] = $bannerArray;
             $arr['popularcar'] = $vehicleArray;
             $arr['popularbrand'] = $popularBrandArray;
@@ -573,7 +573,7 @@ class ApiController extends Controller
             if($carprofile==0){
                 $arr['carprofile'] = 0;
                 //$arr['odometerupdate'] = 1;
-            }else{                    
+            }else{
                 $arr['carprofile'] = 1;
             }
             //odo meter last fill
@@ -586,15 +586,15 @@ class ApiController extends Controller
                 if($servicedates > date('Y-m-d')){
                     $arr['odometerupdate'] = 2;
                 }else{
-                    $arr['odometerupdate'] = 1; 
+                    $arr['odometerupdate'] = 1;
                 }
             }
-                
+
             $arr['location'] = User::find($userID)->location;
             return response()->json(['success'=>'true','message'=>'','result'=>$arr], 200);
         }
     }
-    
+
     //City List
     public function city(Request $request){
         $userID = $request->userID;
@@ -605,20 +605,20 @@ class ApiController extends Controller
         $search = $request->search;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($country==null){
-            $err_array[]='country';    
-        }        
+            $err_array[]='country';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($filter==0){
                 $pagedata = 30;
                 $showdata = $pagedata*$page;
                 $showdatafrom = $pagedata*$page-1;
-                
+
                 $country = Country::where('name',ucwords($country))->first();
                 $stateArray = array();
                 $states = State::select('id')->where('country_id',$country->id)->get();
@@ -629,12 +629,12 @@ class ApiController extends Controller
 
                 $data['allcity'] = City::select('id','name')->whereIN('state_id',$stateArray)->where('status',1)->skip($showdatafrom)->take($showdata)->get();
                 $totalcity =  City::select('id','name')->whereIN('state_id',$stateArray)->where('status',1)->count();
-                $totalvalue = round($totalcity/30);           
+                $totalvalue = round($totalcity/30);
                 return response()->json(['success'=>'true','message'=>'','result'=>$data,'total_page'=>$totalvalue], 200);
             }else{
                 $data['popularcity'] = [];
                 $data['allcity'] = City::select('id','name')->where('name',ucfirst($search))->where('status',1)->get();
-                $totalvalue = "0";           
+                $totalvalue = "0";
                 return response()->json(['success'=>'true','message'=>'','result'=>$data,'total_page'=>$totalvalue], 200);
             }
         }
@@ -651,11 +651,11 @@ class ApiController extends Controller
             $err_array[]='userID';
         }
         if($vehicle_id==null){
-            $err_array[]='vehicle_id';    
+            $err_array[]='vehicle_id';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "اضيف بنجاح";
@@ -671,7 +671,7 @@ class ApiController extends Controller
                 $favorites->userID = $userID;
                 $favorites->favorite = 1;
                 $favorites->save();
-                //send notification                
+                //send notification
                 if($language == 2){
                     $carname = Vehicle::where('id',$vehicle_id)->first()->name_ar;
                     $msgnotification = $carname." تمت إضافة السيارة كمفضلة لديك";
@@ -709,11 +709,11 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $favoritearray= array();
             $favorite = CarFavorite::where('userID',$userID)->orderBy('id','DESC')->get();
@@ -732,7 +732,7 @@ class ApiController extends Controller
                         }else{
                             $data['image'] =$CarImage->first()->image;
                         }
-                       
+
                     }else{
                         $data['image'] ="";
                     }
@@ -747,11 +747,11 @@ class ApiController extends Controller
                 $CarReview = CarReview::where('vehicleID',$value->vehicleID);
                 $data['reviews'] = $CarReview->count();
                 $data['price'] = "";
-                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$value->vehicleID);                
+                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$value->vehicleID);
                     if($VehicleTrimEnginecount->count()!=0){
                         $VehicleTrimEngine = $VehicleTrimEnginecount->first();
                         if($VehicleTrimEngine->transmission!=''){
-                            if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                            if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                                 $geartype = "Automatic";
                             }else{
                                 $geartype = "Manual";
@@ -759,10 +759,10 @@ class ApiController extends Controller
                         }else{
                             $geartype = "";
                         }
-                    }                   
+                    }
                     // $VehicleTrimEngine = VehicleTrimEngine::where('vehicleID',$carvalue->id)->first();
                     // if()
-                    // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                    // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                     //    $geartype = "Automatic";
                     // }else{
                     //     $geartype = "Manual";
@@ -771,7 +771,7 @@ class ApiController extends Controller
                     $data['cc'] = $VehicleTrimEngine->horsepower_rpm. " RPM";
                     $data['geartype'] = $geartype;
                 array_push($favoritearray, $data);
-            }            
+            }
             return response()->json(['success'=>'true','message'=>"",'result'=>$favoritearray], 200);
         }
     }
@@ -785,74 +785,83 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($locationID==null){
-            $err_array[]='locationID';    
+            $err_array[]='locationID';
         }
         if(count($err_array)>0){
             $er = implode(",", $err_array);
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             // print_r($filterIdList);
             // die;
-            $deal_details = DealDetail::where('cityID',$locationID)->orWhere('cityID','')->get();            
+            $deal_details = DealDetail::where('cityID',$locationID)->orWhere('cityID','')->get();
             $dealArray = array();
             foreach($deal_details as $dvalue){
                 //echo $dvalue->dealID."-----";
                 $currentDate = date('Y-m-d');
                 //$deal = Deal::where('id',$dvalue->dealID)->where('status',1)->where('whereshow',3)->orWhere('whereshow',1)->first();
-                $deal = Deal::where('id', $dvalue->dealID)
+                $deals = Deal::where('id', $dvalue->dealID)
                 ->where('status', 1)
                 ->where(function ($query) {
                     $query->where('whereshow', 3)
                         ->orWhere('whereshow', 1);
                 })
-                ->first();
-                $datadeal['position'] = $deal->position; 
-                $datadeal['id'] = $deal->id;                
-                                
-                $datadeal['startDate'] = $deal->startDate;                
-                $datadeal['endDate'] = $deal->endDate;     
-                $datadeal['image'] = $deal->image;
-                $datadeal['tag_icon'] = $deal->tag_icon;
-                
-                $future = strtotime(date('Y-m-d')); //Future date.
-                $timefromdb = strtotime($deal->endDate);
-                $timeleft = $timefromdb-$future;
-                $daysleft = round((($timeleft/24)/60)/60); 
-                $datadeal['remaning_day']= $daysleft;
-                $datadeal['typesofdeal'] = $deal->typesofdeal;
-                if($language==2){
-                    $datadeal['name'] = $deal->name_ar;                
-                    $datadeal['discription'] = $deal->discription_ar;
-                    $datadeal['tag_name'] = $deal->tag_name_ar;
-                    if($deal->typesofdeal!=""){
-                        $datadeal['typesofdeal_name'] = DealType::find($deal->typesofdeal)->name_ar;
-                    }else{
-                        $datadeal['typesofdeal_name'] = "";
-                    }
-                    
-                }else{
-                    $datadeal['name'] = $deal->name;                
-                    $datadeal['discription'] = $deal->discription;
-                    $datadeal['tag_name'] = $deal->tag_name;
-                    if($deal->typesofdeal!=""){
-                        $datadeal['typesofdeal_name'] = DealType::find($deal->typesofdeal)->name;
-                    }else{
-                        $datadeal['typesofdeal_name'] = "";
-                    }
-                }
-                //array_push($dealArray,$datadeal);
-                if($deal->endDate >= $currentDate){
-                    if(empty($filterIdList)){
-                        array_push($dealArray,$datadeal);
-                    }else{
-                        //$filterIdListarray=explode(",",$filterIdList);
-                        if(in_array($deal->typesofdeal, $filterIdList)){
-                            array_push($dealArray,$datadeal);
+                ->count();
+                if($deals!=0){
+                    $deal = Deal::where('id', $dvalue->dealID)
+                    ->where('status', 1)
+                    ->where(function ($query) {
+                        $query->where('whereshow', 3)
+                            ->orWhere('whereshow', 1);
+                    })
+                    ->first();
+                    $datadeal['position'] = $deal->position;
+                    $datadeal['id'] = $deal->id;
+
+                    $datadeal['startDate'] = $deal->startDate;
+                    $datadeal['endDate'] = $deal->endDate;
+                    $datadeal['image'] = $deal->image;
+                    $datadeal['tag_icon'] = $deal->tag_icon;
+
+                    $future = strtotime(date('Y-m-d')); //Future date.
+                    $timefromdb = strtotime($deal->endDate);
+                    $timeleft = $timefromdb-$future;
+                    $daysleft = round((($timeleft/24)/60)/60);
+                    $datadeal['remaning_day']= $daysleft;
+                    $datadeal['typesofdeal'] = $deal->typesofdeal;
+                    if($language==2){
+                        $datadeal['name'] = $deal->name_ar;
+                        $datadeal['discription'] = $deal->discription_ar;
+                        $datadeal['tag_name'] = $deal->tag_name_ar;
+                        if($deal->typesofdeal!=""){
+                            $datadeal['typesofdeal_name'] = DealType::where('id',$deal->typesofdeal)->value('name_ar');
+                        }else{
+                            $datadeal['typesofdeal_name'] = "";
                         }
-                    }                                        
+
+                    }else{
+                        $datadeal['name'] = $deal->name;
+                        $datadeal['discription'] = $deal->discription;
+                        $datadeal['tag_name'] = $deal->tag_name;
+                        if($deal->typesofdeal!=""){
+                            $datadeal['typesofdeal_name'] = DealType::where('id',$deal->typesofdeal)->value('name');
+                        }else{
+                            $datadeal['typesofdeal_name'] = "";
+                        }
+                    }
+                    //array_push($dealArray,$datadeal);
+                    if($deal->endDate >= $currentDate){
+                        if(empty($filterIdList)){
+                            array_push($dealArray,$datadeal);
+                        }else{
+                            //$filterIdListarray=explode(",",$filterIdList);
+                            if(in_array($deal->typesofdeal, $filterIdList)){
+                                array_push($dealArray,$datadeal);
+                            }
+                        }
+                    }
                 }
             }
             //die;
@@ -867,8 +876,8 @@ class ApiController extends Controller
                 // if($dealvalues->startDate<=$currentDate){
                 //     array_push($dealArrays,$datadeals);
                 // }
-            } 
-            sort($dealArray);          
+            }
+            sort($dealArray);
             $arr['all'] = $dealArray;
             $arr['banner'] = $dealArrays;
             return response()->json(['success'=>'true','message'=>'','result'=>$arr], 200);
@@ -882,44 +891,44 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($dealID==null){
-            $err_array[]='dealID';    
+            $err_array[]='dealID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $currentDate = date('Y-m-d');
             $deal = Deal::where('id',$dealID)->where('endDate','>=',$currentDate)->where('status',1)->first();
             if($deal->startDate<=$currentDate){
-                $datadeal['id'] = $deal->id;                
-                //$datadeal['name'] = $deal->name;                
-                //$datadeal['discription'] = $deal->discription;                
-                $datadeal['startDate'] = $deal->startDate;                
-                $datadeal['endDate'] = $deal->endDate;     
+                $datadeal['id'] = $deal->id;
+                //$datadeal['name'] = $deal->name;
+                //$datadeal['discription'] = $deal->discription;
+                $datadeal['startDate'] = $deal->startDate;
+                $datadeal['endDate'] = $deal->endDate;
                 $datadeal['image'] = $deal->image;
                 $datadeal['internalpage'] = $deal->internalpage;
                 $datadeal['pageid'] = $deal->pageid;
                 $future = strtotime(date('Y-m-d')); //Future date.
                 $timefromdb = strtotime($deal->endDate);
                 $timeleft = $timefromdb-$future;
-                $daysleft = round((($timeleft/24)/60)/60); 
+                $daysleft = round((($timeleft/24)/60)/60);
                 $datadeal['remaning_day']= $daysleft;
                 $datadeal['dealType']= $deal->dealType;
                 $datadeal['tag_icon'] = $deal->tag_icon;
                 //$datadeal['tag_name'] = $deal->tag_name;
                 if($language==2){
-                    $datadeal['name'] = $deal->name_ar;                
+                    $datadeal['name'] = $deal->name_ar;
                     $datadeal['discription'] = $deal->discription_ar;
                     $datadeal['tag_name'] = $deal->tag_name_ar;
                 }else{
-                    $datadeal['name'] = $deal->name;                
+                    $datadeal['name'] = $deal->name;
                     $datadeal['discription'] = $deal->discription;
                     $datadeal['tag_name'] = $deal->tag_name;
                 }
-                
+
                 $deal_details = DealDetail::where('dealID',$dealID)->first();
                 if($deal->dealType==1){
                     if($deal_details->dealTypeID!=""){
@@ -939,9 +948,9 @@ class ApiController extends Controller
                         }
 
                     }
-                    
-                    
-                    
+
+
+
                 }else{
                     if($deal_details->dealTypeID!=""){
                         $datadeal['dealTypeid']= $deal_details->dealTypeID;
@@ -960,18 +969,18 @@ class ApiController extends Controller
                         }
 
                     }
-                    
+
                     // $datadeal['dealTypeid']= $deal_details->dealTypeID;
                     // if($language==2){
                     //     $datadeal['dealTypename']= Agent::find($deal_details->dealTypeID)->name_ar;
                     // }else{
-                    //     $datadeal['dealTypename']= Agent::find($deal_details->dealTypeID)->name;    
+                    //     $datadeal['dealTypename']= Agent::find($deal_details->dealTypeID)->name;
                     // }
-                    
+
                 }
                 return response()->json(['success'=>'true','message'=>'','result'=>$datadeal], 200);
-            
-            }            
+
+            }
         }
     }
 
@@ -991,24 +1000,24 @@ class ApiController extends Controller
             }else{
                 $data['name'] = $value->name;
                 $data['discription'] = $value->discription;
-            }            
+            }
             $data['url'] = $value->url;
             $data['start_date'] = $value->start_date;
-            $data['end_date'] = $value->end_date;            
-            $data['image_time'] = $value->image_time;            
-            $data['automatic'] = $value->skipable;         
+            $data['end_date'] = $value->end_date;
+            $data['image_time'] = $value->image_time;
+            $data['automatic'] = $value->skipable;
             $data['internal_external'] = $value->internal_external;
-            $img =  explode(".",$value->image);      
-            $data['type'] = end($img);         
+            $img =  explode(".",$value->image);
+            $data['type'] = end($img);
             if($value->start_date<=$currentDate){
                 array_push($bannerArray,$data);
             }
-                       
+
         }
         //image setting
         $ImageSetting = ImageSetting::find(1);
         $backgroundimage =$ImageSetting->backgroundimage;
-        $sliding =$ImageSetting->sliding; 
+        $sliding =$ImageSetting->sliding;
         return response()->json(['success'=>'true','message'=>'','result'=>$bannerArray,'skippable'=>0,'sliding'=>0,'background_image'=>$backgroundimage], 200);
     }
 
@@ -1018,11 +1027,11 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "تسجيل الخروج بنجاح";
@@ -1042,7 +1051,7 @@ class ApiController extends Controller
             }
             return response()->json(['success'=>'true','message'=>$msg_success], 200);
         }
-       
+
     }
 
     //User viewed
@@ -1053,17 +1062,17 @@ class ApiController extends Controller
         $id = $request->id;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($menutype==null){
-            $err_array[]='menutype';    
+            $err_array[]='menutype';
         }
         if($id==null){
-            $err_array[]='id';    
+            $err_array[]='id';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "حفظ بنجاح";
@@ -1090,14 +1099,14 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($brandID==null){
-            $err_array[]='brandID';    
+            $err_array[]='brandID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "اضيف بنجاح";
@@ -1113,7 +1122,7 @@ class ApiController extends Controller
                 $favorites->userID = $userID;
                 $favorites->favorite = 1;
                 $favorites->save();
-                //send notification                
+                //send notification
                 if($language == 2){
                     $carname = Brand::where('id',$brandID)->first()->name_ar;
                     $msgnotification = $carname." تمت إضافة العلامة التجارية باعتبارها المفضلة لديك";
@@ -1151,11 +1160,11 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $favoritearray= array();
             $favorite = BrandFavorite::where('userID',$userID)->orderBy('id','DESC')->get();
@@ -1163,8 +1172,8 @@ class ApiController extends Controller
                 $data['id'] = $value->id;
                 $data['userID'] = $value->userID;
                 $data['brandID'] = $value->brandID;
-                $vehicle = Brand::where('id',$value->brandID)->first();                                
-                $data['image'] =$vehicle->logo;                
+                $vehicle = Brand::where('id',$value->brandID)->first();
+                $data['image'] =$vehicle->logo;
                 $data['tag_icon'] =$vehicle->tag_icon;
                 if($language==2){
                     $data['name'] = $vehicle->name_ar;
@@ -1174,9 +1183,9 @@ class ApiController extends Controller
                     $data['name'] = $vehicle->name;
                     $data['description'] =$vehicle->description;
                     $data['tag_name'] =$vehicle->tag_name;
-                }             
+                }
                 array_push($favoritearray, $data);
-            }            
+            }
             return response()->json(['success'=>'true','message'=>"",'result'=>$favoritearray], 200);
         }
     }
@@ -1188,48 +1197,48 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($locationID==null){
-            $err_array[]='locationID';    
+            $err_array[]='locationID';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "تم التحديث بنجاح";
             }else{
                 $msg_success = "Successfully updated";
             }
-            $user = User::find($userID);           
+            $user = User::find($userID);
             $user->location = $locationID;
             $user->save();
             return response()->json(['success'=>'true','message'=>$msg_success], 200);
         }
     }
-    
+
     //Update user language
     public function update_userlanguage(Request $request){
         $userID = $request->userID;
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
+            $err_array[]='language';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             if($language == 2){
                 $msg_success = "تم التحديث بنجاح";
             }else{
                 $msg_success = "Successfully updated";
             }
-            $user = User::find($userID);           
+            $user = User::find($userID);
             $user->language = $language;
             $user->save();
             return response()->json(['success'=>'true','message'=>$msg_success], 200);
@@ -1243,24 +1252,24 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
+            $err_array[]='language';
         }
         if($searchtext==null){
-            $err_array[]='searchtext';    
+            $err_array[]='searchtext';
         }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             //agencies
             if($language==2){
                 $agencies = Agent::where('status',1)->where('name_ar', 'like', '%' . $searchtext . '%')->orWhere('discription_ar', 'like', '%' . $searchtext . '%')->get();
             }else{
                 $agencies = Agent::where('status',1)->where('name', 'like', '%' . $searchtext . '%')->orWhere('description', 'like', '%' . $searchtext . '%')->get();
-            }            
+            }
             $agenciesArray = array();
             foreach($agencies as $aggvalue){
                 $dataa['id'] = $aggvalue->id;
@@ -1268,14 +1277,14 @@ class ApiController extends Controller
                     $dataa['name'] = $aggvalue->name_ar;
                 }else{
                     $dataa['name'] = $aggvalue->name;
-                }                    
+                }
                 $dataa['logo'] = $aggvalue->logo;
                 if($language==2){
                     $dataa['description'] = $aggvalue->discription_ar;
                 }else{
                     $dataa['description'] = $aggvalue->description;
                 }
-                
+
                 $dataa['images'] = $aggvalue->images;
                 $dataa['tag_icon'] = $aggvalue->tag_icon;
                 if($language==2){
@@ -1283,7 +1292,7 @@ class ApiController extends Controller
                 }else{
                     $dataa['tag_name'] = $aggvalue->tag_name;
                 }
-                
+
                 $checkagentfav = AgentFavorite::where('userID',$userID)->where('agentID',$aggvalue->id)->count();
                 if($checkagentfav!=0){
                     $dataa['favorite']=1;
@@ -1292,18 +1301,18 @@ class ApiController extends Controller
                 }
                 array_push($agenciesArray,$dataa);
             }
-           
+
             //hotnews
             if($language==2){
                 $news = Magazine::where('type',1)->where('status',1)->where('heading_ar', 'like', '%' . $searchtext . '%')->orWhere('description_ar', 'like', '%' . $searchtext . '%')->get();
             }else{
                 $news = Magazine::where('type',1)->where('status',1)->where('heading', 'like', '%' . $searchtext . '%')->orWhere('description', 'like', '%' . $searchtext . '%')->get();
-            }            
+            }
             $newsarray = array();
             foreach($news as $nvalue){
-                $datanews['id'] = $nvalue->id;                    
+                $datanews['id'] = $nvalue->id;
                 $datanews['image'] = $nvalue->image;
-                $datanews['videourl'] = $nvalue->videourl;                    
+                $datanews['videourl'] = $nvalue->videourl;
                 $datanews['postedDate'] = $nvalue->postedDate;
                 $datanews['tag_icon'] = $nvalue->tag_icon;
                 if($language==2){
@@ -1331,7 +1340,7 @@ class ApiController extends Controller
                 $vehicle = Vehicle::where('status',1)->where('name_ar', 'like', '%' . $searchtext . '%')->orWhere('description_ar', 'like', '%' . $searchtext . '%')->get();
             }else{
                 $vehicle = Vehicle::where('status',1)->where('name', 'like', '%' . $searchtext . '%')->orWhere('description', 'like', '%' . $searchtext . '%')->get();
-            }           
+            }
             $vehicleArray = array();
             foreach($vehicle as $carvalue){
                 $datavehicle['id'] = $carvalue->id;
@@ -1343,7 +1352,7 @@ class ApiController extends Controller
                     }else{
                         $datavehicle['image'] =$CarImage->first()->image;
                     }
-                    
+
                 }else{
                     $datavehicle['image'] ="";
                 }
@@ -1358,34 +1367,34 @@ class ApiController extends Controller
                 }else{
                     $datavehicle['name'] = $carvalue->name;
                 }
-                
+
                 $datavehicle['modelID'] = $carvalue->modelID;
-                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$carvalue->id);                
+                $VehicleTrimEnginecount = VehicleTrimEngine::where('vehicleID',$carvalue->id);
                 if($VehicleTrimEnginecount->count()!=0){
                     $VehicleTrimEngine = $VehicleTrimEnginecount->first();
                     if($VehicleTrimEngine->transmission!=''){
-                        if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                        if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                             if($language==2){
                                 $geartype = "تلقائي";
                             }else{
                                 $geartype = "Automatic";
                             }
-                            
+
                         }else{
                             if($language==2){
                                 $geartype = "يدوي";
                             }else{
                                 $geartype = "Manual";
                             }
-                            
+
                         }
                     }else{
                         $geartype = "";
                     }
-                }                   
+                }
                 // $VehicleTrimEngine = VehicleTrimEngine::where('vehicleID',$carvalue->id)->first();
                 // if()
-                // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) { 
+                // if (str_contains($VehicleTrimEngine->transmission, 'automatic')) {
                 //    $geartype = "Automatic";
                 // }else{
                 //     $geartype = "Manual";
@@ -1420,13 +1429,13 @@ class ApiController extends Controller
                     $datareview['reviewDate'] = date('M d, Y',strtotime($car_reviews->created_at));
                     array_push($review_array,$datareview);
                 }
-                
+
             }
-           
+
             $arr['popularcar'] = $vehicleArray;
             $arr['agencies'] = $agenciesArray;
-            $arr['hotnews'] = $newsarray;            
-            $arr['review'] = $review_array;            
+            $arr['hotnews'] = $newsarray;
+            $arr['review'] = $review_array;
             return response()->json(['success'=>'true','message'=>'','result'=>$arr], 200);
 
         }
@@ -1437,14 +1446,14 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
-        }        
+            $err_array[]='language';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $dealtype = DealType::where('status',1)->get();
             $recordArray = array();
@@ -1466,14 +1475,14 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
-        }        
+            $err_array[]='language';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             //VehicleType
             $VehicleTypeArray = array();
@@ -1484,7 +1493,7 @@ class ApiController extends Controller
                     $vehicle_data['name'] = $value->name_ar;
                 }else{
                     $vehicle_data['name'] = $value->name;
-                }               
+                }
                 $vehicle_data['image'] = $value->image;
                 array_push($VehicleTypeArray,$vehicle_data);
             }
@@ -1508,7 +1517,7 @@ class ApiController extends Controller
             //seats
             if($language==2){
                 $seats = "عدد المقاعد";
-            }else{                
+            }else{
                 $seats = "Seater";
             }
             $j=1;
@@ -1523,7 +1532,7 @@ class ApiController extends Controller
             //cylender
             if($language==2){
                 $cyliender = "اسطوانة";
-            }else{                
+            }else{
                 $cyliender = "Cylinder";
             }
             $k=1;
@@ -1537,7 +1546,7 @@ class ApiController extends Controller
             }
             //transmission
             if($language==2){
-                
+
                 $transmission = ['تلقائي', 'يدوي'];
             }else{
                 $transmission = ['Automatic','Manual'];
@@ -1565,14 +1574,14 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
-        }        
+            $err_array[]='language';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             $categoryArray = array();
             $category = Category::where('status',1)->get();
@@ -1595,7 +1604,7 @@ class ApiController extends Controller
             $client = new GoogleClient();
             $client->setAuthConfig($this->serviceAccountFile);
             $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-            $token = $client->fetchAccessTokenWithAssertion();        
+            $token = $client->fetchAccessTokenWithAssertion();
             return $token['access_token'];
         } catch (\Throwable $th) {
            //echo 5;
@@ -1612,12 +1621,12 @@ class ApiController extends Controller
                 'notification' => [
                     'title' => $title,
                     'body' => $msg,
-                    'image' => "",                    
+                    'image' => "",
                 ],
                 'data' => [
                     'internal_external' => "",
                     'page' => "",
-                    'image' => "",                    
+                    'image' => "",
                     'android' => $json, // Custom data for Android
                 ],
                 'apns' => [
@@ -1626,7 +1635,7 @@ class ApiController extends Controller
                             'sound' => 'default',
                         ],
                     ],
-                    
+
                 ],
             ],
         ];
@@ -1664,14 +1673,14 @@ class ApiController extends Controller
         $state_name = $request->state_name;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($language==null){
-            $err_array[]='language';    
-        }        
+            $err_array[]='language';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             //$city_id = City::where('name',ucfirst($city_name))->first()->id;
             $city_id = City::where('name',ucfirst($city_name));
@@ -1710,7 +1719,7 @@ class ApiController extends Controller
                 $city_insert->save();
                 $cityid = $city_insert->id;
             }else{
-               $cityid = $city_id->first()->id; 
+               $cityid = $city_id->first()->id;
             }
             return response()->json(['success'=>'true','message'=>'','city_id'=>$cityid], 200);
         }
@@ -1723,20 +1732,20 @@ class ApiController extends Controller
         $language = $request->language;
         $err_array =array();
         if($userID==null){
-            $err_array[]='userID';    
+            $err_array[]='userID';
         }
         if($menuID==null){
-            $err_array[]='menuID';    
+            $err_array[]='menuID';
         }
         if($id==null){
-            $err_array[]='id';    
+            $err_array[]='id';
         }
         if($language==null){
-            $err_array[]='language';    
-        }        
+            $err_array[]='language';
+        }
         if(count($err_array)>0){
-            $er = implode(",", $err_array);    
-            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);    
+            $er = implode(",", $err_array);
+            return response()->json(['success'=>'false','message'=>"400 Bad Request, missing ".$er], 400);
         }else{
             //1=Banner 2=Welcome image 3=Brand 4=News 5=car 6=Model 7=Agent 8=Deals 9=Agent Banner
             switch ($menuID) {
@@ -1778,10 +1787,10 @@ class ApiController extends Controller
                     $update->save();
                 }
            }
-           return response()->json(['success'=>'true','message'=>'Added Successfully'], 200);           
+           return response()->json(['success'=>'true','message'=>'Added Successfully'], 200);
         }
     }
-    
-    
+
+
 
 }

@@ -34,12 +34,6 @@
                                 <th scope="col">User Name</th>
                                 <th scope="col">Title (English)</th>
                                 <th scope="col">Title (Arabic)</th>
-                                <th scope="col">Message (English)</th>
-                                <th scope="col">Message (Arabic)</th>
-                                <th scope="col">URL</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">End Date</th>
-                                <th scope="col">End Time</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -79,14 +73,14 @@
                                     ?>
                                 </td>                                
                                 <td><?php if($value->UserID==0){echo "All"; }else{echo App\Models\User::find($value->UserID)->name; } ?></td>
-                                <td>{{$value->title}}</td>
-                                <td>{{$value->title_ar}}</td>
-                                <td>{{$value->message}}</td>
-                                <td>{{$value->message_ar}}</td>
-                                <td>{{$value->url}}</td>
+                                <td><a
+                                    href="{{ url('admin/notificationdetails?key=' . base64_encode($value->id) . '&lang=' . base64_encode(1)) }}">{{$value->title}}</a></td>
+                                <td><a
+                                    href="{{ url('admin/notificationdetails?key=' . base64_encode($value->id) . '&lang=' . base64_encode(2)) }}">{{$value->title_ar}}</a></td>
+                                {{-- <td>{{$value->url}}</td>
                                 <td><img src="{{ url('public/images') }}/{{ $value->image }}" alt="Image" height="50" width="50"></td>
                                 <td>{{$value->end_date}}</td>
-                                <td>{{$value->end_time}}</td>
+                                <td>{{$value->end_time}}</td> --}}
                                 <td><a class="delete" data-id="{{$value->id}}"><i class="fa fa-trash"></i></a></td>                               
                             </tr>
                         @php

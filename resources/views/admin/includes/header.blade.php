@@ -160,13 +160,26 @@ button.dt-button.buttons-excel.buttons-html5:hover {
   border-bottom: 1px solid #bebebe;
   padding: 0 10px 15px 10px;
 }
+.active1{
+  background: #000 !important;
+  color: #fff !important;
+}
+.active2{
+  background: #000 !important;
+  color: #fff !important;
+}
+.active1 i{
+  color: #fff !important;
+}
 </style>
 
 
 <?php
 if (!isset($active)) {
    $active = "dashboard";
-   $activ1 = "dashboard";
+}
+if (!isset($active1)) {
+   $active1 = "dashboard";
 }
 //echo $active;
 ?>
@@ -189,8 +202,8 @@ if (!isset($active)) {
           <span>Dashboard</span>
         </a>
       </li>
-      <li class="<?php if ($active == 'master') echo 'active'; ?>">
-        <a class="has-arrow" href="#" aria-expanded="<?php if ($active == 'master') {
+      <li class="">
+        <a class="has-arrow <?php if ($active == 'master') echo 'active1'; ?>" href="#" aria-expanded="<?php if ($active == 'master') {
                                                             echo 'true';
                                                          } else {
                                                             echo "false";
@@ -201,13 +214,13 @@ if (!isset($active)) {
           <span>Master</span>
         </a>
         <ul <?php if ($active == 'master') echo 'class="collapseshow"'; ?>>
-          <li><a href="{{ url('admin/category') }}">Category</a></li>
-          <li><a href="{{ url('admin/serviceType') }}">Service Type</a></li>
-          <li><a href="{{ url('admin/service') }}">Service</a></li>
-          <li><a href="{{ url('admin/dealtype') }}">Deal Type</a></li>
-          <li><a href="{{ url('admin/notification') }}">Notification</a></li>
-          <li><a href="{{ url('admin/CarCheck') }}">Car Check</a></li>
-          <li><a href="{{ url('admin/stafflist') }}">Staff </a></li>
+          <li><a class="<?php if ($active1 == 'Category') echo 'active2'; ?>" href="{{ url('admin/category') }}">Category</a></li>
+          <li><a class="<?php if ($active1 == 'ServiceType') echo 'active2'; ?>" href="{{ url('admin/serviceType') }}">Service Type</a></li>
+          <li><a class="<?php if ($active1 == 'Service') echo 'active2'; ?>" href="{{ url('admin/service') }}">Service</a></li>
+          <li><a class="<?php if ($active1 == 'DealType') echo 'active2'; ?>" href="{{ url('admin/dealtype') }}">Deal Type</a></li>
+          <li><a class="<?php if ($active1 == 'Notification') echo 'active2'; ?>" href="{{ url('admin/notification') }}">Notification</a></li>
+          <li><a class="<?php if ($active1 == 'CarCheck') echo 'active2'; ?>" href="{{ url('admin/CarCheck') }}">Car Check</a></li>
+          <li><a class="<?php if ($active1 == 'Staff') echo 'active2'; ?>" href="{{ url('admin/stafflist') }}">Staff </a></li>
         </ul>
       </li>
       <li class="<?php if ($active == 'user') echo 'active'; ?>">
@@ -218,8 +231,8 @@ if (!isset($active)) {
           <span>Users</span>
         </a>
       </li>
-      <li class="<?php if ($active == 'banner') echo 'active'; ?>">
-        <a class="has-arrow" href="#" aria-expanded="<?php if ($active == 'banner') {
+      <li class="">
+        <a class="has-arrow <?php if ($active == 'banner') echo 'active1'; ?>" href="#" aria-expanded="<?php if ($active == 'banner') {
                                                             echo 'true';
                                                          } else {
                                                             echo "false";
@@ -230,9 +243,9 @@ if (!isset($active)) {
           <span>Banner</span>
         </a>
         <ul <?php if ($active == 'banner') echo 'class="collapseshow"'; ?>>
-          <li><a href="{{ url('admin/banners') }}">Banners</a></li>
-          <li><a href="{{ url('admin/welcome_images') }}">Welcome Images</a></li>
-          <li><a href="{{ url('admin/image_setting') }}">Welcome Image Setting</a></li>
+          <li><a class="<?php if ($active1 == 'banners') echo 'active2'; ?>" href="{{ url('admin/banners') }}">Banners</a></li>
+          <li><a class="<?php if ($active1 == 'welcome_images') echo 'active2'; ?>" href="{{ url('admin/welcome_images') }}">Welcome Images</a></li>
+          <li><a class="<?php if ($active1 == 'image_setting') echo 'active2'; ?>" href="{{ url('admin/image_setting') }}">Welcome Image Setting</a></li>
           {{-- <li><a href="{{ url('admin/welcomeimagebackground') }}">Welcome Image Background</a></li> --}}
         </ul>
       </li>
@@ -260,8 +273,8 @@ if (!isset($active)) {
           <span>Popular Cars</span>
         </a>
       </li>
-      <li class="<?php if ($active == 'agent') echo 'active'; ?>">
-        <a class="has-arrow" href="#" aria-expanded="<?php if ($active == 'agent') {
+      <li class="">
+        <a class="has-arrow <?php if ($active == 'agent') echo 'active1'; ?>" href="#" aria-expanded="<?php if ($active == 'agent') {
                                                             echo 'true';
                                                          } else {
                                                             echo "false";
@@ -272,9 +285,9 @@ if (!isset($active)) {
           <span>Agents/Resellers</span>
         </a>
         <ul <?php if ($active == 'agent') echo 'class="collapseshow"'; ?>>
-          <li><a href="{{ url('admin/agentBanners') }}">Banner Image</a></li>
-          <li><a href="{{ url('admin/agent') }}">Agents/Resellers</a></li>
-          <li><a href="{{ url('admin/popularAgent') }}">Popular Agents/Resellers</a></li>
+          <li><a class="<?php if ($active1 == 'agentBanners') echo 'active2'; ?>" href="{{ url('admin/agentBanners') }}">Banner Image</a></li>
+          <li><a class="<?php if ($active1 == 'agent') echo 'active2'; ?>" href="{{ url('admin/agent') }}">Agents/Resellers</a></li>
+          <li><a class="<?php if ($active1 == 'popularAgent') echo 'active2'; ?>" href="{{ url('admin/popularAgent') }}">Popular Agents/Resellers</a></li>
         </ul>
       </li>
       <li class="<?php if ($active == 'deals') echo 'active'; ?>">
@@ -301,8 +314,8 @@ if (!isset($active)) {
           <span>Magazine News</span>
         </a>
       </li>
-      <li class="<?php if ($active == 'advice') echo 'active'; ?>">
-        <a class="has-arrow" href="#" aria-expanded="<?php if ($active == 'advice') {
+      <li class="">
+        <a class="has-arrow <?php if ($active == 'advice') echo 'active1'; ?>" href="#" aria-expanded="<?php if ($active == 'advice') {
           echo 'true';
        } else {
           echo "false";
@@ -313,10 +326,10 @@ if (!isset($active)) {
           <span>Knowledge Center</span>
         </a>
         <ul <?php if ($active == 'advice') echo 'class="collapseshow"'; ?>>
-          <li><a href="{{url('admin/knowledgeimagesection')}}">Knowledge Image Section</a></li>
-          <li><a href="{{url('admin/sponserBanners')}}">Sponser Banner</a></li>
-          <li><a href="{{url('admin/advice')}}">Gearz Advice</a></li>
-          <li><a href="{{url('admin/translation')}}">GearZ Dictionary</a></li>
+          <li><a class="<?php if ($active1 == 'knowledgeimagesection') echo 'active2'; ?>" href="{{url('admin/knowledgeimagesection')}}">Knowledge Image Section</a></li>
+          <li><a class="<?php if ($active1 == 'sponserBanners') echo 'active2'; ?>" href="{{url('admin/sponserBanners')}}">Sponser Banner</a></li>
+          <li><a class="<?php if ($active1 == 'advice') echo 'active2'; ?>" href="{{url('admin/advice')}}">Gearz Advice</a></li>
+          <li><a class="<?php if ($active1 == 'translation') echo 'active2'; ?>" href="{{url('admin/translation')}}">GearZ Dictionary</a></li>
           <!-- <li><a href="Checkout.html">Checkout</a></li> -->
         </ul>
       </li>
@@ -336,8 +349,8 @@ if (!isset($active)) {
           <span>Reports</span>
         </a>
       </li>
-      <li class="<?php if ($active == 'setting') echo 'active'; ?>">
-        <a href="#!" aria-expanded="<?php if ($active == 'setting') {
+      <li class="">
+        <a class="has-arrow <?php if ($active == 'setting') echo 'active'; ?>" href="#!" aria-expanded="<?php if ($active == 'setting') {
                                              echo 'true';
                                           } else {
                                              echo "false";
@@ -348,7 +361,7 @@ if (!isset($active)) {
           <span>Settings</span>
         </a>
         <ul <?php if ($active == 'setting') echo 'class="collapseshow"'; ?>>
-          <li><a href="{{url('/admin/countryList')}}">Country</a></li>
+          <li><a class="<?php if ($active1 == 'countryList') echo 'active2'; ?>" href="{{url('/admin/countryList')}}">Country</a></li>
 
         </ul>
       </li>

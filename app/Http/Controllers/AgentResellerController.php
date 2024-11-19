@@ -35,6 +35,7 @@ class AgentResellerController extends Controller
     public function agentBanners(Request $request){
         $admin_id = session::get('id');
         $data['active'] = "agent";
+        $data['active1'] = "agentBanners";
         $data['banners']=AgentBanner::orderBy('position_id', 'asc')->get();
         $data['admin']=Admin::find($admin_id);
         return view('admin.agentbanners', $data);
@@ -42,6 +43,7 @@ class AgentResellerController extends Controller
 
     public function addAgentBanner(Request $request){
         $data['active'] = "agent";
+        $data['active1'] = "agentBanners";
         if($request->id){
             $data['banner']=AgentBanner::find($request->id);
         }
@@ -65,8 +67,8 @@ class AgentResellerController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('image');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('img/banners/');
@@ -219,6 +221,7 @@ class AgentResellerController extends Controller
     //////////////////////////
     public function agent(){
         $data['active'] = "agent";
+        $data['active1'] = "agent";
         $admin_id = session::get('id');
         $data['admin']=Admin::find($admin_id);
         $data['title'] = "Agent/Reseller";
@@ -235,6 +238,7 @@ class AgentResellerController extends Controller
     }
     public function addAgent(Request $request){
         $data['active'] = "agent";
+        $data['active1'] = "agent";
         $admin_id = session::get('id');
         $data['admin']=Admin::find($admin_id);
         $data['category'] = Category::where('status','!=',2)->get();
@@ -277,8 +281,8 @@ class AgentResellerController extends Controller
                     // $imageName = 'logo'.time().'.'.$request->image->extension();      
                     // $request->image->move(public_path('images'), $imageName);
                     if($request->imagess!=''){                        
-                        $new_widths = 100;
-                        $new_heights = 100;
+                        $new_widths = 720;
+                        $new_heights = 480;
                         $files = $request->file('imagess');
                         $fileNames = $files->getRealPath();
                         $uploadPaths = public_path('images/');
@@ -339,8 +343,8 @@ class AgentResellerController extends Controller
                         $i=1;
                         foreach($request->images as $imagevalue){
                             //upload images
-                            $new_widthss = 1179;
-                            $new_heightss = 900;
+                            $new_widthss = 720;
+                            $new_heightss = 480;
                             $filess = $imagevalue;
                             $fileNamess = $filess->getRealPath();
                             $uploadPathss = public_path('images/');
@@ -394,8 +398,8 @@ class AgentResellerController extends Controller
                     // $imageName = 'logo'.time().'.'.$request->image->extension();      
                     // $request->image->move(public_path('images'), $imageName);
                     if($request->imagess!=''){                        
-                        $new_widths = 100;
-                        $new_heights = 100;
+                        $new_widths = 720;
+                        $new_heights = 480;
                         $files = $request->file('imagess');
                         $fileNames = $files->getRealPath();
                         $uploadPaths = public_path('images/');
@@ -475,8 +479,8 @@ class AgentResellerController extends Controller
                         $i=1;
                         foreach($request->images as $imagevalue){
                             //upload images
-                            $new_widthss = 1179;
-                            $new_heightss = 900;
+                            $new_widthss = 720;
+                            $new_heightss = 480;
                             $filess = $imagevalue;
                             $fileNamess = $filess->getRealPath();
                             $uploadPathss = public_path('images/');
@@ -566,6 +570,7 @@ class AgentResellerController extends Controller
 
     public function popularAgent(Request $request){
         $data['active'] = "agent";
+        $data['active1'] = "popularAgent";
         $admin_id = session::get('id');
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Agent::where('status','!=',2)->where('popular',1)->orderBy('position','ASC')->get();
@@ -597,6 +602,7 @@ class AgentResellerController extends Controller
 
     public function branch(Request $request){
         $data['active'] = "agent";
+        $data['active1'] = "agent";
         $data['id'] = $request->key; 
         $admin_id = session::get('id');
         $data['title'] = "Branch";
@@ -608,6 +614,7 @@ class AgentResellerController extends Controller
 
     public function addBranch(Request $request){
         $data['active'] = "agent";
+        $data['active1'] = "agent";
         $admin_id = session::get('id');
         $data['title'] = "Branch";
         $data['agentid'] = base64_decode($request->key);
@@ -664,8 +671,8 @@ class AgentResellerController extends Controller
     //     $longitude = $apiResponse->results[0]->geometry->location->lng; 
     //     die; 
         if($request->image!=''){
-            $new_width = 1179;
-            $new_height = 900;
+            $new_width = 720;
+            $new_height = 480;
             $file = $request->file('image');
             $fileName = $file->getRealPath();
             $uploadPath = public_path('images/');

@@ -25,7 +25,93 @@
         <div class="white_card card_height_100 mb_20 ">
             <!-- <h2 class="card-title text-center p-5">Brands</h2> -->
             <div class="white_card_body text-center">
-                <div class="QA_table table-responsive pb-3">
+                {{-- tab --}}
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        @php
+                        $t=1;
+                        @endphp
+                        @foreach ($Category as $Categoryvalue)
+                            <button class="nav-link <?php if($t==1){ ?>active<?php } ?>" id="nav-{{$Categoryvalue->id}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{$Categoryvalue->id}}" type="button" role="tab" aria-controls="nav-{{$Categoryvalue->id}}" aria-selected="true">{{$Categoryvalue->name}}</button>
+                        @php
+                        $t++;
+                        @endphp
+                        @endforeach
+
+                      {{-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                      <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button> --}}
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    @php
+                    $t1=1;
+                    $tbname="";
+                    @endphp
+                    @foreach ($Category as $Categoryvalues)
+                    <?php
+                        $tbname = $tbname.",#example".$Categoryvalues->id;
+                    ?>
+                        <div class="tab-pane fade show <?php if($t1==1){ ?>active<?php } ?>" id="nav-{{$Categoryvalues->id}}" role="tabpanel" aria-labelledby="nav-{{$Categoryvalues->id}}-tab">
+                            <?php
+                            $brandpopcount = App\Models\Brand::where('status','!=',2)->where('popular',1)->where('categoryID',$Categoryvalues->id)->where('popular',1)->count();
+                            if($brandpopcount!=0){
+                                $data = App\Models\Brand::where('status','!=',2)->where('popular',1)->where('categoryID',$Categoryvalues->id)->orderby('popular','DESC')->orderby('position','ASC')->get();
+                            }else{
+                                $data = App\Models\Brand::where('status','!=',2)->where('popular',1)->where('categoryID',$Categoryvalues->id)->orderby('name','ASC')->get();
+                            }
+                            ?>
+                            <div class="QA_table table-responsive pb-3 mt-4">
+                                <table class="table p-0" id="example{{$Categoryvalues->id}}">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Logo</th>
+                                            <th scope="col">Name (English)</th>
+                                            <th scope="col">Name (Arabic)</th>
+                                            <th scope="col">Popular</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="row_position">
+                                    @php
+                                    $i=1;
+                                    @endphp
+                                    @foreach($data as $value)
+                                        <tr id="<?php echo $value->id; ?>">
+                                            <td><i class="fa fa-arrow-up"></i><br>Move<br><i class="fa fa-arrow-down"></i></td>
+                                            <td>{{$i}}</td>
+                                            <td>
+                                                <img class="img-fluid" src="<?php if($value->logo!=''){ echo url("public/images/".$value->logo);}else{ ?>../public/img/image-preview.png<?php } ?>" alt width="100" height="100">
+                                            </td>
+                                            <td><a
+                                                href="{{ url('admin/brandsdetails?key=' . base64_encode($value->id) . '&lang=' . base64_encode(1)) }}">{{$value->name}}</a></td>
+                                            <td><a
+                                                href="{{ url('admin/brandsdetails?key=' . base64_encode($value->id) . '&lang=' . base64_encode(2)) }}">{{$value->name_ar}}</a></td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input flexSwitchCheckCheckedpopular" type="checkbox" role="switch" id="flexSwitchCheckCheckedpopular" data-id="{{$value->id}}" <?php if($value->popular==1){ echo "checked"; } ?>>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @php
+                                    $i++;
+                                    @endphp
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    @php
+                    $t1++;
+                    @endphp
+                    @endforeach
+
+
+                </div>
+                {{-- tab --}}
+                {{-- <div class="QA_table table-responsive pb-3">
                     <table class="table p-0" id="example">
                         <thead>
                             <tr>
@@ -48,22 +134,22 @@
                                     <img class="img-fluid" src="{{ url('public/images/'.$value->logo) }}" alt width="100" height="100">
                                 </td>
                                 <td>{{$value->name}}</td>
-                                
+
                                 <td>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input flexSwitchCheckCheckedpopular" type="checkbox" role="switch" id="flexSwitchCheckCheckedpopular" data-id="{{$value->id}}" <?php if($value->popular==1){ echo "checked"; } ?>>                                        
+                                        <input class="form-check-input flexSwitchCheckCheckedpopular" type="checkbox" role="switch" id="flexSwitchCheckCheckedpopular" data-id="{{$value->id}}" <?php if($value->popular==1){ echo "checked"; } ?>>
                                     </div>
                                 </td>
-                                
+
                             </tr>
                         @php
                         $i++;
                         @endphp
                         @endforeach
-                            
+
                         </tbody>
                     </table>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -82,11 +168,11 @@
             $.ajax({
                 type:'POST',
                 url:'{{url("/admin/add_popular_brand")}}',
-                data  :{id:id,_token:token,status:status},          
+                data  :{id:id,_token:token,status:status},
                 success:function(data){
                     location.reload();
                 }
-                
+
             });
         }
     })
@@ -126,11 +212,11 @@
 </script>
 <script>
    $(document).ready(function() {
-      $('#example').DataTable({
+      $('{{trim($tbname,",")}}').DataTable({
          dom: 'Bfrtip',
          buttons: [{
             extend: 'excel',
-            text: 'Export', 
+            text: 'Export',
             exportOptions: {
                 columns: [ 1,3]
             },

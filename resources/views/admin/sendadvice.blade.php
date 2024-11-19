@@ -401,6 +401,7 @@
                                     <div class="form-group">
                                       <label for="images" class="col-form-label">Banner Images</label>
                                       <input type="file" name="images[]" id="images" multiple class="form-control" accept=".jpeg, .jpg, .png,.gif">
+                                      <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                                     </div>
                                     <div class="form-group">
                                       <?php if(isset($data->id)){
@@ -437,7 +438,7 @@
                                     <div class="col-md-6">
                                         <label for="sponser_icon" class="col-form-label">Sponser Icon</label>
                                         <input type="file" name="sponser_icon" id="sponserlogo" class="form-control file mb-2" placeholder="Logo" accept=".jpeg, .jpg, .png, .gif"  onchange="previewFilesponser(this,20,20);">
-                                        {{-- <span class="text-danger"><b>Note : </b>Dimension 20px * 20px</span><br> --}}
+                                        <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                                         <img id="previewImgsponser" class="mt-2" src="<?php if(isset($data->id)){ if($data->sponser_icon!=''){ echo url("public/images/".$data->sponser_icon);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                                         <div class="text-danger" id="sponser_error"></div>
                                     </div>

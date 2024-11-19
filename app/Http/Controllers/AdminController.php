@@ -146,7 +146,7 @@ class AdminController extends Controller
     public function banners(Request $request){
         $admin_id = session::get('id');
         $data['active'] = "banner";
-        $data['active1'] = "banner";
+        $data['active1'] = "banners";
         $data['banners']=Banner::orderBy('position_id', 'asc')->get();
         $data['admin']=Admin::find($admin_id);
         return view('admin.banners', $data);
@@ -154,7 +154,7 @@ class AdminController extends Controller
 
     public function addBanner(Request $request){
         $data['active'] = "banner";
-        $data['active1'] = "banner";
+        $data['active1'] = "banners";
         if($request->id){
             $data['banner']=Banner::find($request->id);
         }
@@ -179,8 +179,8 @@ class AdminController extends Controller
             echo $errors;
         }else{
             if($request->hasFile('image')){
-                $new_width = 1179;
-                $new_height = 900;
+                $new_width = 720;
+                $new_height = 480;
                 $file = $request->file('image');
                 $fileName = $file->getRealPath();
                 $uploadPath = public_path('img/banners/');
@@ -258,6 +258,7 @@ class AdminController extends Controller
 
     public function welcome_images(){
         $data['active'] = "banner";
+        $data['active1'] = "welcome_images";
         $admin_id = session::get('id');
         $data['welcome_images']=WelcomeImage::orderBy('position_id', 'asc')->get();
         $data['admin']=Admin::where('id',$admin_id)->first();
@@ -266,6 +267,7 @@ class AdminController extends Controller
 
     public function add_welcome_image(Request $request){
         $data['active'] = "banner";
+        $data['active1'] = "welcome_images";
         if($request->id){
             $data['welcome_image']=WelcomeImage::find($request->id);
         }
@@ -434,6 +436,7 @@ class AdminController extends Controller
         $admin_id = session::get('id');
         $data['title'] = "Country";
         $data['active'] = "setting";
+        $data['active1'] = "countryList";
         $data['data'] = Country::where('status',1)->get();
         $data['admin']=Admin::find($admin_id);
         return view('admin.countrylist', $data);
@@ -442,6 +445,7 @@ class AdminController extends Controller
         $admin_id = session::get('id');
         $data['title'] = "State";
         $data['active'] = "setting";
+        $data['active1'] = "countryList";
         $countryid = base64_decode($request->key);
         $data['data'] = State::where('country_id',$countryid)->where('status',1)->get();
          
@@ -454,6 +458,7 @@ class AdminController extends Controller
         $admin_id = session::get('id');
         $data['title'] = "City";
         $data['active'] = "setting";
+        $data['active1'] = "countryList";
         $stateid = base64_decode($request->key);
         $data['stateid'] = base64_decode($request->key);
         $data['data'] = City::where('state_id',$stateid)->where('status',1)->orderby('popular','DESC')->get();
@@ -543,6 +548,7 @@ class AdminController extends Controller
         $admin_id = session::get('id');
         $data['title'] = "Image Setting";
         $data['active'] = "banner";
+        $data['active1'] = "image_setting";
         $data['data']=ImageSetting::where('id',1)->first();
         $data['admin']=Admin::find($admin_id);
         return view('admin.image_setting', $data);
@@ -699,16 +705,27 @@ class AdminController extends Controller
 
     public function CarCheck(Request $request){
         $admin_id = session::get('id');
-        $data['active'] = "banner";
-        $data['active1'] = "banner";
+        $data['active'] = "master";
+        $data['active1'] = "CarCheck";
         $data['data'] = CarCheck::where('status','!=', 2)->get();
         $data['admin'] = Admin::find($admin_id);
         return view('admin.carcheck', $data);
     }
+    //carcheckdetail
+    public function carcheckdetail(Request $request){
+        $admin_id = session::get('id');
+        $data['active'] = "master";
+        $data['active1'] = "CarCheck";
+        $id = base64_decode($request->key);
+        $data['language'] = base64_decode($request->lang);
+        $data['data'] = CarCheck::where('id',$id)->first();
+        $data['admin'] = Admin::find($admin_id);
+        return view('admin.carcheckdetail', $data);
+    }
     public function addCarCheck(Request $request){
         $admin_id = session::get('id');
-        $data['active'] = "banner";
-        $data['active1'] = "banner";
+        $data['active'] = "master";
+        $data['active1'] = "CarCheck";
         $data['data'] = CarCheck::where('id', base64_decode($request->key))->first();
         $data['admin'] = Admin::find($admin_id);
         return view('admin.addCarCheck', $data);
@@ -790,5 +807,9 @@ class AdminController extends Controller
             // print_r($log);
             $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
         }
+    }
+
+    public function privacyPolicy(Request $request){
+        return view('app.privacy');
     }
 }

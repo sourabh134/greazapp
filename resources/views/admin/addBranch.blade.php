@@ -158,7 +158,7 @@
                 <div class="col-sm-12">
                   <label for="image" class="col-form-label">Branch Image</label>
                   <input type="file" id="imageInput" name="image" accept="image/*" class="form-control mb-2">
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <p class="text-danger" id="message"></p>
                   <img id="preview" src="<?php if(isset($data->id)){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" style="max-width: 100%;">                 
                 </div>

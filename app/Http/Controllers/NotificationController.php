@@ -26,9 +26,22 @@ class NotificationController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Notification";
         $data['active'] = "master";
+        $data['active1'] = "Notification";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = Notification::where('status',1)->orderBy('id','DESC')->get();
         return view('admin.notification',$data);
+    }
+
+    public function notificationdetails(Request $request){
+        $admin_id = Session::get('id');
+        $data['title'] = "Notification";
+        $data['active'] = "master";
+        $data['active1'] = "Notification";
+        $data['admin']=Admin::find($admin_id);
+        $id = base64_decode($request->key);
+        $data['language'] = base64_decode($request->lang);
+        $data['data'] = Notification::where('id',$id)->first();
+        return view('admin.notificationdetails',$data);
     }
 
 
@@ -36,6 +49,7 @@ class NotificationController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Notification";
         $data['active'] = "master";
+        $data['active1'] = "Notification";
         $data['admin']=Admin::find($admin_id);
         $data['user'] = User::where('status',1)->get();
         $data['brand'] = Brand::where('status',1)->get();
@@ -123,8 +137,8 @@ class NotificationController extends Controller
         $notify_type_time = 0;
         //image upload
         if($request->image!=''){
-            $new_width = 1179;
-            $new_height = 900;
+            $new_width = 720;
+            $new_height = 480;
             $file = $request->file('image');
             $fileName = $file->getRealPath();
             $uploadPath = public_path('images/');

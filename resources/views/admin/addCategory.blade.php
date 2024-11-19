@@ -23,11 +23,11 @@
                 @csrf
                 <div class="row">
                   <div class="col-sm-6 mb-4">
-                    <label for="name" class="col-form-label">Category (English)</label>
+                    <label for="name" class="col-form-label">Category (English)<em>*</em></label>
                     <input type="text" name="name" class="form-control name" placeholder="Category Name (English)" id="name" value="@if(isset($data->id)) {{$data->name}} @endif" required>
                   </div>
                   <div class="col-sm-6 mb-4">
-                    <label for="namear" class="col-form-label">Category (Arabic)</label>
+                    <label for="namear" class="col-form-label">Category (Arabic)<em>*</em></label>
                     <input type="text" name="namear" class="form-control namear" placeholder="Category Name (Arabic)" id="namear" value="@if(isset($data->id)) {{$data->name_ar}} @endif" required>
                   </div>
                   <div class="col-sm-12 text-center">

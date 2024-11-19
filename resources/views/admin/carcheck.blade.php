@@ -33,8 +33,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name (English)</th>
                                 <th scope="col">Name (Arabic)</th>
-                                <th scope="col">Content (English)</th>
-                                <th scope="col">Content (Arabic)</th>
+                                {{-- <th scope="col">Content (English)</th>
+                                <th scope="col">Content (Arabic)</th> --}}
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -46,10 +46,12 @@
                         @foreach($data as $value)
                             <tr>
                                 <td>{{$i}}</td>
-                                <td>{{$value->name}}</td>
-                                <td>{{$value->name_ar}}</td>
-                                <td>{{$value->content}}</td>
-                                <td>{{$value->content_ar}}</td>                                
+                                <td><a
+                                    href="{{ url('admin/carcheckdetail?key=' . base64_encode($value->id) . '&lang=' . base64_encode(1)) }}">{{$value->name}}</a></td>
+                                <td><a
+                                    href="{{ url('admin/carcheckdetail?key=' . base64_encode($value->id) . '&lang=' . base64_encode(2)) }}">{{$value->name_ar}}</a></td>
+                                {{-- <td>{{$value->content}}</td>
+                                <td>{{$value->content_ar}}</td>                                 --}}
                                 <td>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input flexSwitchCheckChecked" type="checkbox" role="switch" id="flexSwitchCheckChecked" data-id="{{$value->id}}" <?php if($value->status==1){ echo "checked"; } ?>>                                        

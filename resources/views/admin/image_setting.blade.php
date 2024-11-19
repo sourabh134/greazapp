@@ -29,7 +29,7 @@
                   <div class="col-sm-12">
                     <label for="image" class="col-form-label">Background Image</label>
                     <input type="file" id="imageInput" name="image" accept="image/*" class="form-control mb-2">
-                    {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 0.46:1</span><br> --}}
+                    {{-- <span class="text-danger"><b>Note : </b>Recommended size will be 0.46:1</span><br> --}}
                     <p class="text-danger" id="message"></p>
                     <img id="preview" src="<?php if(isset($data)){ echo url("public/img/welcome_images/".$data->backgroundimage);}else{ ?>../public/img/image-preview.png<?php } ?>" style="max-width: 100%;">
                     <?php if(isset($data)){ ?>

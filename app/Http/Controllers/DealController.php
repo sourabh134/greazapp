@@ -99,8 +99,8 @@ class DealController extends Controller
                 $stateid = implode(",",$request->state);
                 //image upload
                 if($request->images!=''){
-                    $new_width = 1179;
-                    $new_height = 900;
+                    $new_width = 720;
+                    $new_height = 480;
                     $file = $request->file('images');
                     $fileName = $file->getRealPath();
                     $uploadPath = public_path('images/');
@@ -278,8 +278,8 @@ class DealController extends Controller
                 $stateid = implode(",",$request->state);
                 //image upload
                 if($request->images!=''){
-                    $new_width = 1179;
-                    $new_height = 900;
+                    $new_width = 720;
+                    $new_height = 480;
                     $file = $request->file('images');
                     $fileName = $file->getRealPath();
                     $uploadPath = public_path('images/');
@@ -607,6 +607,7 @@ class DealController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Deal Type";
         $data['active'] = "master";
+        $data['active1'] = "DealType";
         $data['admin']=Admin::find($admin_id);
         $data['data'] = DealType::where('status',1)->get();
         return view('admin.dealtype',$data);
@@ -616,6 +617,7 @@ class DealController extends Controller
         $admin_id = Session::get('id');
         $data['title'] = "Deal Type";
         $data['active'] = "master";
+        $data['active1'] = "DealType";
         $data['admin']=Admin::find($admin_id);
         $id = base64_decode($request->key);
         $data['data'] = DealType::find($id);

@@ -60,13 +60,13 @@
               @csrf
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control" placeholder="Name (English)" id="name" value="<?php if(isset($banner)){ echo $banner->name; } ?>">
                   <div class="text-danger" id="name_error"></div>
                 </div>
              
                 <div class="col-sm-6">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control" placeholder="Name (Arabic)" id="namear" value="<?php if(isset($banner)){ echo $banner->name_ar; } ?>">
                   <div class="text-danger" id="namear_error"></div>
                 </div>
@@ -108,13 +108,13 @@
 
               <div class="row mb-3">
                 <div class="col-sm-6">
-                  <label for="start_date" class="col-form-label">Start Date</label>
+                  <label for="start_date" class="col-form-label">Start Date<em>*</em></label>
                   <input type="date" name="start_date" class="form-control" id="start_date" min="<?=date('Y-m-d')?>" value="<?php if(isset($banner)){ echo $banner->start_date; }else{ echo date('Y-m-d'); } ?>">
                   <div class="text-danger" id="start_date_error"></div>
                 </div>
               
                 <div class="col-sm-6">
-                  <label for="end_date" class="col-form-label">Expiry Date</label>
+                  <label for="end_date" class="col-form-label">Expiry Date<em>*</em></label>
                   <input type="date" name="end_date" class="form-control" id="end_date" min="<?=date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'))?>" value="<?php if(isset($banner)){ echo $banner->end_date; }else{ echo date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day')); } ?>">
                   <div class="text-danger" id="end_date_error"></div>
                 </div>
@@ -122,9 +122,11 @@
               
               <div class="row mb-3">
                 <div class="col-sm-12">
-                  <label for="image" class="col-form-label">Upload Image</label>
+                  <label for="image" class="col-form-label">Upload Image<?php if(isset($banner)){}else {
+                    echo "<em>*</em>";
+                  } ?></label>
                   <input type="file" id="imageInput" name="image" accept="image/*" class="form-control mb-2">
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <p class="text-danger" id="message"></p>
                   <img id="preview" src="<?php if(isset($banner)){ echo url("public/img/banners/".$banner->image);}else{ ?>../public/img/image-preview.png<?php } ?>" style="max-width: 100%;">
                   <?php if(isset($banner)){ ?>

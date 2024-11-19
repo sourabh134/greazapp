@@ -62,12 +62,12 @@
               @csrf
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>
@@ -76,12 +76,12 @@
               
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="info" class="col-form-label">Description (English)</label>
+                  <label for="info" class="col-form-label">Description (English)<em>*</em></label>
                   <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Description (English)">@if(isset($data->id)){{$data->content}}@endif</textarea>
                   <div class="text-danger" id="info_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="infoar" class="col-form-label">Description (Arabic)</label>
+                  <label for="infoar" class="col-form-label">Description (Arabic)<em>*</em></label>
                   <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Description (Arabic)">@if(isset($data->id)){{$data->content_ar}}@endif</textarea>
                   <div class="text-danger" id="infoar_error"></div>
                 </div>

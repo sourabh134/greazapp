@@ -60,7 +60,7 @@
 
                   <input type="file" name="image" class="form-control mb-2" id="image" <?php if(!isset($banner)){ echo "required"; } ?>>
 
-                  {{-- <span class="text-danger"><b>Note : </b>Image ratio must be 4:3</span><br> --}}
+                  <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
 
                   <div class="text-center">
 
