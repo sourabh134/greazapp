@@ -39,14 +39,14 @@
                             @csrf
                             <div class="row ui">
                                 <div class="col-sm-6">
-                                    <label for="name" class=" col-form-label">Title (English)</label>
+                                    <label for="name" class=" col-form-label">Title (English)<em>*</em></label>
                                     <input type="text" name="name" class="form-control name" placeholder="Title"
                                         id="name"
                                         value="@if(isset($data->id)){{$data->title}}@endif" required>
                                     <div class="text-danger" id="name_error"></div>
-                                </div>                                
+                                </div>
                                 <div class="col-sm-6">
-                                    <label for="namear" class=" col-form-label">Title (Arabic)</label>
+                                    <label for="namear" class=" col-form-label">Title (Arabic)<em>*</em></label>
                                     <input type="text" name="namear" class="form-control namear" placeholder="Title"
                                         id="namear"
                                         value="@if(isset($data->id)){{$data->titlear}}@endif" required>
@@ -55,14 +55,14 @@
                             </div>
                             <div class="row ui">
                                 <div class="col-sm-6">
-                                    <label for="searchkeyword" class=" col-form-label">Search Keyword (English)</label>
+                                    <label for="searchkeyword" class=" col-form-label">Search Keyword (English)<em>*</em></label>
                                     <input type="text" name="searchkeyword" class="form-control searchkeyword" placeholder="Search Keyword"
                                         id="searchkeyword"
                                         value="@if(isset($data->id)){{$data->searchkeyword}}@endif" required>
                                     <div class="text-danger" id="searchkeyword_error"></div>
-                                </div>                                
+                                </div>
                                 <div class="col-sm-6">
-                                    <label for="searchkeywordar" class=" col-form-label">Search Keyword (Arabic)</label>
+                                    <label for="searchkeywordar" class=" col-form-label">Search Keyword (Arabic)<em>*</em></label>
                                     <input type="text" name="searchkeywordar" class="form-control searchkeywordar" placeholder="Search Keyword"
                                         id="searchkeywordar"
                                         value="@if(isset($data->id)){{$data->searchkeyword_ar}}@endif" required>
@@ -71,17 +71,17 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-sm-12">
-                                    <label for="info" class=" col-form-label">Descritpion (English)</label>
+                                    <label for="info" class=" col-form-label">Descritpion (English)<em>*</em></label>
                                     <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Descritpion (English)">@if(isset($data->id)){{$data->message}}@endif</textarea>
                                     <div class="text-danger" id="info_error"></div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <label for="infoar" class=" col-form-label">Descritpion (Arabic)</label>
+                                    <label for="infoar" class=" col-form-label">Descritpion (Arabic)<em>*</em></label>
                                     <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Descritpion (Arabic)">@if(isset($data->id)){{$data->messagear}}@endif</textarea>
                                     <div class="text-danger" id="infoar_error"></div>
                                 </div>
-                                
-                                <div class="row mb-3">                                    
+
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="sponser_icon" class="col-form-label">Image</label>
                                         <input type="file" name="sponser_icon" id="sponserlogo" class="form-control file mb-2" placeholder="Logo" accept=".jpeg, .jpg, .png, .gif"  onchange="sponserFiles(this);">
@@ -89,7 +89,7 @@
                                         <img id="previewImgss" class="mt-2" src="<?php if(isset($data->id)){ if($data->image!=''){ echo url("public/images/".$data->image);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                                         <div class="text-danger" id="sponser_error"></div>
                                       </div>
-                                  </div>                          
+                                  </div>
 
                                 <div class="col-sm-12 text-center mt-4">
                                     <input type="hidden" class="id" name="id"
@@ -111,14 +111,14 @@
 <script>
     function sponserFiles(input) {
        var files = $("#sponserlogo").get(0).files[0];
- 
+
        if (files) {
           var readers = new FileReader();
- 
+
           readers.onload = function() {
              $("#previewImgss").attr("src", readers.result);
           }
- 
+
           readers.readAsDataURL(files);
        }
     }
@@ -128,29 +128,29 @@
     var name = $('#name').val();
     var namear = $('#namear').val();
     var info = $('#info').val();
-    var infoar = $('#infoar').val();    
-    if (!name) {       
+    var infoar = $('#infoar').val();
+    if (!name) {
         $('#name_error').text("The title field is required.");
         return false;
     }
-    if (!namear) {       
+    if (!namear) {
         $('#name_error').text("");
         $('#namear_error').text("The title field is required.");
         return false;
     }
-    if (!info) {        
+    if (!info) {
         $('#name_error').text("");
         $('#namear_error').text("");
         $('#info_error').text("The info field is required.");
         return false;
-    }       
-    if (!infoar) {        
+    }
+    if (!infoar) {
         $('#name_error').text("");
         $('#namear_error').text("");
         $('#info_error').text("");
         $('#infoar_error').text("The info field is required.");
         return false;
-    }       
+    }
     $('#name_error').text("");
     $('#namear_error').text("");
     $('#info_error').text("");

@@ -13,6 +13,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\KnowledgeCenterController;
+use App\Http\Controllers\JatoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -262,5 +263,15 @@ Route::middleware(['middleware' => 'prevent-back-history','checkLogin'])->group(
         Route::post('/admin/addknowledgeimagesectionupdate', 'addknowledgeimagesectionupdate');
         Route::post('/admin/change_advice_status', 'change_advice_status');
         Route::post('/updateadviceOrder', 'updateadviceOrder');
+    });
+    //JatoController
+    Route::controller(JatoController::class)->group(function(){
+        Route::get('/admin/market', 'market');
+        Route::get('/admin/carmakes', 'carmakes');
+        Route::get('/admin/carmodels', 'carmodels');
+        Route::get('/admin/carbodies', 'carbodies');
+        Route::get('/admin/carvehicles', 'carvehicles');
+        Route::get('/admin/carphoto', 'carphoto');
+
     });
 });

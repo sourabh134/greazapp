@@ -71,15 +71,15 @@ class ApiController extends Controller
         if($username==null){
             $err_array[]='username';
         }
-        if($gender==null){
-            $err_array[]='gender';
-        }
+        // if($gender==null){
+        //     $err_array[]='gender';
+        // }
         if($phone==null){
             $err_array[]='phone';
         }
-        if($dob==null){
-            $err_array[]='dob';
-        }
+        // if($dob==null){
+        //     $err_array[]='dob';
+        // }
         if($deviceType==null){
             $err_array[]='deviceType';
         }

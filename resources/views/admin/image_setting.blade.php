@@ -18,16 +18,16 @@
             <p class="alert alert-success"><span style="font-weight: 600;"> Success !! </span>{{ Session::get('message') }}</p>
             @endif -->
             <p class="alert alert-success" style="display:none" id="msg"></p>
-            
+
             <!-- <a href="#" class="white_btn3">Create Report</a>style="border: 1px solid #d7d7d7;" -->
-          
+
             <!-- <h2 class="card-title text-center pb-5">Banner</h2> -->
             <div class="customCheck">
               <form id="formData" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
                   <div class="col-sm-12">
-                    <label for="image" class="col-form-label">Background Image</label>
+                    <label for="image" class="col-form-label">Background Image<em>*</em></label>
                     <input type="file" id="imageInput" name="image" accept="image/*" class="form-control mb-2">
                     {{-- <span class="text-danger"><b>Note : </b>Recommended size will be 0.46:1</span><br> --}}
                     <p class="text-danger" id="message"></p>
@@ -36,28 +36,28 @@
                       <input type="hidden" name="banner_id" id="banner_id" value="{{ $data->id }}">
                     <?php }else{ ?>
                       <input type="hidden" name="banner_id" id="banner_id" value="">
-                    <?php } ?>                  
+                    <?php } ?>
                   </div>
                 </div>
-  
+
                 <div class="row">
                   <div class="col-sm-12 text-center">
                     <button type="button" onclick="get_form_data()" class="btn btn-primary">Submit</button>
                   </div>
-                </div>              
+                </div>
                 {{-- <div class="row">
                   {{-- <div class="col-sm-2">
                     <div class="form-group">
-                      <input type="checkbox" id="skippable" class="skipable" name="skip" <?php if(isset($data)){ if($data->skipable==1){ echo "Checked"; } } ?>> 
+                      <input type="checkbox" id="skippable" class="skipable" name="skip" <?php if(isset($data)){ if($data->skipable==1){ echo "Checked"; } } ?>>
                       <label for="skippable" class="col-form-label">Skippable</label>
                     </div>
                   </div> --}}
                   {{-- <div class="col-sm-2">
                     <div class="form-group">
-                      <input type="checkbox" id="slidable" class="sliding" name="slidable" <?php if(isset($data)){ if($data->sliding==1){ echo "Checked"; } } ?>> 
+                      <input type="checkbox" id="slidable" class="sliding" name="slidable" <?php if(isset($data)){ if($data->sliding==1){ echo "Checked"; } } ?>>
                       <label for="slidable" class="col-form-label">Automatic</label>
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-sm-2 text-center">
                     <button type="button" onclick="get_form_data()" class="btn btn-primary">Submit</button>
                   </div> --
@@ -78,7 +78,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -103,7 +103,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 0.46 / 1;
@@ -134,12 +134,12 @@
   function get_form_data(){
     var banner_id = $('#banner_id').val();
     var image = $('#imageInput').val();
-    if(!image){        
+    if(!image){
       $('#message').text("The image field is required.");
       return false;
     }
-       
-    $.ajax({  
+
+    $.ajax({
       type:"POST",
       url:"{{url('admin/image_setting_insert')}}",
       data:new FormData( $("#formData")[0]),
@@ -151,7 +151,7 @@
       {
         console.log(data);
         if($.trim(data)=="update")
-        { 
+        {
           $(window).scrollTop(0);
           $('#msg').show();
           $("#msg").html('<span style="font-weight: 600;"> Success !! </span> Banner updated successfully.');
@@ -177,8 +177,8 @@
             window.location.href = "<?php echo url('admin/image_setting'); ?>";
           }, 5000);
         }
-      }  
-      
+      }
+
     });
  // }
   }
@@ -194,16 +194,16 @@
       var sliding = 1;
     }else{
       var sliding = 0;
-    } 
-    var token = "<?=csrf_token()?>";   
-    $.ajax({  
+    }
+    var token = "<?=csrf_token()?>";
+    $.ajax({
       type:"POST",
       url:"{{url('admin/image_setting_insert')}}",
       data:{skipable:skipable,sliding:sliding,_token:token},
       success:function(data)
       {
         if($.trim(data)=="update")
-        { 
+        {
           $(window).scrollTop(0);
           $('#msg').show();
           $("#msg").html('<span style="font-weight: 600;"> Success !! </span> Updated successfully.');
@@ -252,8 +252,8 @@
             $('#end_date_error').html(obj.end_date);
           }
         }
-      }  
-      
+      }
+
     });
  // }
   }

@@ -105,30 +105,30 @@
     }
 </style>
 
-<?php 
-if(isset($data->id)){ 
+<?php
+if(isset($data->id)){
   if($data->internalpage!=''){
     if($data->internalpage==1){
 ?>
-<style>    
+<style>
   .pageid{display: none;}
 </style>
 
     <?php }else{?>
 
-<style>    
+<style>
   .pageid{display: block;}
 </style>
     <?php }
   }else{
     ?>
 
-<style>    
+<style>
   .pageid{display: none;}
 </style>
   <?php }
 }else{?>
-<style>    
+<style>
   .pageid{display: none;}
 </style>
 <?php }
@@ -152,13 +152,13 @@ if(isset($data->id)){
             <p class="alert alert-success"><span style="font-weight: 600;"> Success !! </span>{{ Session::get('message') }}</p>
             @endif -->
             <!-- <p class="alert alert-success" style="display:none" id="msg"></p> -->
-            
+
             <!-- <a href="#" class="white_btn3">Create Report</a>style="border: 1px solid #d7d7d7;" -->
             <!-- <h2 class="card-title text-center pb-5"><?php if(isset($data->id)){ echo "Update"; }else{ echo "Add"; } ?> Banner</h2> -->
 
             <form id="formData" enctype="multipart/form-data">
               @csrf
-              <div class="row">                                
+              <div class="row">
                 <div class="col-md-2">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="whereshow"
@@ -203,16 +203,16 @@ if(isset($data->id)){
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control" placeholder="Name" id="name" value="<?php if(isset($data->id)){ echo $data->name; } ?>">
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control" placeholder="Name (Arabic)" id="namear" value="<?php if(isset($data->id)){ echo $data->name_ar; } ?>">
                   <div class="text-danger" id="namear_error"></div>
                 </div>
-                
+
                 <div class="col-md-6 mb-3">
                   <label for="page" class="col-form-label">Page</label>
                   <Select class="form-select" name="page" id="page">
@@ -226,9 +226,9 @@ if(isset($data->id)){
                 <div class="col-md-6 mb-3 pageid">
                   <label for="pageid" class="col-form-label">Page ID</label>
                   <Select class="form-select" name="pageid" id="pageid">
-                    <?php 
+                    <?php
                       if(isset($data->id)){
-                        if($data->internalpage!=""){                          
+                        if($data->internalpage!=""){
                           if($data->internalpage == 2){
                               //brand
                               $datap = App\Models\Brand::where('status',1)->get();
@@ -305,25 +305,25 @@ if(isset($data->id)){
 
                       }else{?>
                     <option value="">Choose</option>
-                    <?php } ?>                  
+                    <?php } ?>
                   </Select>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="startDate" class="col-form-label">Start Date</label>
+                  <label for="startDate" class="col-form-label">Start Date<em>*</em></label>
                   <input type="date" name="startDate" class="form-control" id="startDate" min="<?=date('Y-m-d')?>" value="<?php if(isset($data->id)){ echo $data->startDate; }else{ echo date('Y-m-d'); } ?>">
                   <div class="text-danger" id="startDate_error"></div>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="endDate" class="col-form-label">Expiry Date</label>
+                  <label for="endDate" class="col-form-label">Expiry Date<em>*</em></label>
                   <input type="date" name="endDate" class="form-control" id="endDate" min="<?=date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'))?>" value="<?php if(isset($data->id)){ echo $data->endDate; }else{ echo date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day')); } ?>">
                   <div class="text-danger" id="endDate_error"></div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label for="twitter" class="col-form-label">Country</label>
+                    <label for="twitter" class="col-form-label">Country<em>*</em></label>
                     <select class="form-select" name="country" id="country">
                       <option value="">Choose</option>
                       @foreach($country as $countryvalue)
@@ -335,7 +335,7 @@ if(isset($data->id)){
 
                   <div class="col-md-6">
                     <div class="state_select">
-                      <label for="state" class="col-form-label">State</label>
+                      <label for="state" class="col-form-label">State<em>*</em></label>
                       <div class="dropdown" data-control="checkbox-dropdown">
                           <label class="dropdown-label">Select</label>
                           <div class="dropdown-list" id="stateDatas">
@@ -358,7 +358,7 @@ if(isset($data->id)){
                                   @endforeach
                               @endif
 
-                              
+
                           </div>
                       </div>
                       <div class="text-danger" id="state_error"></div>
@@ -366,7 +366,7 @@ if(isset($data->id)){
                   </div>
                 <div class="col-md-6 mb-3">
                   <div class="state_select">
-                  <label for="end_date" class="col-form-label">City</label>
+                  <label for="end_date" class="col-form-label">City<em>*</em></label>
                   <div class="dropdown" data-control="checkbox-dropdown">
                     <label class="dropdown-label">Select</label>
                     <div class="dropdown-list" id="cityDatas">
@@ -379,25 +379,25 @@ if(isset($data->id)){
                           <input type="checkbox" name="city[]" class="checkcityname" value="{{$cityvalue->id}}" <?php foreach ($dealdetail as $dvalue) { if($dvalue->cityID == $cityvalue->id){ echo "checked"; }} ?>>{{$cityvalue->name}}
                         </label>
 
-                      
+
                       @endforeach
-                      @endif 
-                      
+                      @endif
+
                     </div>
                   </div>
-                  {{-- <select class="js-example-basic-single form-control form-select" name="city[]" id="city" multiple> 
+                  {{-- <select class="js-example-basic-single form-control form-select" name="city[]" id="city" multiple>
                     @if(isset($data->id))
                     <option value="All">All</option>
                       @foreach($city as $cityvalue)
                       <option value="{{$cityvalue->id}}" <?php foreach ($dealdetail as $dvalue) { if($dvalue->cityID == $cityvalue->id){ echo "selected"; }} ?>>{{$cityvalue->name}}</option>
                       @endforeach
-                    @endif                   
+                    @endif
                   </select> --}}
                   <div class="text-danger" id="city_error"></div>
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="end_date" class="col-form-label">Deal Type</label>
+                  <label for="end_date" class="col-form-label">Deal Type<em>*</em></label>
                   <select class="form-select" id="dealtype" name="dealtype">
                     <option <?php if(isset($data->id)){if($data->dealType==1){ echo"Selected"; }} ?> value="1">Brand</option>
                     <option <?php if(isset($data->id)){if($data->dealType==2){ echo"Selected"; }} ?> value="2">Agent/Reseller</option>
@@ -406,7 +406,7 @@ if(isset($data->id)){
                 </div>
 
                 <div class="col-md-6">
-                  <label for="end_date" class="col-form-label dealtypename"><?php if(isset($data->id)){ if($data->dealType==1){ echo"Brand"; }else{ echo"Agent"; } }else{ echo "Brand"; }  ?></label>
+                  <label for="end_date" class="col-form-label dealtypename"><?php if(isset($data->id)){ if($data->dealType==1){ echo"Brand"; }else{ echo"Agent"; } }else{ echo "Brand"; }  ?><em>*</em></label>
                   <?php if(isset($data->id)){
                     if($data->dealType==1){
                   ?>
@@ -414,14 +414,14 @@ if(isset($data->id)){
                     @foreach($brand as $bvalue)
                     <option <?php if(isset($data->id)){if(count($dealdetail)!=0){ if($dealdetail[0]->dealTypeID==$bvalue->id){ echo"Selected"; }}} ?> value="{{$bvalue->id}}">{{$bvalue->name}}</option>
                     @endforeach
-                    
+
                   </select>
                   <?php }else{ ?>
                     <select class="form-select" name="dealtypeid" id="dealtypeid">
                     @foreach($agent as $avalue)
                     <option <?php if(isset($data->id)){if(count($dealdetail)!=0){if($dealdetail[0]->dealTypeID==$avalue->id){ echo"Selected"; }}} ?> value="{{$avalue->id}}">{{$avalue->name}}</option>
                     @endforeach
-                    
+
                   </select>
 
                   <?php } }else{ ?>
@@ -430,38 +430,38 @@ if(isset($data->id)){
                     @foreach($brand as $bvalue)
                     <option value="{{$bvalue->id}}">{{$bvalue->name}}</option>
                     @endforeach
-                    
+
                   </select>
                   <?php } ?>
                   <div class="text-danger" id="dealtypeid_error"></div>
                 </div>
                 {{--  --}}
                 <div class="col-md-6">
-                  <label for="end_date" class="col-form-label">Types of Deal</label>                  
+                  <label for="end_date" class="col-form-label">Types of Deal<em>*</em></label>
                   <select class="form-select" name="dealtypesid" id="dealtypesid">
                     @foreach($dealtype as $dealtypevalue)
                     <option value="{{$dealtypevalue->id}}">{{$dealtypevalue->name}}</option>
-                    
-                    @endforeach                    
-                  </select>                 
+
+                    @endforeach
+                  </select>
                   <div class="text-danger" id="dealtypesid_error"></div>
                 </div>
                 {{--  --}}
 
                 <div class="col-md-12">
-                  <label for="discription" class="col-form-label">Discription (English)</label>
+                  <label for="discription" class="col-form-label">Discription (English)<em>*</em></label>
                   <textarea class="form-control" name="discription" id="discription"><?php if(isset($data->id)){ echo $data->discription; } ?></textarea>
                   <div class="text-danger" id="discription_error"></div>
                 </div>
                 <div class="col-md-12">
-                  <label for="discriptionar" class="col-form-label">Discription (Arabic)</label>
+                  <label for="discriptionar" class="col-form-label">Discription (Arabic)<em>*</em></label>
                   <textarea class="form-control" name="discriptionar" id="discriptionar"><?php if(isset($data->id)){ echo $data->discription_ar; } ?></textarea>
                   <div class="text-danger" id="discriptionar_error"></div>
                 </div>
 
-              
+
                 <div class="col-md-12 mb-3">
-                  <label for="images" class="col-form-label">Image</label>
+                  <label for="images" class="col-form-label">Image<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" name="images"class="form-control files mb-2" placeholder="images" id="images" accept=".jpeg, .jpg, .png, .gif"  >
                   <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <div class="text-center">
@@ -470,15 +470,15 @@ if(isset($data->id)){
                   <div class="text-danger" id="image_error"></div>
                 </div>
                 {{-- tag --}}
-                <div class="row mb-3">                          
+                <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="tag_name" class="col-form-label">Tag Name (English)</label>
-                    <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>               
+                    <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>
                     <div class="text-danger" id="tag_name_error"></div>
                   </div>
                   <div class="col-md-6">
                     <label for="tag_namear" class="col-form-label">Tag Name (Arabic)</label>
-                    <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>               
+                    <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>
                     <div class="text-danger" id="tag_namear_error"></div>
                   </div>
                 </div>
@@ -497,8 +497,8 @@ if(isset($data->id)){
                     </div>
                   </div>
                 </div>
-                
-                
+
+
               </div>
 
               <div class="row mb-4">
@@ -536,8 +536,8 @@ if(isset($data->id)){
 
         }
       })
-    } 
-    
+    }
+
   })
 </script>
 <script>
@@ -549,7 +549,7 @@ if(isset($data->id)){
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -574,7 +574,7 @@ if(isset($data->id)){
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -611,7 +611,7 @@ if(isset($data->id)){
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -636,7 +636,7 @@ if(isset($data->id)){
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -677,7 +677,7 @@ if(isset($data->id)){
       type:'POST',
       url:"{{url('/getdealtype')}}",
       data:{id:id,_token:token},
-      success:function(res){        
+      success:function(res){
           $('#dealtypeid').html(res)
       }
     })
@@ -696,70 +696,70 @@ if(isset($data->id)){
       var images  = $('#images').val();
       var id  = $('#id').val();
       if(!name){
-        $('#name_error').text("The name field is required."); 
-        return false;     
+        $('#name_error').text("The name field is required.");
+        return false;
       }
       if(!discription){
-        $('#name_error').text(""); 
-        $('#discription_error').text("The discription field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#discription_error').text("The discription field is required.");
+        return false;
       }
       if(!startDate){
-        $('#name_error').text(""); 
-        $('#discription_error').text(""); 
-        $('#startDate_error').text("The start Date field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#discription_error').text("");
+        $('#startDate_error').text("The start Date field is required.");
+        return false;
       }
       if(!endDate){
-        $('#name_error').text(""); 
-        $('#discription_error').text(""); 
-        $('#startDate_error').text(""); 
-        $('#endDate_error').text("The end Date field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#discription_error').text("");
+        $('#startDate_error').text("");
+        $('#endDate_error').text("The end Date field is required.");
+        return false;
       }
       if(new Date(startDate) > new Date(endDate)){
         $('#startDate_error').text("Start Date must be less then Expiry Date");
         return false;
       }
-      
+
       if(!dealtype){
-        $('#name_error').text(""); 
-        $('#discription_error').text(""); 
-        $('#startDate_error').text(""); 
-        $('#endDate_error').text(""); 
-        $('#dealtype_error').text("The deal type field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#discription_error').text("");
+        $('#startDate_error').text("");
+        $('#endDate_error').text("");
+        $('#dealtype_error').text("The deal type field is required.");
+        return false;
       }
       if(!dealtypeid){
-        $('#name_error').text(""); 
-        $('#discription_error').text(""); 
-        $('#startDate_error').text(""); 
-        $('#endDate_error').text(""); 
-        $('#dealtype_error').text(""); 
-        $('#dealtypeid_error').text("This field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#discription_error').text("");
+        $('#startDate_error').text("");
+        $('#endDate_error').text("");
+        $('#dealtype_error').text("");
+        $('#dealtypeid_error').text("This field is required.");
+        return false;
       }
       if(id==''){
         if(!images){
-          $('#name_error').text(""); 
-          $('#discription_error').text(""); 
-          $('#startDate_error').text(""); 
-          $('#endDate_error').text(""); 
-          $('#dealtype_error').text(""); 
-          $('#dealtypeid_error').text(""); 
+          $('#name_error').text("");
+          $('#discription_error').text("");
+          $('#startDate_error').text("");
+          $('#endDate_error').text("");
+          $('#dealtype_error').text("");
+          $('#dealtypeid_error').text("");
           $('#image_error').text("The image field is required.");
           return false;
         }
       }else if(imgfile =="1"){
-        $('#name_error').text(""); 
-        $('#discription_error').text(""); 
-        $('#startDate_error').text(""); 
-        $('#endDate_error').text(""); 
-        $('#dealtype_error').text(""); 
-        $('#dealtypeid_error').text(""); 
+        $('#name_error').text("");
+        $('#discription_error').text("");
+        $('#startDate_error').text("");
+        $('#endDate_error').text("");
+        $('#dealtype_error').text("");
+        $('#dealtypeid_error').text("");
         $('#image_error').text("The image field is required.");
         return false;
-      } 
+      }
       $.ajax({
           type:'POST',
           url:'{{url("/admin/insertdealtype")}}',
@@ -785,9 +785,9 @@ if(isset($data->id)){
 
             }
           }
-          
+
       });
-       
+
     })
 </script>
 {{-- <script>
@@ -819,7 +819,7 @@ if(isset($data->id)){
               data:{country_id:country_id,_token:token},
               success:function(res){
                 console.log(res);
-                
+
                   $('#stateDatas').html(res)
                   //$("#state").multiselect();
                   //$('.js-example-basic-single').select2();
@@ -929,11 +929,11 @@ if(isset($data->id)){
   function checkedstatevalue(){
     var checkedValues = [];
     if (this.checked) {
-      
+
       checkedValues.push($(this).val());
     }
     getCheckedValues();
-    
+
   }
 
 
@@ -964,22 +964,22 @@ if(isset($data->id)){
 <script>
   var state = false;
   function checkallstate(){
-   
+
     $('.checkstatename').each(function() {
     	if(!state) {
         	this.checked = true;
         } else {
          	this.checked = false;
         }
-        
+
     });
-    
+
     //switch
     if (state) {
       //console.log(1);
       $('.stateallcheck').text("Check All");
-      
-     	state = false;   
+
+     	state = false;
     } else {
       $('.stateallcheck').text("Uncheck All");
       //console.log(2);
@@ -990,7 +990,7 @@ if(isset($data->id)){
     // clicked = !clicked;
     // this.innerHTML = clicked ? 'Deselect' : 'Select';
   }
-  
+
   function getCheckedValues() {
     var token = "<?=csrf_token()?>";
     var checkedValues = [];
@@ -1021,15 +1021,15 @@ if(isset($data->id)){
         } else {
          	this.checked = false;
         }
-        
+
     });
-    
+
     //switch
     if (city) {
       //console.log(1);
       $('.cityallcheck').text("Check All");
-      
-      city = false;   
+
+      city = false;
     } else {
       $('.cityallcheck').text("Uncheck All");
       //console.log(2);

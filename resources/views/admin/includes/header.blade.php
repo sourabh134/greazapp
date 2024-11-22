@@ -171,6 +171,9 @@ button.dt-button.buttons-excel.buttons-html5:hover {
 .active1 i{
   color: #fff !important;
 }
+em{
+    color:red;
+}
 </style>
 
 

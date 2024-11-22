@@ -60,20 +60,20 @@
               @csrf
               <div class="row mb-3 ui">
                 <div class="col-md-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>
-                
+
               </div>
-              <div class="row mb-3 ui">                
+              <div class="row mb-3 ui">
                 <div class="col-md-6">
-                  <label for="website" class="col-form-label">Brand</label>
+                  <label for="website" class="col-form-label">Brand<em>*</em></label>
                 <select name="brands[]" multiple="" id="brands" class="js-example-basic-single form-select">
                   @foreach($brand as $brandvalue)
                   <option value="{{$brandvalue->id}}" <?php if(isset($data->id)){ foreach($agentbrand as $agval){ if($agval->brandID==$brandvalue->id){ echo"Selected"; }}}?>>{{$brandvalue->name}}</option>
@@ -81,69 +81,69 @@
                 </select>
                 <div class="text-danger" id="brands_error"></div>
                 </div>
-              </div>  
+              </div>
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="logo" class="col-form-label">Logo</label>
+                  <label for="logo" class="col-form-label">Logo<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" name="image" class="form-control file mb-2" placeholder="Logo" id="logo" accept=".jpeg, .jpg, .png, .gif">
                   <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                   <img id="previewImg" class="mt-2" src="<?php if(isset($data->id)){ echo url("public/images/".$data->logo);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   <div class="text-danger" id="logo_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="imagess" class="col-form-label">Image</label>
+                  <label for="imagess" class="col-form-label">Image<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" name="imagess" class="form-control files mb-2" placeholder="images" id="imagess" accept=".jpeg, .jpg, .png, .gif">
                   <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <img id="previewImgs" class="mt-2" src="<?php if(isset($data->id)){ echo url("public/images/".$data->images);}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   <div class="text-danger" id="imagess_error"></div>
                 </div>
               </div>
-              
+
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="email" class="col-form-label">Email</label>
-                  <input type="text" name="email" class="form-control" placeholder="Email" id="email" value="@if(isset($data->id)){{$data->email}}@endif" required>               
+                  <label for="email" class="col-form-label">Email<em>*</em></label>
+                  <input type="text" name="email" class="form-control" placeholder="Email" id="email" value="@if(isset($data->id)){{$data->email}}@endif" required>
                   <div class="text-danger" id="email_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="mobile" class="col-form-label">Mobile No.</label>
-                  <input type="text" name="mobile" class="form-control" placeholder="Mobile No." id="mobile" value="@if(isset($data->id)){{$data->contact}}@endif" required>               
+                  <label for="mobile" class="col-form-label">Mobile No.<em>*</em></label>
+                  <input type="text" name="mobile" class="form-control" placeholder="Mobile No." id="mobile" value="@if(isset($data->id)){{$data->contact}}@endif" required>
                   <div class="text-danger" id="mobile_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="youtube" class="col-form-label">Youtube</label>
-                  <input type="text" name="youtube" class="form-control" placeholder="Youtube" id="youtube" value="@if(isset($data->id)){{$data->youtube}}@endif" required>               
+                  <input type="text" name="youtube" class="form-control" placeholder="Youtube" id="youtube" value="@if(isset($data->id)){{$data->youtube}}@endif" required>
                   <div class="text-danger" id="youtube_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="twitter" class="col-form-label">Twitter</label>
-                  <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="@if(isset($data->id)){{$data->twitter}}@endif" required>               
+                  <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="@if(isset($data->id)){{$data->twitter}}@endif" required>
                   <div class="text-danger" id="twitter_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="linkedin" class="col-form-label">Linkedin</label>
-                  <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="@if(isset($data->id)){{$data->linkedin}}@endif" required>               
+                  <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="@if(isset($data->id)){{$data->linkedin}}@endif" required>
                   <div class="text-danger" id="linkedin_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="facebook" class="col-form-label">Facebook</label>
-                  <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="@if(isset($data->id)){{$data->facebook}}@endif" required>               
+                  <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="@if(isset($data->id)){{$data->facebook}}@endif" required>
                   <div class="text-danger" id="facebook_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="instagram" class="col-form-label">Instagram</label>
-                  <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="@if(isset($data->id)){{$data->instagram}}@endif" required>               
+                  <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="@if(isset($data->id)){{$data->instagram}}@endif" required>
                   <div class="text-danger" id="instagram_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="snapchat" class="col-form-label">Snapchat</label>
-                  <input type="text" name="snapchat" class="form-control" placeholder="Snapchat" id="snapchat" value="@if(isset($data->id)){{$data->snap_chat}}@endif" required>               
+                  <input type="text" name="snapchat" class="form-control" placeholder="Snapchat" id="snapchat" value="@if(isset($data->id)){{$data->snap_chat}}@endif" required>
                   <div class="text-danger" id="snapchat_error"></div>
                 </div>
               </div>
@@ -159,15 +159,15 @@
                   <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Description (Arabic)">@if(isset($data->id)){{$data->discription_ar}}@endif</textarea>
                 </div>
               </div>
-              <div class="row mb-3">                        
+              <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="tag_name" class="col-form-label">Tag Name (English)</label>
-                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>               
+                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>
                   <div class="text-danger" id="tag_name_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="tag_namear" class="col-form-label">Tag Name (Arabic)</label>
-                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>               
+                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>
                   <div class="text-danger" id="tag_namear_error"></div>
                 </div>
               </div>
@@ -178,18 +178,18 @@
                   <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                   <img id="previewImgtag" src="<?php if(isset($data->id)){ if($data->tag_icon!=''){ echo url("public/images/".$data->tag_icon);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   <div class="text-danger" id="tag_icon_error"></div>
-                </div>        
-                
+                </div>
+
               </div>
               <div class="row align-items-center mb-3">
                 <div class="col-md-12">
-                  <label for="instagram" class="col-form-label">Type</label>
+                  <label for="instagram" class="col-form-label">Type<em>*</em></label>
                   <div>
                     <input type="radio" id="agent" name="type" value="1" <?php if(isset($data->id)){ if($data->type==1){echo "checked"; }}else{ ?>checked<?php } ?> >
                     <label for="agent">Agent</label>
                     <input type="radio" id="reseller" name="type" class="ms-3" value="2" <?php if(isset($data->id)){ if($data->type==2){echo "checked"; }} ?>>
-                    <label for="reseller">Reseller</label> 
-                  </div>            
+                    <label for="reseller">Reseller</label>
+                  </div>
                 </div>
               </div>
               <div class="row mb-3">
@@ -215,7 +215,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="row mt-3">
                 <div class="col-sm-12 text-center">
                   <input type="hidden" class="id" name="id" id="id" value="@if(isset($data->id)) {{$data->id}} @endif">
@@ -240,7 +240,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -265,7 +265,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -303,7 +303,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -328,7 +328,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -365,7 +365,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -390,7 +390,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -423,7 +423,7 @@
    $("#images").change(function(){
       // check if fileArr length is greater than 0
        if (fileArr.length > 0) fileArr = [];
-     
+
         $('#image_preview').html("");
         var total_file = document.getElementById("images").files;
         if (!total_file.length) return;
@@ -436,12 +436,12 @@
           }
         }
    });
-  
+
   $('body').on('click', '#action-icon', function(evt){
       var divName = this.value;
       var fileName = $(this).attr('role');
       $(`#${divName}`).remove();
-    
+
       for (var i = 0; i < fileArr.length; i++) {
         if (fileArr[i].name === fileName) {
           fileArr.splice(i, 1);
@@ -450,7 +450,7 @@
     document.getElementById('images').files = FileListItem(fileArr);
       evt.preventDefault();
   });
-  
+
    function FileListItem(file) {
             file = [].slice.call(Array.isArray(file) ? file : arguments)
             for (var c, b = c = file.length, d = !0; b-- && d;) d = file[b] instanceof File
@@ -462,29 +462,29 @@
 </script>
 <script>
     $('.submitdata').click(function(){
-        var name  = $('#name').val();        
-        var namear  = $('#namear').val();        
-        var logo  = $('#logo').val();        
-        var imagess  = $('#imagess').val();      
-        var brands  = $('#brands').val();   
-        var email  = $('#email').val();   
-        var mobile  = $('#mobile').val();   
-        var youtube  = $('#youtube').val();   
-        var twitter  = $('#twitter').val();   
-        var linkedin  = $('#linkedin').val();   
-        var facebook  = $('#facebook').val();   
+        var name  = $('#name').val();
+        var namear  = $('#namear').val();
+        var logo  = $('#logo').val();
+        var imagess  = $('#imagess').val();
+        var brands  = $('#brands').val();
+        var email  = $('#email').val();
+        var mobile  = $('#mobile').val();
+        var youtube  = $('#youtube').val();
+        var twitter  = $('#twitter').val();
+        var linkedin  = $('#linkedin').val();
+        var facebook  = $('#facebook').val();
         var instagram  = $('#instagram').val();
         var snapchat  = $('#snapchat').val();
         var id  = $('#id').val();
         //alert(brands);
         if(!name){
-          $('#name_error').text("The name field is required."); 
-          return false;     
+          $('#name_error').text("The name field is required.");
+          return false;
         }
         if(!namear){
           $('#name_error').text("");
-          $('#namear_error').text("The name field is required."); 
-          return false;     
+          $('#namear_error').text("The name field is required.");
+          return false;
         }
         if(id==''){
           if(!logo){
@@ -492,13 +492,13 @@
             $('#logo_error').text("The logo field is required.");
             return false;
           }
-          
+
         }else if(imgfile =="1"){
           $('#name_error').text("");
           $('#logo_error').text("The logo field is required.");
           return false;
         }
-        if(id==''){          
+        if(id==''){
           if(!imagess){
             $('#name_error').text("");
             $('#logo_error').text("");
@@ -613,8 +613,8 @@
 
               }
             }
-            
-        });       
+
+        });
     })
 </script>
 <script>
@@ -629,9 +629,9 @@
           console.log(data);
           if($.trim(data)=="1"){
             location.reload();
-          }          
+          }
         }
-        
+
     });
   }
 </script>

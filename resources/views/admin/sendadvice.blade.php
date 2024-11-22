@@ -1,7 +1,7 @@
 @include('admin.includes.header')
 <?php if(isset($data->id)){
     if($data->UserID==1){
- ?> 
+ ?>
  <style>
     .brand {
         display: none;
@@ -98,7 +98,7 @@
         .select2-container {
             display: block !important;
         }
-        </style>  
+        </style>
 <?php }else if($data->type==4){ ?>
     <style>
         .brand {
@@ -122,7 +122,7 @@
         .select2-container {
             display: block !important;
         }
-        </style>  
+        </style>
 <?php }else if($data->type==5){ ?>
     <style>
         .brand {
@@ -147,7 +147,7 @@
             display: block !important;
         }
         </style>
-    <?php } ?>  
+    <?php } ?>
 
 <?php } ?>
 
@@ -177,7 +177,7 @@
         </style>
 <?php } ?>
 <style>
-    
+
     .form-check-input:checked {
         background-color: #766c2c;
         border-color: #766c2c;
@@ -185,7 +185,7 @@
         width: 15px;
         height: 15px;
     }
-   
+
   .img-div {
     position: relative;
     /* width: 46%; */
@@ -253,12 +253,12 @@
                                         <option value="1" <?php if(isset($data->id)){ if($data->UserID==1){ echo"Selected"; } } ?>>General Advice</option>
                                         <option value="2" <?php if(isset($data->id)){ if($data->UserID==2){ echo"Selected"; } } ?>>Sponser Advice</option>
                                     </select>
-                                    
+
                                 </div>
                             </div>
                             <div class="row ui sponseradvice">
                                 <div class="col-sm-6">
-                                    <label for="usertype" class=" col-form-label">Users Type</label>
+                                    <label for="usertype" class=" col-form-label">Users Type<em>*</em></label>
                                     <select name="usertype" id="usertype" class="form-select">
                                         <option value="1" <?php if(isset($data->id)){ if($data->type==1){ echo"Selected"; } } ?>>All user</option>
                                         <option value="2" <?php if(isset($data->id)){ if($data->type==2){ echo"Selected"; } } ?>>User Model</option>
@@ -270,9 +270,9 @@
                                     <div class="text-danger" id="usertype_error"></div>
                                 </div>
                                 <div class="col-sm-6 brand">
-                                    <label for="brand" class=" col-form-label">Brand</label>
+                                    <label for="brand" class=" col-form-label">Brand<em>*</em></label>
                                     <select name="brand" id="brand" class="form-select">
-                                        <option value="">Choose</option>                                        
+                                        <option value="">Choose</option>
                                         @foreach ($brand as $val)
                                             <option value="{{ $val->id }}" <?php if(isset($data->id)){ if($brands==$val->id){ echo "Selected"; } } ?>>{{ $val->name }}</option>
                                         @endforeach
@@ -281,15 +281,15 @@
                                 </div>
                                 {{-- age --}}
                                 <div class="col-sm-6 age">
-                                    <label for="age" class=" col-form-label">Age</label>
+                                    <label for="age" class=" col-form-label">Age<em>*</em></label>
                                     <input type="number" name="age" id="age" class="form-control" value="<?php if(isset($data->id)){ echo $age;  } ?>">
                                     <div class="text-danger" id="age_error"></div>
                                 </div>
                                 {{-- gender --}}
                                 <div class="col-sm-6 gender">
-                                    <label for="gender" class="col-form-label">Gender</label>
+                                    <label for="gender" class="col-form-label">Gender<em>*</em></label>
                                     <select name="gender" id="gender" class="form-select">
-                                        <option value="">Choose</option>                                        
+                                        <option value="">Choose</option>
                                         <option value="1" <?php if(isset($data->id)){ if($gender==1){ echo"Selected"; } } ?>>Male</option>
                                         <option value="2" <?php if(isset($data->id)){ if($gender==2){ echo"Selected"; } } ?>>Female</option>
                                         <option value="3" <?php if(isset($data->id)){ if($gender==3){ echo"Selected"; } } ?>>Other</option>
@@ -298,9 +298,9 @@
                                 </div>
                                 {{-- city --}}
                                 <div class="col-sm-6 city">
-                                    <label for="country" class=" col-form-label">Country</label>
+                                    <label for="country" class=" col-form-label">Country<em>*</em></label>
                                     <select name="country" id="country" class="form-select">
-                                        <option value="">Choose</option>                                        
+                                        <option value="">Choose</option>
                                         @foreach($country as $countryvalue)
                                             <option value="{{$countryvalue->id}}" <?php if(isset($data->id)){ if($countrys==$countryvalue->id){ echo"Selected"; } } ?>>{{$countryvalue->name}}</option>
                                         @endforeach
@@ -311,7 +311,7 @@
                             </div>
                             <div class="row ui statecity">
                                 <div class="col-sm-6">
-                                    <label for="state" class=" col-form-label">State</label>
+                                    <label for="state" class=" col-form-label">State<em>*</em></label>
                                     <select name="state" id="state" class="form-select">
                                         <?php if(isset($data->id)){
                                             $states = App\Models\State::where('country_id',$countrys)->get();
@@ -323,10 +323,10 @@
                                     <div class="text-danger" id="state_error"></div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="city" class=" col-form-label">City</label>
+                                    <label for="city" class=" col-form-label">City<em>*</em></label>
                                     <select name="city" id="city" class="form-select">
                                         <?php if(isset($data->id)){
-                                            
+
                                             $city = App\Models\City::where('state_id',$state)->get();
                                             foreach($city as $cvalue){
                                         ?>
@@ -337,9 +337,9 @@
                                 </div>
                             </div>
 
-                            <div class="row ui sponseradvice">                                
+                            <div class="row ui sponseradvice">
                                 <div class="col-sm-6">
-                                    <label for="user" class=" col-form-label">User</label>
+                                    <label for="user" class=" col-form-label">User<em>*</em></label>
                                     <select name="user[]" multiple="" id="user"
                                         class="js-example-basic-single form-control" onchange="toggleSelectAll(this)">
                                         <option value="0">All</option>
@@ -352,14 +352,14 @@
                             </div>
                             <div class="row ui">
                                 <div class="col-sm-6">
-                                    <label for="name" class=" col-form-label">Title (English)</label>
+                                    <label for="name" class=" col-form-label">Title (English)<em>*</em></label>
                                     <input type="text" name="name" class="form-control name" placeholder="Title (English)"
                                         id="name"
                                         value="@if(isset($data->id)){{$data->title}}@endif" required>
                                     <div class="text-danger" id="name_error"></div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="namear" class=" col-form-label">Title (Arabic)</label>
+                                    <label for="namear" class=" col-form-label">Title (Arabic)<em>*</em></label>
                                     <input type="text" name="namear" class="form-control namear" placeholder="Title (Arabic)"
                                         id="namear"
                                         value="@if(isset($data->id)){{$data->title_ar}}@endif" required>
@@ -368,12 +368,12 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-sm-12">
-                                    <label for="info" class=" col-form-label">Message (English)</label>
+                                    <label for="info" class=" col-form-label">Message (English)<em>*</em></label>
                                     <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Message (English)">@if(isset($data->id)){{$data->message}}@endif</textarea>
                                     <div class="text-danger" id="info_error"></div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <label for="infoar" class=" col-form-label">Message (Arabic)</label>
+                                    <label for="infoar" class=" col-form-label">Message (Arabic)<em>*</em></label>
                                     <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Message (Arabic)">@if(isset($data->id)){{$data->message_ar}}@endif</textarea>
                                     <div class="text-danger" id="infoar_error"></div>
                                 </div>
@@ -390,10 +390,10 @@
                                              <?php if (!isset($banner)) {
                                                 echo 'required';
                                             } ?>>
-                                        
+
                                         <img id="previewImg" src="../public/img/image-preview.png" alt="Placeholder"
                                             width="100px">
-                                        
+
                                     </div> --}}
                                 </div>
                                 {{-- banner image --}}
@@ -407,14 +407,14 @@
                                       <?php if(isset($data->id)){
                                         foreach($brandbanner as $bannervalue){
                                       ?>
-                    
+
                                         <div class='img-div' id='img-div"+i+"'>
                                           <img src='{{url('public/images/'.$bannervalue->image)}}' class='img-responsive image img-thumbnail' title=''>
                                           <div class='middle'>
                                             <button id='action-icon' class='btn' type="button" onclick="bannerimagedelete({{$bannervalue->id}})"><i class='fa fa-trash'></i></button>
                                           </div>
                                         </div>
-                    
+
                                       <?php } } ?>
                                       <div id="image_preview" style="width:100%;">
                                       </div>
@@ -425,16 +425,16 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                       <label for="sponser_name" class="col-form-label">Sponser Name (English)</label>
-                                      <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>               
+                                      <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>
                                       <div class="text-danger" id="sponser_name_error"></div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="sponser_namear" class="col-form-label">Sponser Name (Arabic)</label>
-                                        <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name_ar}}@endif" required>               
+                                        <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name_ar}}@endif" required>
                                         <div class="text-danger" id="sponser_namear_error"></div>
                                       </div>
                                   </div>
-                                  <div class="row mb-3">                                    
+                                  <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="sponser_icon" class="col-form-label">Sponser Icon</label>
                                         <input type="file" name="sponser_icon" id="sponserlogo" class="form-control file mb-2" placeholder="Logo" accept=".jpeg, .jpg, .png, .gif"  onchange="previewFilesponser(this,20,20);">
@@ -447,7 +447,7 @@
                                         <input type="date" name="expire_date" class="form-control" min="<?=date('Y-m-d')?>" placeholder="End Date"
                                             id="expire_date" value="@if(isset($data->id)){{$data->expire_date}}@endif">
                                         <div class="text-danger" id="end_date_error"></div>
-                                    </div> 
+                                    </div>
                                   </div>
                                 <div class="row ui">
                                     <label for="end_date" class="col-form-label">Send a push notification</label>
@@ -469,7 +469,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                                                
+
                               </div>
 
                                 <div class="col-sm-12 text-center mt-4">
@@ -503,11 +503,11 @@
     document.getElementById('sponserlogo').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (!file) return;
-  
+
         const img = new Image();
         const objectURL = URL.createObjectURL(file);
         img.src = objectURL;
-        
+
         img.onload = function() {
             const width = img.naturalWidth;
             const height = img.naturalHeight;
@@ -528,9 +528,9 @@
                 document.getElementById('previewImgsponser').style.display = 'block';
                 document.getElementById('sponser_error').style.display = 'none';
                 imgfile="0";
-            }            
+            }
         };
-  
+
         img.onerror = function() {
             document.getElementById('image_error').textContent = 'Failed to load image.';
             document.getElementById('previewImg').style.display = 'none';
@@ -737,7 +737,7 @@
             return false;
         }
     }
-    
+
     if (!name) {
         $('#user_error').text("");
         $('#name_error').text("The title field is required.");
@@ -758,25 +758,25 @@
         return false;
       }
     }
-    
-    // if(!images){      
+
+    // if(!images){
     //     $('#user_error').text("");
     //     $('#name_error').text("");
     //     $('#info_error').text("");
     //     $('#url_error').text("");
     //     $('#image_error').text("The field is required.");
-    //     return false;      
+    //     return false;
     // }
-    if(!sponser_name){      
+    if(!sponser_name){
         $('#user_error').text("");
         $('#name_error').text("");
         $('#info_error').text("");
         $('#url_error').text("");
         $('#image_error').text("");
         $('#sponser_name_error').text("The field is required.");
-        return false;      
+        return false;
     }
-    // if(!sponserlogo){      
+    // if(!sponserlogo){
     //     $('#user_error').text("");
     //     $('#name_error').text("");
     //     $('#info_error').text("");
@@ -784,9 +784,9 @@
     //     $('#image_error').text("");
     //     $('#sponser_name_error').text("");
     //     $('#sponser_error').text("The field is required.");
-    //     return false;      
-    // }    
-    // if(!expire_date){      
+    //     return false;
+    // }
+    // if(!expire_date){
     //     $('#user_error').text("");
     //     $('#name_error').text("");
     //     $('#info_error').text("");
@@ -795,8 +795,8 @@
     //     $('#sponser_name_error').text("");
     //     $('#sponser_error').text("");
     //     $('#end_date_error').text("The field is required.");
-    //     return false;      
-    // }    
+    //     return false;
+    // }
     $('#user_error').text("");
     $('#name_error').text("");
     $('#info_error').text("");
@@ -852,7 +852,7 @@
      $("#images").change(function(){
         // check if fileArr length is greater than 0
          if (fileArr.length > 0) fileArr = [];
-       
+
           $('#image_preview').html("");
           var total_file = document.getElementById("images").files;
           if (!total_file.length) return;
@@ -865,12 +865,12 @@
             }
           }
      });
-    
+
     $('body').on('click', '#action-icon', function(evt){
         var divName = this.value;
         var fileName = $(this).attr('role');
         $(`#${divName}`).remove();
-      
+
         for (var i = 0; i < fileArr.length; i++) {
           if (fileArr[i].name === fileName) {
             fileArr.splice(i, 1);
@@ -879,7 +879,7 @@
       document.getElementById('images').files = FileListItem(fileArr);
         evt.preventDefault();
     });
-    
+
      function FileListItem(file) {
               file = [].slice.call(Array.isArray(file) ? file : arguments)
               for (var c, b = c = file.length, d = !0; b-- && d;) d = file[b] instanceof File
@@ -901,9 +901,9 @@
             console.log(data);
             if($.trim(data)=="1"){
               location.reload();
-            }          
+            }
           }
-          
+
       });
     }
   </script>

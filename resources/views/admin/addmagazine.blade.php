@@ -29,36 +29,36 @@
                     <input type="radio" id="news" name="type" value="1" <?php if(isset($data->id)){ if($data->type==1){echo "checked"; }}else{ ?>checked<?php } ?> >
                     <label for="news" class="px-2">News</label>
                     <input type="radio" id="event" name="type" value="4" <?php if(isset($data->id)){ if($data->type==4){echo "checked"; }} ?>>
-                    <label for="event" class="px-2">Event</label> 
+                    <label for="event" class="px-2">Event</label>
                     <input type="radio" id="review" name="type" value="2" <?php if(isset($data->id)){ if($data->type==2){echo "checked"; }} ?>>
                     <label for="review" class="px-2">Review</label>
                     <input type="radio" id="video" name="type" value="3" <?php if(isset($data->id)){ if($data->type==3){echo "checked"; }} ?>>
                     <label for="video" class="px-2">Video</label>
-                  </div>    
+                  </div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="name" class="col-form-label">Heading (English)</label>
+                  <label for="name" class="col-form-label">Heading (English)<em>*</em></label>
                   <input type="text" name="heading" class="form-control name" placeholder="Heading (English)" id="name" value="@if(isset($data->id)){{$data->heading}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="namear" class="col-form-label">Heading (Arabic)</label>
+                  <label for="namear" class="col-form-label">Heading (Arabic)<em>*</em></label>
                   <input type="text" name="headingar" class="form-control namear" placeholder="Heading (Arabic)" id="namear" value="@if(isset($data->id)){{$data->heading_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
-                </div>                
+                </div>
               </div>
-              <div class="row mb-3">                
+              <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="postedBy" class="col-form-label">Created By (English)</label>
-                  <input type="text" name="postedBy" class="form-control" placeholder="Created By (English)" id="postedBy" value="@if(isset($data->id)){{$data->postedBy}}@endif" required>               
+                  <label for="postedBy" class="col-form-label">Created By (English)<em>*</em></label>
+                  <input type="text" name="postedBy" class="form-control" placeholder="Created By (English)" id="postedBy" value="@if(isset($data->id)){{$data->postedBy}}@endif" required>
                   <div class="text-danger" id="postedBy_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="postedByar" class="col-form-label">Created By (Arabic)</label>
-                  <input type="text" name="postedByar" class="form-control" placeholder="Created By (Arabic)" id="postedByar" value="@if(isset($data->id)){{$data->postedBy_ar}}@endif" required>               
+                  <label for="postedByar" class="col-form-label">Created By (Arabic)<em>*</em></label>
+                  <input type="text" name="postedByar" class="form-control" placeholder="Created By (Arabic)" id="postedByar" value="@if(isset($data->id)){{$data->postedBy_ar}}@endif" required>
                   <div class="text-danger" id="postedByar_error"></div>
                 </div>
               </div>
@@ -74,30 +74,30 @@
                   <textarea name="sort_descriptionar" id="sort_descriptionar" cols="30" rows="5" class="form-control" placeholder="Sort Description (Arabic)">@if(isset($data->id)){{$data->sort_description_ar}}@endif</textarea>
                   <div class="text-danger" id="sort_descriptionar_error"></div>
                 </div>
-                
+
               </div> --}}
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="info" class="col-form-label">Description (English)</label>
+                  <label for="info" class="col-form-label">Description (English)<em>*</em></label>
                   <textarea name="info" id="info" cols="30" rows="5" class="form-control" placeholder="Description (English)">@if(isset($data->id)){{$data->description}}@endif</textarea>
                   <div class="text-danger" id="info_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="infoar" class="col-form-label">Description (Arabic)</label>
+                  <label for="infoar" class="col-form-label">Description (Arabic)<em>*</em></label>
                   <textarea name="infoar" id="infoar" cols="30" rows="5" class="form-control" placeholder="Description (Arabic)">@if(isset($data->id)){{$data->description_ar}}@endif</textarea>
                   <div class="text-danger" id="infoar_error"></div>
                 </div>
-              </div>           
-              
+              </div>
+
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="postedDate" class="col-form-label">Start Date</label>
-                  <input type="date" name="postedDate" class="form-control" placeholder="Created Date" id="postedDate" value="<?php if(isset($data->id)){echo $data->postedDate; } ?>" required>               
+                  <label for="postedDate" class="col-form-label">Start Date<em>*</em></label>
+                  <input type="date" name="postedDate" class="form-control" placeholder="Created Date" id="postedDate" value="<?php if(isset($data->id)){echo $data->postedDate; } ?>" required>
                   <div class="text-danger" id="start_date_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="end_date" class="col-form-label">End Date</label>
-                  <input type="date" name="end_date" class="form-control" placeholder="Created Date" id="end_date" value="<?php if(isset($data->id)){echo $data->end_date; } ?>" required>               
+                  <label for="end_date" class="col-form-label">End Date<em>*</em></label>
+                  <input type="date" name="end_date" class="form-control" placeholder="Created Date" id="end_date" value="<?php if(isset($data->id)){echo $data->end_date; } ?>" required>
                   <div class="text-danger" id="end_date_error"></div>
                 </div>
               </div>
@@ -106,43 +106,43 @@
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="contact_number" class="col-form-label">Contact Number</label>
-                    <input type="text" name="contact_number" class="form-control" placeholder="Contact Number" id="contact_number" value="<?php if(isset($data->id)){echo $data->contact_number; } ?>" required>               
+                    <input type="text" name="contact_number" class="form-control" placeholder="Contact Number" id="contact_number" value="<?php if(isset($data->id)){echo $data->contact_number; } ?>" required>
                     <div class="text-danger" id="contact_number_error"></div>
                   </div>
                   <div class="col-md-6">
                     <label for="website" class="col-form-label">Website</label>
-                    <input type="text" name="website" class="form-control" placeholder="Website" id="website" value="<?php if(isset($data->id)){echo $data->website; } ?>" required>               
+                    <input type="text" name="website" class="form-control" placeholder="Website" id="website" value="<?php if(isset($data->id)){echo $data->website; } ?>" required>
                     <div class="text-danger" id="website_error"></div>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-12">
                     <label for="address" class="col-form-label">Address</label>
-                    <textarea name="address" id="address" class="form-control" placeholder="Address">@if(isset($data->id)){{$data->address}}@endif</textarea>             
+                    <textarea name="address" id="address" class="form-control" placeholder="Address">@if(isset($data->id)){{$data->address}}@endif</textarea>
                     <div class="text-danger" id="address_error"></div>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="facebook" class="col-form-label">Facebook</label>
-                    <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="<?php if(isset($data->id)){echo $data->facebook; } ?>" required>               
+                    <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="<?php if(isset($data->id)){echo $data->facebook; } ?>" required>
                     <div class="text-danger" id="facebook_error"></div>
                   </div>
                   <div class="col-md-6">
                     <label for="instagram" class="col-form-label">Instagram</label>
-                    <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="<?php if(isset($data->id)){echo $data->instagram; } ?>" required>               
+                    <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="<?php if(isset($data->id)){echo $data->instagram; } ?>" required>
                     <div class="text-danger" id="instagram_error"></div>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label for="linkedin" class="col-form-label">Linkedin</label>
-                    <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="<?php if(isset($data->id)){echo $data->linkedin; } ?>" required>               
+                    <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="<?php if(isset($data->id)){echo $data->linkedin; } ?>" required>
                     <div class="text-danger" id="linkedin_error"></div>
                   </div>
                   <div class="col-md-6">
                     <label for="twitter" class="col-form-label">Twitter</label>
-                    <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="<?php if(isset($data->id)){echo $data->twitter; } ?>" required>               
+                    <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="<?php if(isset($data->id)){echo $data->twitter; } ?>" required>
                     <div class="text-danger" id="twitter_error"></div>
                   </div>
                 </div>
@@ -153,24 +153,24 @@
                   <label for="videourl" class="col-form-label">Video URL</label>
                   <input type="text" name="videourl" class="form-control videourl" placeholder="Video url" id="videourl" value="@if(isset($data->id)){{$data->videourl}}@endif" required>
                   <div class="text-danger" id="videourl_error"></div>
-                </div>                
+                </div>
               </div>
-              <div class="row mb-3">                
+              <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="tag_name" class="col-form-label">Tag Name (English)</label>
-                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>               
+                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>
                   <div class="text-danger" id="tag_name_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="tag_namear" class="col-form-label">Tag Name (Arabic)</label>
-                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>               
+                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>
                   <div class="text-danger" id="tag_namear_error"></div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="images" class="col-form-label">Image</label>
+                  <label for="images" class="col-form-label">Image<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" name="images"class="form-control files mb-2" placeholder="images" id="images" accept=".jpeg, .jpg, .png, .gif">
                   <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <div class="text-center">
@@ -189,7 +189,7 @@
                 </div>
               </div>
 
-              <!-- event --> 
+              <!-- event -->
 
               {{-- <div class="row mb-3">
                 <div class="col-md-2">
@@ -207,7 +207,7 @@
                   <label for="sponser_name" class="col-form-label">Sponser Name</label>
                 </div>
                 <div class="col-sm-10">
-                  <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>               
+                  <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>
                   <div class="text-danger" id="sponser_name_error"></div>
                 </div>
               </div> --}}
@@ -236,7 +236,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -261,7 +261,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -296,7 +296,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -321,7 +321,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -369,34 +369,34 @@
       var end_date = new Date($('#end_date').val());
       var id  = $('#id').val();
       if(!name){
-        $('#name_error').text("The field is required."); 
-        return false;     
+        $('#name_error').text("The field is required.");
+        return false;
       }
       if(!info){
-        $('#name_error').text(""); 
-        $('#info_error').text("The field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#info_error').text("The field is required.");
+        return false;
       }
       if(!postedBy){
-        $('#name_error').text(""); 
-        $('#info_error').text(""); 
-        $('#postedBy_error').text("The field is required."); 
-        return false;     
+        $('#name_error').text("");
+        $('#info_error').text("");
+        $('#postedBy_error').text("The field is required.");
+        return false;
       }
       if(!postedDate){
-        $('#name_error').text(""); 
-        $('#info_error').text(""); 
-        $('#postedBy_error').text(""); 
-        $('#postedDate_error').text("The field is required."); 
-        return false;     
-      } 
+        $('#name_error').text("");
+        $('#info_error').text("");
+        $('#postedBy_error').text("");
+        $('#postedDate_error').text("The field is required.");
+        return false;
+      }
       if(end_date!=''){
         if(new Date(start_date) > new Date(end_date)){
           $('#start_date_error').text("Start Date must be less then Expiry Date");
           return false;
         }
         //return false;
-      }    
+      }
       $.ajax({
           type:'POST',
           url:'{{url("/admin/insert_magazine")}}',
@@ -422,9 +422,9 @@
 
             }
           }
-          
+
       });
-       
+
     })
 
 

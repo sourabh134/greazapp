@@ -16,25 +16,25 @@
             <p class="alert alert-success"><span style="font-weight: 600;"> Success !! </span>{{ Session::get('message') }}</p>
             @endif
             <!-- <a href="#" class="white_btn3">Create Report</a> -->
-     
+
             <!-- <h2 class="card-title text-center pb-5">Add Brand</h2> -->
             <form method="post" id="saveform" enctype="multipart/form-data">
               @csrf
               <div class="row mb-3 ui">
                 <div class="col-md-6">
-                  <label for="name" class="col-form-label">Name (English)</label>
+                  <label for="name" class="col-form-label">Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="namear" class="col-form-label">Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>
               </div>
-              <div class="row mb-3 ui">                
+              <div class="row mb-3 ui">
                 <div class="col-md-6">
-                  <label for="website" class="col-form-label">Brand</label>
+                  <label for="website" class="col-form-label">Brand<em>*</em></label>
                   <select name="brands[]" multiple="" id="brands" class="js-example-basic-single form-select">
                     @foreach($brand as $brandvalue)
                     <?php
@@ -44,17 +44,17 @@
                     @endforeach
                   </select>
                   <div class="text-danger" id="brand_error"></div>
-                </div> 
+                </div>
                 <div class="col-md-6">
-                  <label for="email" class="col-form-label">Email</label>
-                  <input type="text" name="email" class="form-control email" id="email" value="@if(isset($data->id)){{$data->email}}@endif"/>                  
+                  <label for="email" class="col-form-label">Email<em>*</em></label>
+                  <input type="text" name="email" class="form-control email" id="email" value="@if(isset($data->id)){{$data->email}}@endif"/>
                   <div class="text-danger" id="email_error"></div>
-                </div>               
+                </div>
               </div>
               <div class="row mb-3 ui">
                 <div class="col-md-6">
-                  <label for="servicetypeID" class="col-form-label">Service Type</label>
-                  <select name="servicetypeID[]" multiple="" id="servicetypeID" class="js-example-basic-single form-select">                    
+                  <label for="servicetypeID" class="col-form-label">Service Type<em>*</em></label>
+                  <select name="servicetypeID[]" multiple="" id="servicetypeID" class="js-example-basic-single form-select">
                     @foreach($servicetype as $value)
                     <option value="{{$value->id}}" <?php if(isset($data->id)){ foreach($service as $sver){if($value->id == $sver->serviceID){ echo"selected"; }} }?>>{{$value->name}}</option>
                     @endforeach
@@ -62,14 +62,14 @@
                   <div class="text-danger" id="service_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="mobile" class="col-form-label">Mobile No.</label>
+                  <label for="mobile" class="col-form-label">Mobile No.<em>*</em></label>
                   <input type="text" name="mobile" class="form-control" placeholder="Mobile No." id="mobile" value="@if(isset($data->id)){{$data->contact}}@endif" required>
-                  <div class="text-danger" id="mobile_error"></div>               
+                  <div class="text-danger" id="mobile_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="youtube" class="col-form-label">Working Days</label>
+                  <label for="youtube" class="col-form-label">Working Days<em>*</em></label>
                   <div class="row">
                     <div class="col-sm-6">
                       <select name="start_day" id="start_day" class="form-select">
@@ -94,11 +94,11 @@
                         <option <?php if(isset($data->id)){ if($data->end_day==7){ echo"selected"; }}else{ echo"selected"; } ?> value="7">Sunday</option>
                       </select>
                       <div class="text-danger" id="end_error"></div>
-                    </div> 
-                  </div>             
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="youtube" class="col-form-label">Working Hours</label>
+                  <label for="youtube" class="col-form-label">Working Hours<em>*</em></label>
                   <div class="row">
                     <div class="col-sm-6">
                       <input type="time" class="form-control" name="start_time" id="start_time" value="<?php if(isset($data->id)){ echo $data->start_time; } ?>">
@@ -113,7 +113,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="twitter" class="col-form-label">Country</label>
+                  <label for="twitter" class="col-form-label">Country<em>*</em></label>
                   <select class="form-select" name="country" id="country">
                     <option value="">Choose</option>
                     @foreach($country as $countryvalue)
@@ -123,7 +123,7 @@
                   <div class="text-danger" id="country_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="linkedin" class="col-form-label">State</label>
+                  <label for="linkedin" class="col-form-label">State<em>*</em></label>
                   <select class="form-select" name="state" id="state">
                     <option value="">Choose</option>
                     @if(isset($data->id))
@@ -137,7 +137,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="facebook" class="col-form-label">City</label>
+                  <label for="facebook" class="col-form-label">City<em>*</em></label>
                   <select class="form-select" name="city" id="city">
                     <option value="">Choose</option>
                     @if(isset($data->id))
@@ -149,18 +149,18 @@
                   <div class="text-danger" id="city_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="instagram" class="col-form-label">Address</label>
+                  <label for="instagram" class="col-form-label">Address<em>*</em></label>
                   <textarea class="form-control" name="address" id="address">@if(isset($data->id)){{$data->address}}@endif</textarea>
                   <div class="text-danger" id="address_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-sm-12">
-                  <label for="image" class="col-form-label">Branch Image</label>
+                  <label for="image" class="col-form-label">Branch Image<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" id="imageInput" name="image" accept="image/*" class="form-control mb-2">
                   <span class="text-danger"><b>Note : </b>Recommended size will be 3:2</span><br>
                   <p class="text-danger" id="message"></p>
-                  <img id="preview" src="<?php if(isset($data->id)){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" style="max-width: 100%;">                 
+                  <img id="preview" src="<?php if(isset($data->id)){ echo url("public/images/".$data->image);}else{ ?>../public/img/image-preview.png<?php } ?>" style="max-width: 100%;">
                 </div>
               </div>
               <div class="row">
@@ -188,7 +188,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -213,7 +213,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -260,19 +260,19 @@
         var agentid = $('.agentid').val();
         var image = $('#imageInput').val();
         if(!name){
-          $('#name_error').text("This field is required."); 
-          return false;     
+          $('#name_error').text("This field is required.");
+          return false;
         }
         if(!brands){
           $('#name_error').text("");
           $('#brand_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!email){
           $('#name_error').text("");
           $('#brand_error').text("");
           $('#email_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)){
           $('#name_error').text("");
@@ -284,14 +284,14 @@
           $('#name_error').text("");
           $('#brand_error').text("");
           $('#service_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!mobile){
           $('#name_error').text("");
           $('#brand_error').text("");
           $('#service_error').text("");
           $('#mobile_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!mobile.match(/^[0-9]{9,12}$/)){
           $('#name_error').text("");
@@ -306,7 +306,7 @@
           $('#service_error').text("");
           $('#mobile_error').text("");
           $('#start_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!end_day){
           $('#name_error').text("");
@@ -315,7 +315,7 @@
           $('#mobile_error').text("");
           $('#start_error').text("");
           $('#end_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(start_day > end_day){
           $('#name_error').text("");
@@ -324,7 +324,7 @@
           $('#mobile_error').text("");
           $('#start_error').text("Start date always less then End date");
           $('#end_error').text("");
-          return false;     
+          return false;
         }
         if(!start_time){
           $('#name_error').text("");
@@ -334,7 +334,7 @@
           $('#start_error').text("");
           $('#end_error').text("");
           $('#start_time_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!end_time){
           $('#name_error').text("");
@@ -345,7 +345,7 @@
           $('#end_error').text("");
           $('#start_time_error').text("");
           $('#end_time_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(start_time > end_time){
           $('#name_error').text("");
@@ -356,7 +356,7 @@
           $('#end_error').text("");
           $('#start_time_error').text("Start time always less then End time");
           $('#end_time_error').text("");
-          return false;     
+          return false;
         }
         if(!country){
           $('#name_error').text("");
@@ -368,7 +368,7 @@
           $('#start_time_error').text("");
           $('#end_time_error').text("");
           $('#country_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!state){
           $('#name_error').text("");
@@ -381,7 +381,7 @@
           $('#end_time_error').text("");
           $('#country_error').text("");
           $('#state_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!city){
           $('#name_error').text("");
@@ -395,7 +395,7 @@
           $('#country_error').text("");
           $('#state_error').text("");
           $('#city_error').text("This field is required.");
-          return false;     
+          return false;
         }
         if(!address){
           $('#name_error').text("");
@@ -410,8 +410,8 @@
           $('#state_error').text("");
           $('#city_error').text("");
           $('#address_error').text("This field is required.");
-          return false;     
-        } 
+          return false;
+        }
         if(agentid==''){
           if(!image){
             $('#name_error').text("");
@@ -470,9 +470,9 @@
 
               }
             }
-            
+
         });
-        
+
     })
 </script>
 <script>

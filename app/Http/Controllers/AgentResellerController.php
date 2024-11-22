@@ -54,7 +54,7 @@ class AgentResellerController extends Controller
     }
 
     public function insertAgentBanner(Request $request){
-        $validator = Validator::make($request->all(), 
+        $validator = Validator::make($request->all(),
             [
                 //'image' => 'mimes:jpeg,jpg,png,gif|max:2000|dimensions:max_width=500,max_height=500',
                 'name' => 'required',
@@ -137,7 +137,7 @@ class AgentResellerController extends Controller
                 // return redirect()->back()->with('message', 'Banner added successfully.');
             }
         }
-        
+
     }
 
     public function update_Agentstatus($id, $table){
@@ -197,7 +197,7 @@ class AgentResellerController extends Controller
                 // print_r($log);
                 $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
             }
-        } 
+        }
     }
 
     public function change_agentbanner_status(Request $request){
@@ -251,8 +251,8 @@ class AgentResellerController extends Controller
         return view('admin.addagent', $data);
     }
 
-    public function insert_agent(Request $request){ 
-        $validator = Validator::make($request->all(), 
+    public function insert_agent(Request $request){
+        $validator = Validator::make($request->all(),
             [
                 //'image' => 'mimes:jpeg,jpg,png,gif|max:2000|dimensions:max_width=100,max_height=100',
                 //'images' => 'mimes:jpeg,jpg,png,gif|max:2000|dimensions:max_width=500,max_height=500',
@@ -261,10 +261,10 @@ class AgentResellerController extends Controller
         if ($validator->fails()){
             $errors = $validator->errors();
             echo $errors;
-        }else{       
+        }else{
             if($request->id==""){
                 $check_name = Agent::where('name',$request->name)->count();
-                if($check_name==0){ 
+                if($check_name==0){
                     //image upload
                     if($request->image!=''){
                         $new_width = 100;
@@ -278,9 +278,9 @@ class AgentResellerController extends Controller
                     }else{
                         $imageName = "";
                     }
-                    // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                    // $imageName = 'logo'.time().'.'.$request->image->extension();
                     // $request->image->move(public_path('images'), $imageName);
-                    if($request->imagess!=''){                        
+                    if($request->imagess!=''){
                         $new_widths = 720;
                         $new_heights = 480;
                         $files = $request->file('imagess');
@@ -288,13 +288,13 @@ class AgentResellerController extends Controller
                         $uploadPaths = public_path('images/');
                         $fileExts = $file->getClientOriginalExtension();
                         $imgnames = "imthump_";
-                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames); 
+                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
                     }else{
                         $imageName1='';
                     }
-                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();      
+                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();
                     // $request->imagess->move(public_path('images'), $imageName1);
-                    
+
                     //tag icon
                     if($request->tag_icon!=''){
                         $new_widtht = 100;
@@ -305,7 +305,7 @@ class AgentResellerController extends Controller
                         $fileExtt = $filet->getClientOriginalExtension();
                         $imgnamet = "tagthump_";
                         $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
-                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();
                         // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
@@ -351,7 +351,7 @@ class AgentResellerController extends Controller
                             $fileExtss = $file->getClientOriginalExtension();
                             $imgnamess = $i."sponthump_";
                             $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();
                             // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $agent->id;
@@ -376,7 +376,7 @@ class AgentResellerController extends Controller
                     echo 1;
                 }else{
                     echo 2;
-                }              
+                }
             }else{
                 $check_name = Brand::where('name',$request->name)->where('id',$request->id);
                 if($check_name->count() >= 1 && $request->id != $check_name->first()->id){
@@ -395,9 +395,9 @@ class AgentResellerController extends Controller
                     }else{
                         $imageName = "";
                     }
-                    // $imageName = 'logo'.time().'.'.$request->image->extension();      
+                    // $imageName = 'logo'.time().'.'.$request->image->extension();
                     // $request->image->move(public_path('images'), $imageName);
-                    if($request->imagess!=''){                        
+                    if($request->imagess!=''){
                         $new_widths = 720;
                         $new_heights = 480;
                         $files = $request->file('imagess');
@@ -405,13 +405,13 @@ class AgentResellerController extends Controller
                         $uploadPaths = public_path('images/');
                         $fileExts = $file->getClientOriginalExtension();
                         $imgnames = "imthump_";
-                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames); 
+                        $imageName1 = ExternalSystem::saveresizeimage($new_widths,$new_heights,$fileNames,$uploadPaths,$fileExts,$imgnames);
                     }else{
                         $imageName1='';
                     }
-                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();      
+                    // $imageName1 = 'im'.time().'.'.$request->imagess->extension();
                     // $request->imagess->move(public_path('images'), $imageName1);
-                    
+
                     //tag icon
                     if($request->tag_icon!=''){
                         $new_widtht = 100;
@@ -422,7 +422,7 @@ class AgentResellerController extends Controller
                         $fileExtt = $filet->getClientOriginalExtension();
                         $imgnamet = "tagthump_";
                         $tag_icon = ExternalSystem::saveresizeimage($new_widtht,$new_heightt,$fileNamet,$uploadPatht,$fileExtt,$imgnamet);
-                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();      
+                        // $tag_icon = 't'.time().'.'.$request->tag_icon->extension();
                         // $request->tag_icon->move(public_path('images'), $tag_icon);
                     }else{
                         $tag_icon='';
@@ -468,12 +468,12 @@ class AgentResellerController extends Controller
                             $agentBrand->agentID = $request->id;
                             $agentBrand->brandID = $valb;
                             $agentBrand->save();
-                        }                    
+                        }
                     }
                     foreach($result as $rval){
                         AgentBrand::where('brandID',$rval)->where('agentID',$request->id)->delete();
                     }
-                    
+
                     //image upload
                     if(!empty($request->images)){
                         $i=1;
@@ -487,7 +487,7 @@ class AgentResellerController extends Controller
                             $fileExtss = $file->getClientOriginalExtension();
                             $imgnamess = $i."sponthump_";
                             $imageNames = ExternalSystem::saveresizeimage($new_widthss,$new_heightss,$fileNamess,$uploadPathss,$fileExtss,$imgnamess);
-                            // $imageNames = $i.time().'.'.$imagevalue->extension();      
+                            // $imageNames = $i.time().'.'.$imagevalue->extension();
                             // $imagevalue->move(public_path('images'), $imageNames);
                             $AllBannerImage = new AllBannerImage;
                             $AllBannerImage->bannerimageID = $request->id;
@@ -509,7 +509,7 @@ class AgentResellerController extends Controller
                         // print_r($log);
                         $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
                     }
-                }             
+                }
 
             }
         }
@@ -576,7 +576,7 @@ class AgentResellerController extends Controller
         $data['data'] = Agent::where('status','!=',2)->where('popular',1)->orderBy('position','ASC')->get();
         return view('admin.popularAgents', $data);
     }
-    
+
     public function updateAgentOrder(Request $request){
         $arr=$request->allData;
         $num=0;
@@ -585,8 +585,8 @@ class AgentResellerController extends Controller
             $brand = Agent::find($arr[$i]);
             $brand->position = $num=$num+1;
             $brand->update();
-            
-        } 
+
+        }
         if(session::get('usertype')==2){
             $log = array(
                 'staff_id'=>session::get('id'),
@@ -603,12 +603,12 @@ class AgentResellerController extends Controller
     public function branch(Request $request){
         $data['active'] = "agent";
         $data['active1'] = "agent";
-        $data['id'] = $request->key; 
+        $data['id'] = $request->key;
         $admin_id = session::get('id');
         $data['title'] = "Branch";
         $data['data']=AgentBranch::where('agentID', base64_decode($request->key))->get();
         $data['admin']=Admin::find($admin_id);
-        
+
         return view('admin.branch', $data);
     }
 
@@ -623,7 +623,7 @@ class AgentResellerController extends Controller
         $data['servicetype'] = ServiceType::where('status',1)->get();
         $data['country'] = Country::where('status',1)->get();
         $data['brand'] = AgentBrand::where('agentID',base64_decode($request->key))->get();
-        if($branchid!='') {      
+        if($branchid!='') {
         $data['data'] = AgentBranch::where('id',$branchid)->first();
         $data['state'] = State::where('country_id',$data['data']->country)->get();
         $data['city'] = City::where('state_id',$data['data']->state)->get();
@@ -649,27 +649,27 @@ class AgentResellerController extends Controller
         }
     }
 
-    public function insert_branch(Request $request){ 
-       // Google Maps API Key 
-    //     $GOOGLE_API_KEY = 'AIzaSyA_VxG35IaFz_h_F0G_786p77XvwRKG_WM'; 
-            
-    //     // Address from which the latitude and longitude will be retrieved 
-    //     $address = 'White House, Pennsylvania Avenue Northwest, Washington, DC, United States'; 
-        
-    //     // Formatted address 
-    //     $formatted_address = str_replace(' ', '+', $address); 
-        
-    //     // Get geo data from Google Maps API by address 
-    //     $geocodeFromAddr = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address={$formatted_address}&key={$GOOGLE_API_KEY}"); 
-        
-    //     // Decode JSON data returned by API 
+    public function insert_branch(Request $request){
+       // Google Maps API Key
+    //     $GOOGLE_API_KEY = 'AIzaSyA_VxG35IaFz_h_F0G_786p77XvwRKG_WM';
+
+    //     // Address from which the latitude and longitude will be retrieved
+    //     $address = 'White House, Pennsylvania Avenue Northwest, Washington, DC, United States';
+
+    //     // Formatted address
+    //     $formatted_address = str_replace(' ', '+', $address);
+
+    //     // Get geo data from Google Maps API by address
+    //     $geocodeFromAddr = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address={$formatted_address}&key={$GOOGLE_API_KEY}");
+
+    //     // Decode JSON data returned by API
     //     $apiResponse = json_decode($geocodeFromAddr);
     //     print_r($apiResponse);
-        
-    //    // Retrieve latitude and longitude from API data 
-    //     $latitude  = $apiResponse->results[0]->geometry->location->lat;  
-    //     $longitude = $apiResponse->results[0]->geometry->location->lng; 
-    //     die; 
+
+    //    // Retrieve latitude and longitude from API data
+    //     $latitude  = $apiResponse->results[0]->geometry->location->lat;
+    //     $longitude = $apiResponse->results[0]->geometry->location->lng;
+    //     die;
         if($request->image!=''){
             $new_width = 720;
             $new_height = 480;
@@ -679,15 +679,15 @@ class AgentResellerController extends Controller
             $fileExt = $file->getClientOriginalExtension();
             $imgname = "thump_";
             $image = ExternalSystem::saveresizeimage($new_width,$new_height,$fileName,$uploadPath,$fileExt,$imgname);
-            // $image = 't'.time().'.'.$request->image->extension();      
+            // $image = 't'.time().'.'.$request->image->extension();
             // $request->image->move(public_path('images'), $image);
         }else{
             $image='';
-        }      
+        }
         if($request->id==""){
-            
+
             $check_name = AgentBranch::where('name',$request->name)->count();
-            if($check_name==0){                              
+            if($check_name==0){
                 $insert = new AgentBranch;
                 $insert->name = $request->name;
                 $insert->name_ar = $request->namear;
@@ -724,7 +724,7 @@ class AgentResellerController extends Controller
                     $ServiceBranch->serviceID = $serval;
                     $ServiceBranch->save();
                 }
-                
+
                 echo 1;
                 if(session::get('usertype')==2){
                     $log = array(
@@ -739,13 +739,13 @@ class AgentResellerController extends Controller
                 }
             }else{
                 echo 2;
-            }              
+            }
         }else{
             $check_name = AgentBranch::where('name',$request->name)->where('id',$request->id);
             if($check_name->count() >= 1 && $request->id != $check_name->first()->id){
                 echo 2;
             }else{
-                               
+
                 $insert = new AgentBranch;
                 $insert = AgentBranch::find($request->id);
                 $insert->name = $request->name;
@@ -764,7 +764,7 @@ class AgentResellerController extends Controller
                 $insert->address = $request->address;
                 if($image!=""){
                     $insert->image = $image;
-                }                
+                }
                 $insert->latitude = 0;
                 $insert->longitude = 0;
                 $insert->save();
@@ -783,7 +783,7 @@ class AgentResellerController extends Controller
                         $agentBrand->agentId = $request->agentid;
                         $agentBrand->brandId = $valb;
                         $agentBrand->save();
-                    }                    
+                    }
                 }
                 foreach($result as $rval){
                     BranchBrand::where('brandId',$rval)->where('branchId',$request->id)->delete();
@@ -803,11 +803,11 @@ class AgentResellerController extends Controller
                         $ServiceBranch->agentId = $request->agentid;
                         $ServiceBranch->serviceID = $valbs;
                         $ServiceBranch->save();
-                    }                    
+                    }
                 }
                 foreach($results as $rvals){
                     ServiceBranch::where('serviceID',$rvals)->where('branchId',$request->id)->delete();
-                } 
+                }
                 if(session::get('usertype')==2){
                     $log = array(
                         'staff_id'=>session::get('id'),
@@ -818,9 +818,9 @@ class AgentResellerController extends Controller
                     );
                     // print_r($log);
                     $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
-                }           
+                }
                 echo 1;
-            }             
+            }
 
         }
     }
@@ -861,6 +861,6 @@ class AgentResellerController extends Controller
             $StaffLogEvent = StaffLogEvent::createStaffLogEvent($log);
         }
     }
-    
-    
+
+
 }

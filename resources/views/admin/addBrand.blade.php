@@ -50,7 +50,7 @@
               <li class="breadcrumb-item"><a href="{{ url('admin/brands') }}">Brands</a></li>
               <li class="breadcrumb-item active">Add Brand</li>
             </ol> -->
-          
+
         <div class="card p-4">
           <div class="card-body">
             @if(Session::has('message'))
@@ -62,36 +62,36 @@
               @csrf
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="name" class="col-form-label">Brand Name (English)</label>
+                  <label for="name" class="col-form-label">Brand Name (English)<em>*</em></label>
                   <input type="text" name="name" class="form-control name" placeholder="Brand Name (English)" id="name" value="@if(isset($data->id)){{$data->name}}@endif" required>
                   <div class="text-danger" id="name_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="namear" class="col-form-label">Brand Name (Arabic)</label>
+                  <label for="namear" class="col-form-label">Brand Name (Arabic)<em>*</em></label>
                   <input type="text" name="namear" class="form-control namear" placeholder="Brand Name (Arabic)" id="namear" value="@if(isset($data->id)){{$data->name_ar}}@endif" required>
                   <div class="text-danger" id="namear_error"></div>
                 </div>
               </div>
-              <div class="row mb-3">                
+              <div class="row mb-3">
                 <div class="col-md-6">
-                  <label for="category" class="col-form-label">Category</label>
+                  <label for="category" class="col-form-label">Category<em>*</em></label>
                   <select name="category" id="category" class="form-select">
                     <option value="">Choose</option>
                     @foreach($category as $cvalue)
                       <option <?php if(isset($data->id)){ if($data->categoryID == $cvalue->id){ echo"Selected"; }} ?> value="{{$cvalue->id}}">{{$cvalue->name}}</option>
-                    @endforeach                      
+                    @endforeach
                   </select>
                   <div class="text-danger" id="category_error"></div>
                 </div>
                 <div class="col-md-6">
-                  <label for="logo" class="col-form-label">Logo</label>
+                  <label for="logo" class="col-form-label">Logo<?php if(isset($data->id)){}else { echo "<em>*</em>"; } ?></label>
                   <input type="file" name="image" id="logo" class="form-control file mb-2" placeholder="Logo" accept=".jpeg, .jpg, .png,.gif">
                   {{-- <span class="text-danger"><b>Note : </b>Recommended size will be 4:3</span><br> --}}
                   <img id="previewImg" class="mt-2" src="<?php if(isset($data->id)){ if($data->logo!=''){ echo url("public/images/".$data->logo);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   <div class="text-danger" id="image_error"></div>
                 </div>
               </div>
-              
+
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="info" class="col-form-label">Description (English)</label>
@@ -105,60 +105,60 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="website" class="col-form-label">Website</label>
-                  <input type="text" name="website" class="form-control" placeholder="Website" id="website" value="@if(isset($data->id)){{$data->website}}@endif" required>               
+                  <input type="text" name="website" class="form-control" placeholder="Website" id="website" value="@if(isset($data->id)){{$data->website}}@endif" required>
                   <div class="text-danger" id="website_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="youtube" class="col-form-label">Youtube</label>
-                  <input type="text" name="youtube" class="form-control" placeholder="Youtube" id="youtube" value="@if(isset($data->id)){{$data->youtube}}@endif" required>               
+                  <input type="text" name="youtube" class="form-control" placeholder="Youtube" id="youtube" value="@if(isset($data->id)){{$data->youtube}}@endif" required>
                   <div class="text-danger" id="youtube_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="twitter" class="col-form-label">Twitter</label>
-                  <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="@if(isset($data->id)){{$data->twitter}}@endif" required>               
+                  <input type="text" name="twitter" class="form-control" placeholder="Twitter" id="twitter" value="@if(isset($data->id)){{$data->twitter}}@endif" required>
                   <div class="text-danger" id="twitter_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="linkedin" class="col-form-label">Linkedin</label>
-                  <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="@if(isset($data->id)){{$data->linkedin}}@endif" required>               
+                  <input type="text" name="linkedin" class="form-control" placeholder="Linkedin" id="linkedin" value="@if(isset($data->id)){{$data->linkedin}}@endif" required>
                   <div class="text-danger" id="linkedin_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="facebook" class="col-form-label">Facebook</label>
-                  <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="@if(isset($data->id)){{$data->facebook}}@endif" required>               
+                  <input type="text" name="facebook" class="form-control" placeholder="Facebook" id="facebook" value="@if(isset($data->id)){{$data->facebook}}@endif" required>
                   <div class="text-danger" id="facebook_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="instagram" class="col-form-label">Instagram</label>
-                  <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="@if(isset($data->id)){{$data->instagram}}@endif" required>               
+                  <input type="text" name="instagram" class="form-control" placeholder="Instagram" id="instagram" value="@if(isset($data->id)){{$data->instagram}}@endif" required>
                   <div class="text-danger" id="instagram_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="sponser_name" class="col-form-label">Sponser Name (English)</label>
-                  <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name (English)" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>               
+                  <input type="text" name="sponser_name" class="form-control" placeholder="Sponser Name (English)" id="sponser_name" value="@if(isset($data->id)){{$data->sponser_name}}@endif" required>
                   <div class="text-danger" id="sponser_name_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="tag_name" class="col-form-label">Tag Name (English)</label>
-                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>               
+                  <input type="text" name="tag_name" class="form-control" placeholder="Tag Name (English)" id="tag_name" value="@if(isset($data->id)){{$data->tag_name}}@endif" required>
                   <div class="text-danger" id="tag_name_error"></div>
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="sponser_namear" class="col-form-label">Sponser Name (Arabic)</label>
-                  <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name (Arabic)" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name_ar}}@endif" required>               
+                  <input type="text" name="sponser_namear" class="form-control" placeholder="Sponser Name (Arabic)" id="sponser_namear" value="@if(isset($data->id)){{$data->sponser_name_ar}}@endif" required>
                   <div class="text-danger" id="sponser_name_error"></div>
                 </div>
                 <div class="col-md-6">
                   <label for="tag_namear" class="col-form-label">Tag Name (Arabic)</label>
-                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>               
+                  <input type="text" name="tag_namear" class="form-control" placeholder="Tag Name (Arabic)" id="tag_namear" value="@if(isset($data->id)){{$data->tag_name_ar}}@endif" required>
                   <div class="text-danger" id="tag_namear_error"></div>
                 </div>
               </div>
@@ -176,7 +176,7 @@
                   <span class="text-danger"><b>Note : </b>Recommended size will be 1:1</span><br>
                   <img id="previewImgtag" class="mt-2" src="<?php if(isset($data->id)){ if($data->tag_icon!=''){ echo url("public/images/".$data->tag_icon);}else{?> ../public/img/image-preview.png <?php }}else{ ?>../public/img/image-preview.png<?php } ?>" alt="Placeholder" width="100px">
                   <div class="text-danger" id="tag_icon_error"></div>
-                </div> 
+                </div>
               </div>
               <div class="row mb-3">
                 <div class="form-group">
@@ -200,9 +200,9 @@
                   <div id="image_preview" style="width:100%;">
                   </div>
                 </div>
-              </div>            
+              </div>
 
-              
+
               <div class="row mt-5">
                 <div class="col-sm-12 text-center">
                   <input type="hidden" class="id" name="id" id="id" value="@if(isset($data->id)){{$data->id}}@endif">
@@ -227,7 +227,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -252,7 +252,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -289,7 +289,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -314,7 +314,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -348,7 +348,7 @@
       const img = new Image();
       const objectURL = URL.createObjectURL(file);
       img.src = objectURL;
-      
+
       img.onload = function() {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -373,7 +373,7 @@
           // const width = img.naturalWidth;
           // const height = img.naturalHeight;
           // const aspectRatio = width / height;
-          
+
           // // Define your desired aspect ratio
           // //const desiredAspectRatio = 16 / 9;
           // const desiredAspectRatio = 4 / 3;
@@ -405,7 +405,7 @@
    $("#images").change(function(){
       // check if fileArr length is greater than 0
        if (fileArr.length > 0) fileArr = [];
-     
+
         $('#image_preview').html("");
         var total_file = document.getElementById("images").files;
         if (!total_file.length) return;
@@ -418,12 +418,12 @@
           }
         }
    });
-  
+
   $('body').on('click', '#action-icon', function(evt){
       var divName = this.value;
       var fileName = $(this).attr('role');
       $(`#${divName}`).remove();
-    
+
       for (var i = 0; i < fileArr.length; i++) {
         if (fileArr[i].name === fileName) {
           fileArr.splice(i, 1);
@@ -432,7 +432,7 @@
     document.getElementById('images').files = FileListItem(fileArr);
       evt.preventDefault();
   });
-  
+
    function FileListItem(file) {
             file = [].slice.call(Array.isArray(file) ? file : arguments)
             for (var c, b = c = file.length, d = !0; b-- && d;) d = file[b] instanceof File
@@ -444,24 +444,29 @@
 </script>
 <script>
     $('.submitdata').click(function(){
-        var name  = $('#name').val();        
-        var category  = $('#category').val();        
-        var logo  = $('#logo').val();      
-        var website  = $('#website').val();   
-        var youtube  = $('#youtube').val();   
-        var twitter  = $('#twitter').val();   
-        var linkedin  = $('#linkedin').val();   
-        var facebook  = $('#facebook').val();   
+        var name  = $('#name').val();
+        var namear  = $('#namear').val();
+        var category  = $('#category').val();
+        var logo  = $('#logo').val();
+        var website  = $('#website').val();
+        var youtube  = $('#youtube').val();
+        var twitter  = $('#twitter').val();
+        var linkedin  = $('#linkedin').val();
+        var facebook  = $('#facebook').val();
         var instagram  = $('#instagram').val();
         var id  = $('#id').val();
         if(!name){
-          $('#name_error').text("The name field is required."); 
-          return false;     
+          $('#name_error').text("The name field is required.");
+          return false;
+        }
+        if(!namear){
+          $('#namear_error').text("The name field is required.");
+          return false;
         }
         if(!category){
           $('#name_error').text("");
-          $('#category_error').text("The category field is required."); 
-          return false;     
+          $('#category_error').text("The category field is required.");
+          return false;
         }
         if(id==''){
           if(!logo){
@@ -512,7 +517,7 @@
             return false;
           }
         }
-        
+
             $.ajax({
                 type:'POST',
                 url:'{{url("/admin/insert_brand")}}',
@@ -537,14 +542,14 @@
                   $(".alert-danger").show('slow' , 'linear').delay(4000).fadeOut();
 
                   }
-                  if ($.trim(data) == "3") {           
+                  if ($.trim(data) == "3") {
                     $('#image_error').text("Invalid image dimensions must be 40px X 40px");
 
                   }
                 }
-                
+
             });
-       
+
     })
 </script>
 <script>
@@ -559,9 +564,9 @@
           console.log(data);
           if($.trim(data)=="1"){
             location.reload();
-          }          
+          }
         }
-        
+
     });
   }
 </script>

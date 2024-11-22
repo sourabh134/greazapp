@@ -101,6 +101,8 @@ class BrandController extends Controller
             //about
             $brand = Brand::where('id',$brandID)->where('status',1)->first();
             $datap['id'] = $brand->id;
+            $datap['categoryID'] = $brand->categoryID;
+            $arr['categoryID'] = $brand->categoryID;
             $datap['logo'] = $brand->logo;
             $datap['website'] = $brand->website;
             $datap['youtube'] = $brand->youtube;
@@ -264,6 +266,7 @@ class BrandController extends Controller
             $arr['rating'] = "".number_format($avgStar, 1, '.', '');
             $CarReview = BrandReview::where('brandID',$brandID);
             $arr['reviews'] = $CarReview->count();
+
             return response()->json(['success'=>'true','message'=>'','result'=>$arr], 200);
         }
     }
